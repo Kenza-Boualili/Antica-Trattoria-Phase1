@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'Antica Trattoria - Accueil</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="fichiercommun.css">
+    <link rel="stylesheet" href="style index.css">
+</head>
+<body>
+
+<header class="hero">
+    <nav id="navbar">
+        <div class="logo">L'Antica Trattoria</div>
+        <ul class="nav-links">
+            <li><a href="index.html">ACCUEIL</a></li>
+            <li><a href="carte.html">NOTRE CARTE</a></li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="btn-gold" onclick="window.location.href='connexion.html'">SE CONNECTER</button>
+            <button class="btn-gold" onclick="window.location.href='inscription.html'">S'INSCRIRE</button>
+        </div>
+    </nav>
+    <div class="hero-content">
+        <h1>Une expérience italienne authentique</h1>
+        <p>Tradition, passion et saveurs d'Italie</p>
+        
+        <div class="search-container">
+            <form action="carte.html" method="GET" class="search-form">
+                <input type="text" name="search" placeholder="Rechercher un plat..." required>
+                <button type="submit" class="btn-search">RECHERCHER</button>
+            </form>
+        </div>
+        <div class="separator"></div>
+    </div>
+</header>
+
+<section class="banner">
+    <div class="banner-content">
+        Carne • Pesce • Pasta • Dolci • Pizza • Antipasti • Carne • Pesce • Pasta • Dolci • Pizza • Antipasti • Carne • Pesce • Pasta • Dolci • Pizza • Antipasti
+    </div>
+</section>
+
+<section class="suggestions-section">
+    <h2 class="section-title">NOS INCONTOURNABLES</h2>
+    <div class="suggestions-grid">
+        <div class="suggestion-card">
+            <div class="dish-tag">Plat du jour</div>
+            <img src="Ossobuco.jpeg" alt="Osso Buco">
+            <h3>Osso Buco</h3>
+            <p>Jarret de veau braisé, sauce tomate aux aromates.</p>
+        </div>
+        <div class="suggestion-card">
+            <div class="dish-tag">Populaire</div>
+            <img src="pizza1.jpeg" alt="Pizza">
+            <h3>Margherita Bufala</h3>
+            <p>Mozzarella di Bufala et basilic frais.</p>
+        </div>
+        <div class="suggestion-card">
+            <div class="dish-tag">Populaire</div>
+            <img src="pates1.jpeg" alt="Pasta">
+            <h3>Linguine Carbonara</h3>
+            <p>La vraie recette romaine au pecorino.</p>
+        </div>
+    </div>
+</section>
+
+<section class="about-section">
+    <div class="about-text">
+        <h2>D'OÙ VIENT LA MAGIE DE L'ANTICA TRATTORIA ?</h2>
+        <p>Né d'un rêve familial et d'une passion inébranlable pour la gastronomie italienne, L'Antica Trattoria est plus qu'un restaurant : c'est une invitation au voyage au cœur de l'Italie.</p>
+        <p>Depuis notre ouverture, nous avons eu un seul but : partager l'amour et le respect de la cuisine italienne authentique avec nos convives.</p>
+    </div>
+    <div class="about-images">
+        <img src="pizza1.jpeg" alt="Pizza" class="pizza-img">
+        <img src="burratta1.jpeg" alt="Burrata" class="burrata-img">
+    </div>
+</section>
+
+<section class="menu-section">
+    <h2>L'essence de la cuisine italienne</h2>
+    <div class="menu-grid">
+        <div class="menu-item" onclick="window.location.href='carte.html#antipasti'">
+            <span class="menu-item-title">Antipasti</span>
+            <img src="burratta2.jpeg" alt="Antipasti">
+        </div>
+        <div class="menu-item" onclick="window.location.href='carte.html#carne'">
+            <span class="menu-item-title">Carne</span>
+            <img src="viande1.jpeg" alt="Viande">
+        </div>
+        <div class="menu-item" onclick="window.location.href='carte.html#pasta'">
+            <span class="menu-item-title">Pasta</span>
+            <img src="pates1.jpeg" alt="Pâtes">
+        </div>
+        <div class="menu-item" onclick="window.location.href='carte.html#pizze'">
+            <span class="menu-item-title">Pizze</span>
+            <img src="pizza2.jpeg" alt="Pizza">
+        </div>
+    </div>
+</section>
+
+<section class="reserve-section">
+    <div class="reserve-wrapper">
+        <div class="reserve-image">
+            <img src="reserver.jpeg" alt="Restaurant">
+        </div>
+        <div class="reserve-content">
+            <h2>Une Expérience Unique</h2>
+            <p>Chez L'Antica Trattoria, chaque repas est une fête qui célèbre la vraie cuisine italienne.</p>
+            <p>Nous unissons tradition et créativité pour offrir des moments uniques.</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-top">
+        <div class="footer-column">
+            <h3>Notre Adresse</h3>
+            <p>Avenue du Parc<br>95000 Cergy</p>
+        </div>
+        <div class="footer-column">
+            <h3>Horaires</h3>
+            <p>Lundi - Jeudi : 12:00 - 22:45</p>
+            <p>Vendredi - Dimanche : 12:00 - 23:45</p>
+        </div>
+        <div class="footer-column">
+            <h3>Compte Client</h3>
+            <a href="inscription.html">S'inscrire</a>
+            <a href="connexion.html">Se connecter</a>
+            <a href="profil.html">Mon Profil</a>
+        </div>
+    </div>
+
+    <div class="footer-middle">
+        <div class="footer-column">
+            <h3>Administration</h3>
+            <a href="admin.html">Interface Administrateur</a>
+        </div>
+        <div class="footer-column">
+            <h3>Restaurateur</h3>
+            <a href="restaurateur.html">Gestion Cuisine (Tablette)</a>
+        </div>
+        <div class="footer-column">
+            <h3>Livreur</h3>
+            <a href="livreur.html">Interface Livraison (Mobile)</a>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 L'Antica Trattoria - Site réalisé par Boualili Kenza et Eish Shahd</p>
+    </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,155 @@
+/* ===== RESET & BASE ===== */
+body {
+    background-color: #F4EFEA;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ===== HERO ===== */
+.notation-hero {
+    height: 30vh;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url("restophoto.jpeg");
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 70px;
+}
+
+.notation-hero-overlay h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+
+.separator {
+    width: 80px;
+    height: 2px;
+    background: #B08D57;
+    margin: 10px auto;
+}
+
+/* ===== SECTION NOTATION ===== */
+.notation-section {
+    padding: 80px 80px 100px 80px;
+    display: flex;
+    gap: 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: flex-start;
+}
+
+.notation-intro {
+    width: 300px;
+    min-width: 300px;
+}
+
+.notation-intro h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    color: #2C3E50;
+    letter-spacing: 2px;
+}
+
+.btn-retour-profil {
+    display: inline-block;
+    margin-top: 20px;
+    color: #B08D57;
+    text-decoration: underline;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Formulaire */
+.notation-form {
+    flex: 1;
+    background-color: #fff;
+    padding: 50px;
+    border-left: 4px solid #B08D57;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.rating-group {
+    margin-bottom: 40px;
+}
+
+.rating-group label {
+    display: block;
+    font-size: 14px;
+    color: #2C3E50;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+/* Système d'étoiles CSS pur */
+.stars {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+.stars input {
+    display: none;
+}
+
+.stars label {
+    font-size: 40px;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.stars label:hover,
+.stars label:hover ~ label,
+.stars input:checked ~ label {
+    color: #B08D57;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+
+.form-group textarea {
+    border: none;
+    border-bottom: 1px solid #B08D57;
+    outline: none;
+    padding: 10px 0;
+    font-family: 'Poppins', sans-serif;
+    resize: none;
+    background: transparent;
+}
+
+.btn-envoyer {
+    background-color: #5B1F1F;
+    color: #fff;
+    border: none;
+    padding: 15px 40px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-envoyer:hover {
+    background-color: #B08D57;
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .notation-section {
+        flex-direction: column;
+        padding: 40px 20px;
+    }
+    .notation-intro {
+        width: 100%;
+    }
+}

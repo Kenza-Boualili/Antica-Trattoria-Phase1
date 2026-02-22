@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Profil - L'Antica Trattoria</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="fichiercommun.css">
+    <link rel="stylesheet" href="style-profil.css">
+</head>
+<body>
+
+<nav id="navbar" class="nav-scrolled">
+    <div class="logo">L'Antica Trattoria</div>
+    <ul class="nav-links">
+        <li><a href="index.html">ACCUEIL</a></li>
+        <li><a href="carte.html">NOTRE CARTE</a></li>
+    </ul>
+    <div class="nav-buttons">
+        <button class="btn-gold" onclick="window.location.href='index.html'">DÉCONNEXION</button>
+    </div>
+</nav>
+
+<div class="profil-hero">
+    <div class="profil-hero-overlay">
+        <h1>Mon Espace</h1>
+        <div class="separator"></div>
+    </div>
+</div>
+
+<section class="profil-section">
+    <div class="profil-intro">
+        <h2>BENVENUTO</h2>
+        <p>Gérez vos informations personnelles, suivez vos avantages fidélité et retrouvez le goût de vos précédentes visites chez L'Antica Trattoria.</p>
+    </div>
+
+    <div class="profil-container">
+        
+        <div class="profil-block">
+            <div class="block-header">
+                <h3>Mes Informations</h3>
+                <span class="edit-icon" title="Modifier">✎</span>
+            </div>
+            <div class="info-grid">
+                <div class="info-item"><strong>Nom :</strong> Boualili</div>
+                <div class="info-item"><strong>Prénom :</strong> Kenza</div>
+                <div class="info-item"><strong>Email :</strong> kenza@example.com</div>
+                <div class="info-item"><strong>Téléphone :</strong> 06 00 00 00 00</div>
+                <div class="info-item full-width"><strong>Adresse :</strong> Avenue du Parc, 95000 Cergy</div>
+            </div>
+        </div>
+
+        <div class="profil-block loyalty-card">
+            <div class="block-header">
+                <h3>Mon Compte Fidélité</h3>
+            </div>
+            <div class="loyalty-content">
+                <div class="points-circle">
+                    <span class="points-value">150</span>
+                    <span class="points-label">Points</span>
+                </div>
+                <div class="loyalty-text">
+                    <p>Vous avez bientôt assez de points pour un <strong>dessert offert</strong> !</p>
+                    <a href="#" class="btn-link">Voir mes avantages</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="profil-block">
+            <div class="block-header">
+                <h3>Dernières Commandes</h3>
+            </div>
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Commande</th>
+                        <th>Prix</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>12/02/2026</td>
+                        <td>Pizza Margherita, Tiramisu</td>
+                        <td>24.50€</td>
+                        <td class="status-delivered">Livrée</td>
+                    </tr>
+                    <tr>
+                        <td>05/01/2026</td>
+                        <td>Linguine Carbonara, Cannoli</td>
+                        <td>22.00€</td>
+                        <td class="status-delivered">Livrée</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</section>
+
+<footer>
+    <div class="footer-top">
+        <div class="footer-column">
+            <h3>Notre Adresse</h3>
+            <p>Avenue du Parc<br>95000 Cergy</p>
+        </div>
+        <div class="footer-column">
+            <h3>Horaires</h3>
+            <p>Lundi - Jeudi :<br>12:00 - 22:45</p>
+            <p>Vendredi - Dimanche :<br>12:00 - 23:45</p>
+        </div>
+        <div class="footer-column">
+            <h3>Mon Compte</h3>
+            <a href="index.html">Déconnexion</a>
+            <a href="notation.html">Noter ma commande</a>
+        </div>
+    </div>
+
+    <div class="footer-middle">
+        <div class="footer-column">
+            <h3>Administration</h3>
+            <a href="admin.html">Interface Administrateur</a>
+        </div>
+        <div class="footer-column">
+            <h3>Restaurateur</h3>
+            <a href="restaurateur.html">Gestion Cuisine (Tablette)</a>
+        </div>
+        <div class="footer-column">
+            <h3>Livreur</h3>
+            <a href="livreur.html">Interface Livraison (Mobile)</a>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 L'Antica Trattoria - Site réalisé par Boualili Kenza et Eish Shahd</p>
+    </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,170 @@
+/* ===== RESET & BASE ===== */
+body {
+    background-color: #F4EFEA;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ===== HERO ===== */
+.resto-hero {
+    height: 30vh;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url("restophoto.jpeg");
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 70px;
+}
+
+.resto-hero-overlay h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+
+.separator {
+    width: 80px;
+    height: 2px;
+    background: #B08D57;
+    margin: 10px auto;
+}
+
+/* ===== SECTION RESTAURATEUR ===== */
+.resto-section {
+    padding: 60px 40px;
+    display: flex;
+    gap: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+    align-items: flex-start;
+}
+
+.resto-intro {
+    width: 250px;
+    min-width: 250px;
+}
+
+.resto-intro h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: #2C3E50;
+    letter-spacing: 2px;
+}
+
+.resto-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.resto-block {
+    background-color: #fff;
+    padding: 30px;
+    border-left: 4px solid #B08D57;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+.block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.block-header h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: #5B1F1F;
+    margin: 0;
+}
+
+.badge {
+    background: #5B1F1F;
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.orders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.order-card {
+    border: 1px solid #F4EFEA;
+    padding: 20px;
+    background: #fafafa;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.order-id {
+    font-weight: 700;
+    color: #B08D57;
+    margin-bottom: 10px;
+}
+
+.items-list {
+    padding-left: 20px;
+    font-size: 14px;
+    color: #5a5a5a;
+    margin: 10px 0 20px 0;
+}
+
+.btn-action {
+    background-color: #5B1F1F;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: auto;
+}
+
+.btn-action:hover {
+    background-color: #B08D57;
+}
+
+.delivery-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.delivery-table th {
+    text-align: left;
+    padding: 12px;
+    background: #F4EFEA;
+    color: #5B1F1F;
+}
+
+.delivery-table td {
+    padding: 15px 12px;
+    border-bottom: 1px solid #F4EFEA;
+}
+
+.status-shipping {
+    color: #e67e22;
+    font-weight: 600;
+}
+
+@media (max-width: 900px) {
+    .resto-section {
+        flex-direction: column;
+        padding: 20px;
+    }
+    .resto-intro {
+        width: 100%;
+    }
+}

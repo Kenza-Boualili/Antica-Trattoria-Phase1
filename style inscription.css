@@ -1,0 +1,203 @@
+/* ===== RESET BODY ===== */
+body {
+    background-color: #F4EFEA;
+    margin: 0;
+    padding: 0;
+}
+
+/* ===== HERO ===== */
+.inscription-hero {
+    height: 30vh;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url("restophoto.jpeg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 70px;
+}
+
+.inscription-hero-overlay {
+    text-align: center;
+    color: #fff;
+}
+
+.inscription-hero-overlay h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+}
+
+.separator {
+    width: 80px;
+    height: 2px;
+    background: #B08D57;
+    margin: 0 auto;
+}
+
+/* ===== SECTION INSCRIPTION ===== */
+.inscription-section {
+    background-color: #F4EFEA;
+    padding: 80px 80px 100px 80px;
+    display: flex;
+    gap: 80px;
+    align-items: flex-start;
+}
+
+/* Intro gauche */
+.inscription-intro {
+    width: 300px;
+    min-width: 300px;
+    padding-top: 10px;
+}
+
+.inscription-intro h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    color: #2C3E50;
+    margin-bottom: 25px;
+    letter-spacing: 2px;
+    line-height: 1.2;
+}
+
+.inscription-intro p {
+    font-size: 15px;
+    color: #5a5a5a;
+    line-height: 1.9;
+    font-style: italic;
+}
+
+/* Formulaire droite */
+.inscription-form {
+    flex: 1;
+    background-color: #fff;
+    padding: 50px 50px;
+    border-left: 4px solid #B08D57;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.form-row {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 0;
+}
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+
+.form-group.full-width {
+    flex: unset;
+    width: 100%;
+}
+
+.form-group label {
+    font-size: 13px;
+    color: #2C3E50;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea {
+    border: none;
+    border-bottom: 1px solid #B08D57;
+    outline: none;
+    padding: 10px 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #2C3E50;
+    background: transparent;
+    transition: border-color 0.3s ease;
+    resize: none;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #bbb;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-bottom-color: #5B1F1F;
+}
+
+/* CGU */
+.form-cgu {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 30px;
+    margin-top: 10px;
+}
+
+.form-cgu input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #B08D57;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.form-cgu label {
+    font-size: 14px;
+    color: #5a5a5a;
+    cursor: pointer;
+}
+
+.form-cgu a {
+    color: #B08D57;
+    text-decoration: underline;
+}
+
+/* Bouton */
+.form-submit {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.btn-inscrire {
+    background-color: #5B1F1F;
+    border: 2px solid #5B1F1F;
+    color: #fff;
+    padding: 14px 45px;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+.btn-inscrire:hover {
+    background-color: #B08D57;
+    border-color: #B08D57;
+    transform: translateY(-2px);
+}
+
+/* Lien connexion */
+.form-login {
+    text-align: right;
+    font-size: 14px;
+    color: #5a5a5a;
+}
+
+.form-login a {
+    color: #B08D57;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+.form-login a:hover {
+    color: #5B1F1F;
+}

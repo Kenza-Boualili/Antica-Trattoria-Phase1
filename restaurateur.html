@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Restaurateur - L'Antica Trattoria</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="fichiercommun.css">
+    <link rel="stylesheet" href="style-restaurateur.css">
+</head>
+<body>
+
+<nav id="navbar" class="nav-scrolled">
+    <div class="logo">L'Antica Trattoria</div>
+    <ul class="nav-links">
+        <li><a href="index.html">ACCUEIL</a></li>
+        <li><a href="carte.html">NOTRE CARTE</a></li>
+    </ul>
+    <div class="nav-buttons">
+        <button class="btn-gold" onclick="window.location.href='connexion.html'">SE CONNECTER</button>
+        <button class="btn-gold" onclick="window.location.href='inscription.html'">S'INSCRIRE</button>
+    </div>
+</nav>
+
+<div class="resto-hero">
+    <div class="resto-hero-overlay">
+        <h1>Gestion Cuisine</h1>
+        <div class="separator"></div>
+    </div>
+</div>
+
+<section class="resto-section">
+    <div class="resto-intro">
+        <h2>TABLEAU DE BORD</h2>
+        <p>Gérez le flux de vos commandes en temps réel. Visualisez les préparations prioritaires et suivez les départs en livraison.</p>
+    </div>
+
+    <div class="resto-container">
+        
+        <div class="resto-block">
+            <div class="block-header">
+                <h3>Commandes à préparer</h3>
+                <span class="badge">3 En attente</span>
+            </div>
+            
+            <div class="orders-grid">
+                <div class="order-card">
+                    <div class="order-id">#ORD-452</div>
+                    <div class="order-details">
+                        <p><strong>Client :</strong> Mme. Boualili</p>
+                        <ul class="items-list">
+                            <li>2x Pizza Margherita</li>
+                            <li>1x Tiramisu</li>
+                        </ul>
+                    </div>
+                    <button class="btn-action">Passer en livraison</button>
+                </div>
+
+                <div class="order-card">
+                    <div class="order-id">#ORD-453</div>
+                    <div class="order-details">
+                        <p><strong>Client :</strong> M. Dupont</p>
+                        <ul class="items-list">
+                            <li>1x Penne Arrabbiata</li>
+                            <li>1x Virgin Mojito</li>
+                        </ul>
+                    </div>
+                    <button class="btn-action">Passer en livraison</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="resto-block">
+            <div class="block-header">
+                <h3>En cours de livraison</h3>
+            </div>
+            
+            <table class="delivery-table">
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>Client</th>
+                        <th>Livreur</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#ORD-450</td>
+                        <td>Mlle. Eish</td>
+                        <td>Marco</td>
+                        <td><span class="status-shipping">En route</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</section>
+
+<footer>
+    <div class="footer-top">
+        <div class="footer-column">
+            <h3>Notre Adresse</h3>
+            <p>Avenue du Parc<br>95000 Cergy</p>
+        </div>
+        <div class="footer-column">
+            <h3>Horaires</h3>
+            <p>Lundi - Jeudi : 12:00 - 22:45</p>
+            <p>Vendredi - Dimanche : 12:00 - 23:45</p>
+        </div>
+        <div class="footer-column">
+            <h3>Compte</h3>
+            <a href="connexion.html">Se connecter</a>
+            <a href="inscription.html">S'inscrire</a>
+        </div>
+    </div>
+
+    <div class="footer-middle">
+        <div class="footer-column">
+            <h3>Administration</h3>
+            <a href="admin.html">Espace Admin</a>
+        </div>
+        <div class="footer-column">
+            <h3>Restaurateur</h3>
+            <a href="restaurateur.html">Tableau de Bord</a>
+        </div>
+        <div class="footer-column">
+            <h3>Livreur</h3>
+            <a href="livreur.html">Interface Livreur</a>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 L'Antica Trattoria - Site réalisé par Boualili Kenza et Eish Shahd</p>
+    </div>
+</footer>
+
+</body>
+</html>

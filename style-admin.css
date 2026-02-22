@@ -1,0 +1,156 @@
+/* ===== RESET & BASE ===== */
+body {
+    background-color: #F4EFEA;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ===== HERO ===== */
+.admin-hero {
+    height: 30vh;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url("restophoto.jpeg");
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 70px;
+}
+
+.admin-hero-overlay h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+
+.separator {
+    width: 80px;
+    height: 2px;
+    background: #B08D57;
+    margin: 10px auto;
+}
+
+/* ===== SECTION ADMIN ===== */
+.admin-section {
+    padding: 80px 80px 100px 80px;
+    display: flex;
+    gap: 80px;
+    max-width: 1400px;
+    margin: 0 auto;
+    align-items: flex-start;
+}
+
+.admin-intro {
+    width: 300px;
+    min-width: 300px;
+}
+
+.admin-intro h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    color: #2C3E50;
+    letter-spacing: 2px;
+    line-height: 1.2;
+}
+
+.admin-intro p {
+    font-size: 15px;
+    color: #5a5a5a;
+    line-height: 1.8;
+    font-style: italic;
+}
+
+.admin-container {
+    flex: 1;
+}
+
+.admin-block {
+    background-color: #fff;
+    padding: 40px;
+    border-left: 4px solid #B08D57;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #F4EFEA;
+    padding-bottom: 15px;
+}
+
+.block-header h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    color: #5B1F1F;
+    margin: 0;
+}
+
+.admin-filters {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-filter {
+    background: transparent;
+    border: 1px solid #B08D57;
+    color: #B08D57;
+    padding: 6px 15px;
+    font-size: 12px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-filter.active, .btn-filter:hover {
+    background: #B08D57;
+    color: #fff;
+}
+
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.users-table th {
+    text-align: left;
+    padding: 15px;
+    background: #F4EFEA;
+    color: #5B1F1F;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.users-table td {
+    padding: 20px 15px;
+    border-bottom: 1px solid #F4EFEA;
+    color: #2C3E50;
+}
+
+.view-icon {
+    font-size: 18px;
+    color: #B08D57;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.view-icon:hover {
+    color: #5B1F1F;
+}
+
+@media (max-width: 1024px) {
+    .admin-section {
+        flex-direction: column;
+        padding: 40px 20px;
+    }
+    .admin-intro {
+        width: 100%;
+        margin-bottom: 30px;
+    }
+}

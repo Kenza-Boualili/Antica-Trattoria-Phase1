@@ -1,0 +1,197 @@
+/* ===== RESET & BASE ===== */
+body {
+    background-color: #F4EFEA;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ===== HERO ===== */
+.connexion-hero {
+    height: 30vh;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url("restophoto.jpeg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 70px;
+}
+
+.connexion-hero-overlay {
+    text-align: center;
+    color: #fff;
+}
+
+.connexion-hero-overlay h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+}
+
+.separator {
+    width: 80px;
+    height: 2px;
+    background: #B08D57;
+    margin: 0 auto;
+}
+
+/* ===== SECTION CONNEXION ===== */
+.connexion-section {
+    background-color: #F4EFEA;
+    padding: 80px 80px 100px 80px;
+    display: flex;
+    gap: 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: flex-start;
+}
+
+.connexion-intro {
+    width: 300px;
+    min-width: 300px;
+    padding-top: 10px;
+}
+
+.connexion-intro h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    color: #2C3E50;
+    margin-bottom: 25px;
+    letter-spacing: 2px;
+}
+
+.connexion-intro p {
+    font-size: 15px;
+    color: #5a5a5a;
+    line-height: 1.9;
+    font-style: italic;
+}
+
+.connexion-form {
+    flex: 1;
+    background-color: #fff;
+    padding: 60px 50px;
+    border-left: 4px solid #B08D57;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 35px;
+}
+
+.form-group.full-width {
+    width: 100%;
+}
+
+.form-group label {
+    font-size: 13px;
+    color: #2C3E50;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.form-group input {
+    border: none;
+    border-bottom: 1px solid #B08D57;
+    outline: none;
+    padding: 10px 0;
+    font-size: 14px;
+    color: #2C3E50;
+    background: transparent;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    border-bottom-color: #5B1F1F;
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    font-size: 14px;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #5a5a5a;
+}
+
+.remember-me input[type="checkbox"] {
+    accent-color: #B08D57;
+    cursor: pointer;
+}
+
+.forgot-password {
+    color: #B08D57;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.forgot-password:hover {
+    color: #5B1F1F;
+    text-decoration: underline;
+}
+
+.form-submit {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 25px;
+}
+
+.btn-connexion {
+    background-color: #5B1F1F;
+    border: 2px solid #5B1F1F;
+    color: #fff;
+    padding: 14px 50px;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-connexion:hover {
+    background-color: #B08D57;
+    border-color: #B08D57;
+    transform: translateY(-2px);
+}
+
+.form-footer-link {
+    text-align: right;
+    font-size: 14px;
+    color: #5a5a5a;
+}
+
+.form-footer-link a {
+    color: #B08D57;
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.form-footer-link a:hover {
+    color: #5B1F1F;
+}
+
+@media (max-width: 900px) {
+    .connexion-section {
+        flex-direction: column;
+        padding: 40px 20px;
+    }
+    .connexion-intro {
+        width: 100%;
+        margin-bottom: 40px;
+    }
+}
