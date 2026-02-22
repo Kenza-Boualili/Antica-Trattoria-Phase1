@@ -10,94 +10,98 @@
 </head>
 <body>
 
-<nav id="navbar" class="nav-scrolled">
-    <div class="logo">L'Antica Trattoria</div>
-    <ul class="nav-links">
-        <li><a href="index.html">ACCUEIL</a></li>
-        <li><a href="carte.html">NOTRE CARTE</a></li>
-    </ul>
-    <div class="nav-buttons">
-        <button class="btn-gold" onclick="window.location.href='index.html'">DÉCONNEXION</button>
-    </div>
-</nav>
-
-<div class="profil-hero">
-    <div class="profil-hero-overlay">
-        <h1>Mon Espace</h1>
-        <div class="separator"></div>
-    </div>
-</div>
-
-<section class="profil-section">
-    <div class="profil-intro">
-        <h2>BENVENUTO</h2>
-        <p>Gérez vos informations personnelles, suivez vos avantages fidélité et retrouvez le goût de vos précédentes visites chez L'Antica Trattoria.</p>
-    </div>
-
-    <div class="profil-container">
-        
-        <div class="profil-block">
-            <div class="block-header">
-                <h3>Mes Informations</h3>
-                <span class="edit-icon" title="Modifier">✎</span>
-            </div>
-            <div class="info-grid">
-                <div class="info-item"><strong>Nom :</strong> Boualili</div>
-                <div class="info-item"><strong>Prénom :</strong> Kenza</div>
-                <div class="info-item"><strong>Email :</strong> kenza@example.com</div>
-                <div class="info-item"><strong>Téléphone :</strong> 06 00 00 00 00</div>
-                <div class="info-item full-width"><strong>Adresse :</strong> Avenue du Parc, 95000 Cergy</div>
-            </div>
+<header>
+    <nav id="navbar" class="nav-scrolled">
+        <div class="logo">L'Antica Trattoria</div>
+        <ul class="nav-links">
+            <li><a href="index.html">ACCUEIL</a></li>
+            <li><a href="carte.html">NOTRE CARTE</a></li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="btn-gold" onclick="window.location.href='index.html'">DÉCONNEXION</button>
         </div>
+    </nav>
+</header>
 
-        <div class="profil-block loyalty-card">
-            <div class="block-header">
-                <h3>Mon Compte Fidélité</h3>
-            </div>
-            <div class="loyalty-content">
-                <div class="points-circle">
-                    <span class="points-value">150</span>
-                    <span class="points-label">Points</span>
+<main>
+    <div class="profil-hero">
+        <div class="profil-hero-overlay">
+            <h1>Mon Espace</h1>
+            <div class="separator"></div>
+        </div>
+    </div>
+
+    <section class="profil-section">
+        <header class="profil-intro">
+            <h2>BENVENUTO</h2>
+            <p>Gérez vos informations personnelles, suivez vos avantages fidélité et retrouvez le goût de vos précédentes visites chez L'Antica Trattoria.</p>
+        </header>
+
+        <div class="profil-container">
+            
+            <div class="profil-block">
+                <div class="block-header">
+                    <h3>Mes Informations</h3>
+                    <span class="edit-icon" title="Modifier">✎</span>
                 </div>
-                <div class="loyalty-text">
-                    <p>Vous avez bientôt assez de points pour un <strong>dessert offert</strong> !</p>
-                    <a href="#" class="btn-link">Voir mes avantages</a>
+                <div class="info-grid">
+                    <div class="info-item"><strong>Nom :</strong> Boualili</div>
+                    <div class="info-item"><strong>Prénom :</strong> Kenza</div>
+                    <div class="info-item"><strong>Email :</strong> kenza@example.com</div>
+                    <div class="info-item"><strong>Téléphone :</strong> 06 00 00 00 00</div>
+                    <div class="info-item full-width"><strong>Adresse :</strong> Avenue du Parc, 95000 Cergy</div>
                 </div>
             </div>
-        </div>
 
-        <div class="profil-block">
-            <div class="block-header">
-                <h3>Dernières Commandes</h3>
+            <div class="profil-block loyalty-card">
+                <div class="block-header">
+                    <h3>Mon Compte Fidélité</h3>
+                </div>
+                <div class="loyalty-content">
+                    <div class="points-circle">
+                        <span class="points-value">150</span>
+                        <span class="points-label">Points</span>
+                    </div>
+                    <div class="loyalty-text">
+                        <p>Vous avez bientôt assez de points pour un <strong>dessert offert</strong> !</p>
+                        <a href="#" class="btn-link">Voir mes avantages</a>
+                    </div>
+                </div>
             </div>
-            <table class="orders-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Commande</th>
-                        <th>Prix</th>
-                        <th>Statut</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>12/02/2026</td>
-                        <td>Pizza Margherita, Tiramisu</td>
-                        <td>24.50€</td>
-                        <td class="status-delivered">Livrée</td>
-                    </tr>
-                    <tr>
-                        <td>05/01/2026</td>
-                        <td>Linguine Carbonara, Cannoli</td>
-                        <td>22.00€</td>
-                        <td class="status-delivered">Livrée</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
 
-    </div>
-</section>
+            <div class="profil-block">
+                <div class="block-header">
+                    <h3>Dernières Commandes</h3>
+                </div>
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Commande</th>
+                            <th>Prix</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>12/02/2026</td>
+                            <td>Pizza Margherita, Tiramisu</td>
+                            <td>24.50€</td>
+                            <td class="status-delivered">Livrée</td>
+                        </tr>
+                        <tr>
+                            <td>05/01/2026</td>
+                            <td>Linguine Carbonara, Cannoli</td>
+                            <td>22.00€</td>
+                            <td class="status-delivered">Livrée</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </section>
+</main>
 
 <footer>
     <div class="footer-top">

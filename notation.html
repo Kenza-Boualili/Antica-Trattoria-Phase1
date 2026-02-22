@@ -10,66 +10,70 @@
 </head>
 <body>
 
-<nav id="navbar" class="nav-scrolled">
-    <div class="logo">L'Antica Trattoria</div>
-    <ul class="nav-links">
-        <li><a href="index.html">ACCUEIL</a></li>
-        <li><a href="carte.html">NOTRE CARTE</a></li>
-        <li><a href="profil.html">MON PROFIL</a></li> 
-    </ul>
-    <div class="nav-buttons">
-        <button class="btn-gold" onclick="window.location.href='index.html'">DÉCONNEXION</button>
-    </div>
-</nav>
+<header>
+    <nav id="navbar" class="nav-scrolled">
+        <div class="logo">L'Antica Trattoria</div>
+        <ul class="nav-links">
+            <li><a href="index.html">ACCUEIL</a></li>
+            <li><a href="carte.html">NOTRE CARTE</a></li>
+            <li><a href="profil.html">MON PROFIL</a></li> 
+        </ul>
+        <div class="nav-buttons">
+            <button class="btn-gold" onclick="window.location.href='index.html'">DÉCONNEXION</button>
+        </div>
+    </nav>
+</header>
 
-<div class="notation-hero">
-    <div class="notation-hero-overlay">
-        <h1>Votre Expérience</h1>
-        <div class="separator"></div>
-    </div>
-</div>
-
-<section class="notation-section">
-    <div class="notation-intro">
-        <h2>VOTRE AVIS COMPTE</h2>
-        <p>Parce que nous avons à cœur de vous offrir le meilleur de l'Italie, votre retour nous est précieux. Prenez un instant pour noter votre commande.</p>
-        <a href="profil.html" class="btn-retour-profil">Retour au profil</a>
+<main>
+    <div class="notation-hero">
+        <div class="notation-hero-overlay">
+            <h1>Votre Expérience</h1>
+            <div class="separator"></div>
+        </div>
     </div>
 
-    <form action="" method="GET" class="notation-form">
-        
-        <div class="rating-group">
-            <label>Qualité des produits *</label>
-            <div class="stars">
-                <input type="radio" name="produit" id="p5" value="5" required><label for="p5">★</label>
-                <input type="radio" name="produit" id="p4" value="4"><label for="p4">★</label>
-                <input type="radio" name="produit" id="p3" value="3"><label for="p3">★</label>
-                <input type="radio" name="produit" id="p2" value="2"><label for="p2">★</label>
-                <input type="radio" name="produit" id="p1" value="1"><label for="p1">★</label>
+    <section class="notation-section">
+        <header class="notation-intro">
+            <h2>VOTRE AVIS COMPTE</h2>
+            <p>Parce que nous avons à cœur de vous offrir le meilleur de l'Italie, votre retour nous est précieux. Prenez un instant pour noter votre commande.</p>
+            <a href="profil.html" class="btn-retour-profil">Retour au profil</a>
+        </header>
+
+        <form action="" method="GET" class="notation-form">
+            
+            <div class="rating-group">
+                <label>Qualité des produits *</label>
+                <div class="stars">
+                    <input type="radio" name="produit" id="p5" value="5" required><label for="p5">★</label>
+                    <input type="radio" name="produit" id="p4" value="4"><label for="p4">★</label>
+                    <input type="radio" name="produit" id="p3" value="3"><label for="p3">★</label>
+                    <input type="radio" name="produit" id="p2" value="2"><label for="p2">★</label>
+                    <input type="radio" name="produit" id="p1" value="1"><label for="p1">★</label>
+                </div>
             </div>
-        </div>
 
-        <div class="rating-group">
-            <label>Qualité de la livraison *</label>
-            <div class="stars">
-                <input type="radio" name="livraison" id="l5" value="5" required><label for="l5">★</label>
-                <input type="radio" name="livraison" id="l4" value="4"><label for="l4">★</label>
-                <input type="radio" name="livraison" id="l3" value="3"><label for="l3">★</label>
-                <input type="radio" name="livraison" id="l2" value="2"><label for="l2">★</label>
-                <input type="radio" name="livraison" id="l1" value="1"><label for="l1">★</label>
+            <div class="rating-group">
+                <label>Qualité de la livraison *</label>
+                <div class="stars">
+                    <input type="radio" name="livraison" id="l5" value="5" required><label for="l5">★</label>
+                    <input type="radio" name="livraison" id="l4" value="4"><label for="l4">★</label>
+                    <input type="radio" name="livraison" id="l3" value="3"><label for="l3">★</label>
+                    <input type="radio" name="livraison" id="l2" value="2"><label for="l2">★</label>
+                    <input type="radio" name="livraison" id="l1" value="1"><label for="l1">★</label>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group full-width">
-            <label for="commentaire">Commentaire (optionnel)</label>
-            <textarea id="commentaire" name="commentaire" rows="4" placeholder="Dites-nous en plus..."></textarea>
-        </div>
+            <div class="form-group full-width">
+                <label for="commentaire">Commentaire (optionnel)</label>
+                <textarea id="commentaire" name="commentaire" rows="4" placeholder="Dites-nous en plus..."></textarea>
+            </div>
 
-        <div class="form-submit">
-            <button type="submit" class="btn-envoyer">Envoyer mon avis</button>
-        </div>
-    </form>
-</section>
+            <div class="form-submit">
+                <button type="submit" class="btn-envoyer">Envoyer mon avis</button>
+            </div>
+        </form>
+    </section>
+</main>
 
 <footer>
     <div class="footer-top">

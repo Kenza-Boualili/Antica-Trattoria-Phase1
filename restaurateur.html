@@ -10,93 +10,96 @@
 </head>
 <body>
 
-<nav id="navbar" class="nav-scrolled">
-    <div class="logo">L'Antica Trattoria</div>
-    <ul class="nav-links">
-        <li><a href="index.html">ACCUEIL</a></li>
-        <li><a href="carte.html">NOTRE CARTE</a></li>
-    </ul>
-    <div class="nav-buttons">
-        <button class="btn-gold" onclick="window.location.href='connexion.html'">SE CONNECTER</button>
-        <button class="btn-gold" onclick="window.location.href='inscription.html'">S'INSCRIRE</button>
-    </div>
-</nav>
+<header>
+    <nav id="navbar" class="nav-scrolled">
+        <div class="logo">L'Antica Trattoria</div>
+        <ul class="nav-links">
+            <li><a href="index.html">ACCUEIL</a></li>
+            <li><a href="carte.html">NOTRE CARTE</a></li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="btn-gold" onclick="window.location.href='connexion.html'">SE CONNECTER</button>
+            <button class="btn-gold" onclick="window.location.href='inscription.html'">S'INSCRIRE</button>
+        </div>
+    </nav>
+</header>
 
-<div class="resto-hero">
-    <div class="resto-hero-overlay">
-        <h1>Gestion Cuisine</h1>
-        <div class="separator"></div>
-    </div>
-</div>
-
-<section class="resto-section">
-    <div class="resto-intro">
-        <h2>TABLEAU DE BORD</h2>
-        <p>Gérez le flux de vos commandes en temps réel. Visualisez les préparations prioritaires et suivez les départs en livraison.</p>
+<main>
+    <div class="resto-hero">
+        <div class="resto-hero-overlay">
+            <h1>Gestion Cuisine</h1>
+            <div class="separator"></div>
+        </div>
     </div>
 
-    <div class="resto-container">
-        
-        <div class="resto-block">
-            <div class="block-header">
-                <h3>Commandes à préparer</h3>
-                <span class="badge">3 En attente</span>
-            </div>
+    <section class="resto-section">
+        <header class="resto-intro">
+            <h2>TABLEAU DE BORD</h2>
+            <p>Gérez le flux de vos commandes en temps réel. Visualisez les préparations prioritaires et suivez les départs en livraison.</p>
+        </header>
+
+        <div class="resto-container">
             
-            <div class="orders-grid">
-                <div class="order-card">
-                    <div class="order-id">#ORD-452</div>
-                    <div class="order-details">
-                        <p><strong>Client :</strong> Mme. Boualili</p>
-                        <ul class="items-list">
-                            <li>2x Pizza Margherita</li>
-                            <li>1x Tiramisu</li>
-                        </ul>
-                    </div>
-                    <button class="btn-action">Passer en livraison</button>
+            <div class="resto-block">
+                <div class="block-header">
+                    <h3>Commandes à préparer</h3>
+                    <span class="badge">3 En attente</span>
                 </div>
+                
+                <div class="orders-grid">
+                    <div class="order-card">
+                        <div class="order-id">#ORD-452</div>
+                        <div class="order-details">
+                            <p><strong>Client :</strong> Mme. Boualili</p>
+                            <ul class="items-list">
+                                <li>2x Pizza Margherita</li>
+                                <li>1x Tiramisu</li>
+                            </ul>
+                        </div>
+                        <button class="btn-action">Passer en livraison</button>
+                    </div>
 
-                <div class="order-card">
-                    <div class="order-id">#ORD-453</div>
-                    <div class="order-details">
-                        <p><strong>Client :</strong> M. Dupont</p>
-                        <ul class="items-list">
-                            <li>1x Penne Arrabbiata</li>
-                            <li>1x Virgin Mojito</li>
-                        </ul>
+                    <div class="order-card">
+                        <div class="order-id">#ORD-453</div>
+                        <div class="order-details">
+                            <p><strong>Client :</strong> M. Dupont</p>
+                            <ul class="items-list">
+                                <li>1x Penne Arrabbiata</li>
+                                <li>1x Virgin Mojito</li>
+                            </ul>
+                        </div>
+                        <button class="btn-action">Passer en livraison</button>
                     </div>
-                    <button class="btn-action">Passer en livraison</button>
                 </div>
+            </div>
+
+            <div class="resto-block">
+                <div class="block-header">
+                    <h3>En cours de livraison</h3>
+                </div>
+                
+                <table class="delivery-table">
+                    <thead>
+                        <tr>
+                            <th>N°</th>
+                            <th>Client</th>
+                            <th>Livreur</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#ORD-450</td>
+                            <td>Mlle. Eish</td>
+                            <td>Marco</td>
+                            <td><span class="status-shipping">En route</span></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-
-        <div class="resto-block">
-            <div class="block-header">
-                <h3>En cours de livraison</h3>
-            </div>
-            
-            <table class="delivery-table">
-                <thead>
-                    <tr>
-                        <th>N°</th>
-                        <th>Client</th>
-                        <th>Livreur</th>
-                        <th>Statut</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>#ORD-450</td>
-                        <td>Mlle. Eish</td>
-                        <td>Marco</td>
-                        <td><span class="status-shipping">En route</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-    </div>
-</section>
+    </section>
+</main>
 
 <footer>
     <div class="footer-top">
