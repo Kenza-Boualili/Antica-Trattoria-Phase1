@@ -1,4 +1,3 @@
-/* ===== RESET & BASE ===== */
 body {
     background-color: #F4EFEA;
     margin: 0;
@@ -6,10 +5,9 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
-/* ===== HERO ===== */
 .connexion-hero {
     height: 30vh;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url("restophoto.jpeg");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url("photo/restophoto.jpeg");
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
