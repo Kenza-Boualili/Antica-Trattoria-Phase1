@@ -9,7 +9,7 @@ body {
 /* ===== HERO ===== */
 .profil-hero {
     height: 30vh;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url("restophoto.jpeg");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url("photo/restophoto.jpeg");
     background-position: center;
     background-size: cover;
     display: flex;

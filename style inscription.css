@@ -1,15 +1,13 @@
-/* ===== RESET BODY ===== */
 body {
     background-color: #F4EFEA;
     margin: 0;
     padding: 0;
 }
 
-/* ===== HERO ===== */
 .inscription-hero {
     height: 30vh;
-    /* Mise à jour du chemin vers le dossier photo */
-    background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url("photo/restophoto.jpeg");
+
+     background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url("photo/restophoto.jpeg");
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -40,7 +38,6 @@ body {
     margin: 0 auto;
 }
 
-/* ===== SECTION INSCRIPTION ===== */
 .inscription-section {
     background-color: #F4EFEA;
     padding: 80px 80px 100px 80px;
@@ -49,7 +46,6 @@ body {
     align-items: flex-start;
 }
 
-/* Intro gauche */
 .inscription-intro {
     width: 300px;
     min-width: 300px;
@@ -72,7 +68,6 @@ body {
     font-style: italic;
 }
 
-/* Formulaire droite */
 .inscription-form {
     flex: 1;
     background-color: #fff;
@@ -132,7 +127,6 @@ body {
     border-bottom-color: #5B1F1F;
 }
 
-/* CGU */
 .form-cgu {
     display: flex;
     align-items: center;
@@ -160,7 +154,6 @@ body {
     text-decoration: underline;
 }
 
-/* Bouton */
 .form-submit {
     display: flex;
     justify-content: flex-end;
@@ -186,7 +179,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* Lien connexion */
 .form-login {
     text-align: right;
     font-size: 14px;

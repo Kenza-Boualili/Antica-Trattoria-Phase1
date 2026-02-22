@@ -155,9 +155,10 @@ footer {
     text-decoration: underline;
 }
 
-/* ===== SECTION AVIS (utilisée sur apropos et index) ===== */
+/* ===== SECTION AVIS ===== */
 .reviews-section {
-    background-image: url("table.png");
+    /* Mise à jour du chemin pour table.png */
+    background-image: url("photo/table.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
