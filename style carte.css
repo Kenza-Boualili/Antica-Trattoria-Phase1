@@ -1,10 +1,8 @@
-/* ===== PAGE CARTE ===== */
 .carte-section {
     background-color: #F4EFEA;
     padding: 60px 80px 100px 80px;
 }
 
-/* Ajustement pour laisser de la place aux filtres */
 .carte-section:first-of-type {
     padding-top: 40px;
 }
@@ -18,11 +16,9 @@
     letter-spacing: 3px;
 }
 
-/* ===== STYLE FILTRES ET RECHERCHE (Phase 1) ===== */
 .carte-filter-section {
     background-color: #F4EFEA;
-    padding: 140px 80px 20px 80px; /* Padding haut important pour la navbar fixe */
-}
+    padding: 140px 80px 20px 80px; 
 
 .filter-container {
     display: flex;
@@ -86,7 +82,6 @@
     min-width: 180px;
 }
 
-/* ===== GRILLE DE CARTE ===== */
 .carte-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
