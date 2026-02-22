@@ -1,3 +1,15 @@
+
+:root {
+    --color-bordeaux: #5B1F1F;
+    --color-gold: #B08D57;
+    --color-beige: #F4EFEA;
+    --color-dark: #2C3E50;
+    --color-white: #ffffff;
+    --font-main: 'Poppins', sans-serif;
+    --font-title: 'Playfair Display', serif;
+    --transition: all 0.3s ease;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -5,8 +17,10 @@
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #1a1a1a;
+    font-family: var(--font-main);
+    background-color: var(--color-beige); 
+    color: var(--color-dark);
+    line-height: 1.6;
 }
 
 nav {
@@ -20,18 +34,18 @@ nav {
     right: 0;
     z-index: 1000;
     background-color: transparent;
-    transition: all 0.3s ease;
+    transition: var(--transition);
 }
 
 .nav-scrolled {
-    background-color: #5B1F1F;
+    background-color: var(--color-bordeaux);
     padding: 15px 80px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .logo {
-    font-family: 'Playfair Display', serif;
-    color: #fff;
+    font-family: var(--font-title);
+    color: var(--color-white);
     font-size: 28px;
     font-weight: 700;
     transition: font-size 0.3s ease;
@@ -45,16 +59,15 @@ nav {
 
 .nav-links a {
     text-decoration: none;
-    color: #fff;
+    color: var(--color-white);
     font-size: 14px;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    transition: all 0.3s ease;
+    transition: var(--transition);
 }
 
 .nav-links a:hover {
-    color: #B08D57;
-    cursor: pointer;
+    color: var(--color-gold);
 }
 
 .nav-buttons {
@@ -64,22 +77,24 @@ nav {
 
 .btn-gold {
     background: transparent;
-    border: 1px solid #B08D57;
-    color: #fff;
+    border: 1px solid var(--color-gold);
+    color: var(--color-white);
     padding: 10px 22px;
     cursor: pointer;
     text-transform: uppercase;
-    transition: all 0.3s ease;
+    transition: var(--transition);
+    font-family: var(--font-main);
 }
 
 .btn-gold:hover {
-    background-color: #B08D57;
+    background-color: var(--color-gold);
     color: #1a1a1a;
     transform: translateY(-2px);
 }
 
+/* 5. Footer (Pied de page) */
 footer {
-    background-color: #F4EFEA;
+    background-color: var(--color-beige);
     padding: 60px 80px 30px 80px;
 }
 
@@ -88,14 +103,14 @@ footer {
     grid-template-columns: repeat(3, 1fr);
     gap: 60px;
     padding-bottom: 40px;
-    border-bottom: 1px solid #B08D57;
+    border-bottom: 1px solid var(--color-gold);
     margin-bottom: 40px;
 }
 
 .footer-column h3 {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-title);
     font-size: 20px;
-    color: #2C3E50;
+    color: var(--color-dark);
     margin-bottom: 20px;
     text-transform: uppercase;
 }
@@ -110,14 +125,14 @@ footer {
 .footer-column a {
     display: block;
     font-size: 14px;
-    color: #2C3E50;
+    color: var(--color-dark);
     text-decoration: none;
     margin-bottom: 10px;
-    transition: color 0.3s ease;
+    transition: var(--transition);
 }
 
 .footer-column a:hover {
-    color: #B08D57;
+    color: var(--color-gold);
     text-decoration: underline;
 }
 
@@ -126,7 +141,7 @@ footer {
     grid-template-columns: repeat(3, 1fr);
     gap: 60px;
     padding-bottom: 40px;
-    border-bottom: 1px solid #B08D57;
+    border-bottom: 1px solid var(--color-gold);
     margin-bottom: 30px;
 }
 
@@ -134,14 +149,4 @@ footer {
     text-align: center;
     font-size: 13px;
     color: #5a5a5a;
-}
-
-.footer-bottom a {
-    color: #2C3E50;
-    text-decoration: none;
-}
-
-.footer-bottom a:hover {
-    color: #B08D57;
-    text-decoration: underline;
 }

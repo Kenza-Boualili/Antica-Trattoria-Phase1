@@ -1,17 +1,10 @@
 
-body {
-    background-color: #F4EFEA;
-    margin: 0;
-    padding: 0;
-    font-family: 'Poppins', sans-serif;
-}
-
 #navbar .logo {
     font-size: 18px;
 }
 
 .livreur-hero {
-    background-color: #5B1F1F;
+    background-color: var(--color-bordeaux);
     color: #fff;
     padding: 30px 20px;
     text-align: center;
@@ -19,12 +12,11 @@ body {
 }
 
 .livreur-hero h1 {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-title);
     font-size: 24px;
     margin: 0;
     letter-spacing: 2px;
 }
-
 
 .livreur-section {
     padding: 20px;
@@ -37,7 +29,7 @@ body {
     padding: 25px;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    border-left: 5px solid #B08D57;
+    border-left: 5px solid var(--color-gold);
 }
 
 .info-group {
@@ -57,7 +49,7 @@ body {
 label {
     display: block;
     font-size: 11px;
-    color: #B08D57;
+    color: var(--color-gold);
     font-weight: 600;
     margin-bottom: 5px;
     letter-spacing: 1px;
@@ -65,7 +57,7 @@ label {
 
 p {
     margin: 0;
-    color: #2C3E50;
+    color: var(--color-dark);
     font-size: 15px;
 }
 
@@ -90,14 +82,14 @@ p {
 }
 
 .btn-maps {
-    background-color: #B08D57;
+    background-color: var(--color-gold);
     color: #fff;
 }
 
 .btn-phone {
-    background-color: #F4EFEA;
-    color: #5B1F1F;
-    border: 1px solid #5B1F1F;
+    background-color: var(--color-beige);
+    color: var(--color-bordeaux);
+    border: 1px solid var(--color-bordeaux);
 }
 
 .btn-complete {
@@ -105,7 +97,7 @@ p {
     color: #fff;
     border: none;
     margin-top: 30px;
-    padding: 25px 0;
+    padding: 25px 0; 
     cursor: pointer;
 }
 
