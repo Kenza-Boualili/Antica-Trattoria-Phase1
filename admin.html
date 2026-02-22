@@ -10,80 +10,82 @@
 </head>
 <body>
 
-<nav id="navbar" class="nav-scrolled">
-    <div class="logo">L'Antica Trattoria</div>
-    <ul class="nav-links">
-        <li><a href="index.html">ACCUEIL</a></li>
-        <li><a href="carte.html">NOTRE CARTE</a></li>
-    </ul>
-    <div class="nav-buttons">
-        <button class="btn-gold" onclick="window.location.href='connexion.html'">SE CONNECTER</button>
-        <button class="btn-gold" onclick="window.location.href='inscription.html'">S'INSCRIRE</button>
-    </div>
-</nav>
-
-<div class="admin-hero">
-    <div class="admin-hero-overlay">
-        <h1>Espace Gestion</h1>
-        <div class="separator"></div>
-    </div>
-</div>
-
-<section class="admin-section">
-    <div class="admin-intro">
-        <h2>ADMINISTRATION</h2>
-        <p>Interface de gestion des utilisateurs et suivi de l'activité. Consultez la liste complète des clients inscrits et filtrez les profils selon leur activité.</p>
-    </div>
-
-    <div class="admin-container">
-        
-        <div class="admin-block">
-            <div class="block-header">
-                <h3>Liste des Utilisateurs</h3>
-                <div class="admin-filters">
-                    <button class="btn-filter active">Tous</button>
-                    <button class="btn-filter">Avec commandes</button>
-                </div>
-            </div>
-
-            <table class="users-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nom & Prénom</th>
-                        <th>Email</th>
-                        <th>Dernière Commande</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>#001</td>
-                        <td>Boualili Kenza</td>
-                        <td>kenza@example.com</td>
-                        <td>12/02/2026</td>
-                        <td><span class="view-icon" title="Voir le profil">👁</span></td>
-                    </tr>
-                    <tr>
-                        <td>#002</td>
-                        <td>Eish Shahd</td>
-                        <td>shahd@example.com</td>
-                        <td>10/02/2026</td>
-                        <td><span class="view-icon" title="Voir le profil">👁</span></td>
-                    </tr>
-                    <tr>
-                        <td>#003</td>
-                        <td>Jean Dupont</td>
-                        <td>j.dupont@test.fr</td>
-                        <td>Aucune</td>
-                        <td><span class="view-icon" title="Voir le profil">👁</span></td>
-                    </tr>
-                </tbody>
-            </table>
+<header>
+    <nav id="navbar" class="nav-scrolled">
+        <div class="logo">L'Antica Trattoria</div>
+        <ul class="nav-links">
+            <li><a href="index.html">ACCUEIL</a></li>
+            <li><a href="carte.html">NOTRE CARTE</a></li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="btn-gold" onclick="window.location.href='connexion.html'">SE CONNECTER</button>
+            <button class="btn-gold" onclick="window.location.href='inscription.html'">S'INSCRIRE</button>
         </div>
+    </nav>
+</header>
 
+<main>
+    <div class="admin-hero">
+        <div class="admin-hero-overlay">
+            <h1>Espace Gestion</h1>
+            <div class="separator"></div>
+        </div>
     </div>
-</section>
+
+    <section class="admin-section">
+        <header class="admin-intro">
+            <h2>ADMINISTRATION</h2>
+            <p>Interface de gestion des utilisateurs et suivi de l'activité. Consultez la liste complète des clients inscrits et filtrez les profils selon leur activité.</p>
+        </header>
+
+        <div class="admin-container">
+            <div class="admin-block">
+                <div class="block-header">
+                    <h3>Liste des Utilisateurs</h3>
+                    <div class="admin-filters">
+                        <button class="btn-filter active">Tous</button>
+                        <button class="btn-filter">Avec commandes</button>
+                    </div>
+                </div>
+
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom & Prénom</th>
+                            <th>Email</th>
+                            <th>Dernière Commande</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#001</td>
+                            <td>Boualili Kenza</td>
+                            <td>kenza@example.com</td>
+                            <td>12/02/2026</td>
+                            <td><span class="view-icon" title="Voir le profil">👁</span></td>
+                        </tr>
+                        <tr>
+                            <td>#002</td>
+                            <td>Eish Shahd</td>
+                            <td>shahd@example.com</td>
+                            <td>10/02/2026</td>
+                            <td><span class="view-icon" title="Voir le profil">👁</span></td>
+                        </tr>
+                        <tr>
+                            <td>#003</td>
+                            <td>Jean Dupont</td>
+                            <td>j.dupont@test.fr</td>
+                            <td>Aucune</td>
+                            <td><span class="view-icon" title="Voir le profil">👁</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</main>
 
 <footer>
     <div class="footer-top">

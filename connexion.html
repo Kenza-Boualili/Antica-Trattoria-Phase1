@@ -10,58 +10,62 @@
 </head>
 <body>
 
-<nav id="navbar" class="nav-scrolled">
-    <div class="logo">L'Antica Trattoria</div>
-    <ul class="nav-links">
-        <li><a href="index.html">ACCUEIL</a></li>
-        <li><a href="carte.html">NOTRE CARTE</a></li>
-    </ul>
-    <div class="nav-buttons">
-        <button class="btn-gold" onclick="window.location.href='connexion.html'">SE CONNECTER</button>
-        <button class="btn-gold" onclick="window.location.href='inscription.html'">S'INSCRIRE</button>
-    </div>
-</nav>
-
-<div class="connexion-hero">
-    <div class="connexion-hero-overlay">
-        <h1>Se Connecter</h1>
-        <div class="separator"></div>
-    </div>
-</div>
-
-<section class="connexion-section">
-    <div class="connexion-intro">
-        <h2>BIENVENUE</h2>
-        <p>Connectez-vous à votre espace personnel pour gérer vos réservations, suivre vos commandes en cours et profiter de vos offres fidélité.</p>
-    </div>
-
-    <form action="" method="GET" class="connexion-form">
-        
-        <div class="form-group full-width">
-            <label for="email">Adresse e-mail *</label>
-            <input type="email" id="email" name="email" placeholder="votre@email.com" required>
+<header>
+    <nav id="navbar" class="nav-scrolled">
+        <div class="logo">L'Antica Trattoria</div>
+        <ul class="nav-links">
+            <li><a href="index.html">ACCUEIL</a></li>
+            <li><a href="carte.html">NOTRE CARTE</a></li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="btn-gold" onclick="window.location.href='connexion.html'">SE CONNECTER</button>
+            <button class="btn-gold" onclick="window.location.href='inscription.html'">S'INSCRIRE</button>
         </div>
+    </nav>
+</header>
 
-        <div class="form-group full-width">
-            <label for="password">Mot de passe *</label>
-            <input type="password" id="password" name="password" placeholder="••••••••" required>
+<main>
+    <div class="connexion-hero">
+        <div class="connexion-hero-overlay">
+            <h1>Se Connecter</h1>
+            <div class="separator"></div>
         </div>
+    </div>
 
-        <div class="form-options">
-            <div class="remember-me">
-                <input type="checkbox" id="remember" name="remember">
-                <label for="remember">Se souvenir de moi</label>
+    <section class="connexion-section">
+        <header class="connexion-intro">
+            <h2>BIENVENUE</h2>
+            <p>Connectez-vous à votre espace personnel pour gérer vos réservations, suivre vos commandes en cours et profiter de vos offres fidélité.</p>
+        </header>
+
+        <form action="" method="GET" class="connexion-form">
+            
+            <div class="form-group full-width">
+                <label for="email">Adresse e-mail *</label>
+                <input type="email" id="email" name="email" placeholder="votre@email.com" required>
             </div>
-            <a href="#" class="forgot-password">Mot de passe oublié ?</a>
-        </div>
 
-        <div class="form-submit">
-            <button type="submit" class="btn-connexion">SE CONNECTER</button>
-        </div>
+            <div class="form-group full-width">
+                <label for="password">Mot de passe *</label>
+                <input type="password" id="password" name="password" placeholder="••••••••" required>
+            </div>
 
-        <p class="form-footer-link">Pas encore de compte ? <a href="inscription.html">Créer un compte</a></p>
-    </form>
-</section>
+            <div class="form-options">
+                <div class="remember-me">
+                    <input type="checkbox" id="remember" name="remember">
+                    <label for="remember">Se souvenir de moi</label>
+                </div>
+                <a href="#" class="forgot-password">Mot de passe oublié ?</a>
+            </div>
+
+            <div class="form-submit">
+                <button type="submit" class="btn-connexion">SE CONNECTER</button>
+            </div>
+
+            <p class="form-footer-link">Pas encore de compte ? <a href="inscription.html">Créer un compte</a></p>
+        </form>
+    </section>
+</main>
 
 <footer>
     <div class="footer-top">
