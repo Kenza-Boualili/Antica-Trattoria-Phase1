@@ -1,15 +1,20 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+
 require_once 'lib/auth.php';
 demarrerSession();
 
 requireConnexion();
 requireRole('client');
 
-function lirePlats() {
+function lirePlats()
+{
     $fichier = __DIR__ . '/data/plats.json';
-    if (!file_exists($fichier)) return [];
+    if (!file_exists($fichier))
+    {
+        return [];
+    }
     return json_decode(file_get_contents($fichier), true) ?? [];
 }
 
@@ -17,12 +22,14 @@ $plats = lirePlats();
 
 // Indexer les plats par id
 $platsById = [];
-foreach ($plats as $p) {
+foreach ($plats as $p)
+{
     $platsById[$p['id']] = $p;
 }
 
 // Initialiser le panier en session
-if (!isset($_SESSION['panier'])) {
+if (!isset($_SESSION['panier']))
+{
     $_SESSION['panier'] = [];
 }
 
@@ -30,12 +37,17 @@ if (!isset($_SESSION['panier'])) {
 $action = $_GET['action'] ?? $_POST['action'] ?? '';
 
 // Ajouter un plat
-if (isset($_GET['ajouter'])) {
+if (isset($_GET['ajouter']))
+{
     $platId = intval($_GET['ajouter']);
-    if (isset($platsById[$platId])) {
-        if (isset($_SESSION['panier'][$platId])) {
+    if (isset($platsById[$platId]))
+    {
+        if (isset($_SESSION['panier'][$platId]))
+        {
             $_SESSION['panier'][$platId]['quantite']++;
-        } else {
+        }
+        else
+        {
             $_SESSION['panier'][$platId] = [
                 'id'       => $platId,
                 'nom'      => $platsById[$platId]['nom'],
@@ -49,14 +61,20 @@ if (isset($_GET['ajouter'])) {
 }
 
 // Modifier la quantité
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['quantite'])) {
-    foreach ($_POST['quantite'] as $platId => $qte) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['quantite']))
+{
+    foreach ($_POST['quantite'] as $platId => $qte)
+    {
         $platId = intval($platId);
         $qte    = intval($qte);
-        if ($qte <= 0) {
+        if ($qte <= 0)
+        {
             unset($_SESSION['panier'][$platId]);
-        } else {
-            if (isset($_SESSION['panier'][$platId])) {
+        }
+        else
+        {
+            if (isset($_SESSION['panier'][$platId]))
+            {
                 $_SESSION['panier'][$platId]['quantite'] = $qte;
             }
         }
@@ -66,7 +84,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['quantite'])) {
 }
 
 // Supprimer un article
-if (isset($_GET['supprimer'])) {
+if (isset($_GET['supprimer']))
+{
     $platId = intval($_GET['supprimer']);
     unset($_SESSION['panier'][$platId]);
     header('Location: panier.php');
@@ -74,7 +93,8 @@ if (isset($_GET['supprimer'])) {
 }
 
 // Vider le panier
-if (isset($_GET['vider'])) {
+if (isset($_GET['vider']))
+{
     $_SESSION['panier'] = [];
     header('Location: panier.php');
     exit;
@@ -82,7 +102,8 @@ if (isset($_GET['vider'])) {
 
 // Calculer le total
 $total = 0;
-foreach ($_SESSION['panier'] as $item) {
+foreach ($_SESSION['panier'] as $item)
+{
     $total += $item['prix'] * $item['quantite'];
 }
 
@@ -111,6 +132,7 @@ $totalRemise = $total * (1 - $remise / 100);
             justify-content: center;
             margin-top: 70px;
         }
+
         .panier-hero h1 {
             font-family: var(--font-title);
             font-size: 52px;
@@ -118,6 +140,7 @@ $totalRemise = $total * (1 - $remise / 100);
             text-transform: uppercase;
             letter-spacing: 4px;
         }
+
         .panier-section {
             padding: 60px 80px 100px 80px;
             max-width: 1100px;
@@ -126,6 +149,7 @@ $totalRemise = $total * (1 - $remise / 100);
             gap: 40px;
             align-items: flex-start;
         }
+
         .panier-items { flex: 2; }
         .panier-resume { flex: 1; }
 
@@ -136,6 +160,7 @@ $totalRemise = $total * (1 - $remise / 100);
             box-shadow: 0 5px 20px rgba(0,0,0,0.05);
             margin-bottom: 20px;
         }
+
         .panier-block h2 {
             font-family: var(--font-title);
             font-size: 24px;
@@ -144,11 +169,13 @@ $totalRemise = $total * (1 - $remise / 100);
             padding-bottom: 10px;
             border-bottom: 1px solid var(--color-beige);
         }
+
         .panier-vide {
             text-align: center;
             padding: 60px 20px;
             color: #999;
         }
+
         .panier-vide p { margin-bottom: 20px; font-size: 16px; }
 
         .panier-table {
@@ -156,6 +183,7 @@ $totalRemise = $total * (1 - $remise / 100);
             border-collapse: collapse;
             font-size: 14px;
         }
+
         .panier-table th {
             text-align: left;
             padding: 10px;
@@ -165,11 +193,13 @@ $totalRemise = $total * (1 - $remise / 100);
             font-size: 12px;
             letter-spacing: 1px;
         }
+
         .panier-table td {
             padding: 15px 10px;
             border-bottom: 1px solid var(--color-beige);
             vertical-align: middle;
         }
+
         .qte-input {
             width: 60px;
             padding: 5px;
@@ -178,6 +208,7 @@ $totalRemise = $total * (1 - $remise / 100);
             font-family: var(--font-main);
             font-size: 14px;
         }
+
         .btn-supprimer {
             background: none;
             border: none;
@@ -186,6 +217,7 @@ $totalRemise = $total * (1 - $remise / 100);
             font-size: 18px;
             padding: 0 5px;
         }
+
         .btn-update {
             background: var(--color-bordeaux);
             color: #fff;
@@ -199,6 +231,7 @@ $totalRemise = $total * (1 - $remise / 100);
             margin-top: 15px;
             transition: background 0.3s;
         }
+
         .btn-update:hover { background: var(--color-gold); }
 
         .resume-ligne {
@@ -208,6 +241,7 @@ $totalRemise = $total * (1 - $remise / 100);
             border-bottom: 1px solid var(--color-beige);
             font-size: 14px;
         }
+
         .resume-total {
             display: flex;
             justify-content: space-between;
@@ -216,6 +250,7 @@ $totalRemise = $total * (1 - $remise / 100);
             font-weight: 600;
             color: var(--color-bordeaux);
         }
+
         .remise-badge {
             display: inline-block;
             background: #27ae60;
@@ -225,6 +260,7 @@ $totalRemise = $total * (1 - $remise / 100);
             border-radius: 10px;
             margin-left: 5px;
         }
+
         .btn-commander {
             display: block;
             width: 100%;
@@ -242,7 +278,9 @@ $totalRemise = $total * (1 - $remise / 100);
             text-decoration: none;
             transition: background 0.3s;
         }
+
         .btn-commander:hover { background: var(--color-gold); }
+
         .btn-vider {
             display: block;
             text-align: center;
@@ -252,6 +290,7 @@ $totalRemise = $total * (1 - $remise / 100);
             text-decoration: underline;
             cursor: pointer;
         }
+
         .btn-continuer {
             display: inline-block;
             margin-top: 15px;
@@ -259,6 +298,7 @@ $totalRemise = $total * (1 - $remise / 100);
             text-decoration: underline;
             font-size: 14px;
         }
+
         @media (max-width: 768px) {
             .panier-section { flex-direction: column; padding: 30px 20px; }
         }
@@ -287,7 +327,6 @@ $totalRemise = $total * (1 - $remise / 100);
 
     <div class="panier-section">
 
-        <!-- Articles du panier -->
         <div class="panier-items">
             <div class="panier-block">
                 <h2>Mes Articles</h2>
@@ -312,22 +351,22 @@ $totalRemise = $total * (1 - $remise / 100);
                             </thead>
                             <tbody>
                                 <?php foreach ($_SESSION['panier'] as $item): ?>
-                                <tr>
-                                    <td><strong><?php echo htmlspecialchars($item['nom']); ?></strong></td>
-                                    <td><?php echo number_format($item['prix'], 2, ',', ''); ?> €</td>
-                                    <td>
-                                        <input type="number" class="qte-input"
-                                               name="quantite[<?php echo $item['id']; ?>]"
-                                               value="<?php echo $item['quantite']; ?>"
-                                               min="0" max="20">
-                                    </td>
-                                    <td><strong><?php echo number_format($item['prix'] * $item['quantite'], 2, ',', ''); ?> €</strong></td>
-                                    <td>
-                                        <a href="panier.php?supprimer=<?php echo $item['id']; ?>">
-                                            <button type="button" class="btn-supprimer" title="Supprimer">✕</button>
-                                        </a>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td><strong><?php echo htmlspecialchars($item['nom']); ?></strong></td>
+                                        <td><?php echo number_format($item['prix'], 2, ',', ''); ?> €</td>
+                                        <td>
+                                            <input type="number" class="qte-input"
+                                                   name="quantite[<?php echo $item['id']; ?>]"
+                                                   value="<?php echo $item['quantite']; ?>"
+                                                   min="0" max="20">
+                                        </td>
+                                        <td><strong><?php echo number_format($item['prix'] * $item['quantite'], 2, ',', ''); ?> €</strong></td>
+                                        <td>
+                                            <a href="panier.php?supprimer=<?php echo $item['id']; ?>">
+                                                <button type="button" class="btn-supprimer" title="Supprimer">✕</button>
+                                            </a>
+                                        </td>
+                                    </tr>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
@@ -339,39 +378,38 @@ $totalRemise = $total * (1 - $remise / 100);
             </div>
         </div>
 
-        <!-- Résumé et commande -->
         <?php if (!empty($_SESSION['panier'])): ?>
-        <div class="panier-resume">
-            <div class="panier-block">
-                <h2>Résumé</h2>
+            <div class="panier-resume">
+                <div class="panier-block">
+                    <h2>Résumé</h2>
 
-                <?php foreach ($_SESSION['panier'] as $item): ?>
-                <div class="resume-ligne">
-                    <span><?php echo $item['quantite']; ?>x <?php echo htmlspecialchars($item['nom']); ?></span>
-                    <span><?php echo number_format($item['prix'] * $item['quantite'], 2, ',', ''); ?> €</span>
-                </div>
-                <?php endforeach; ?>
+                    <?php foreach ($_SESSION['panier'] as $item): ?>
+                        <div class="resume-ligne">
+                            <span><?php echo $item['quantite']; ?>x <?php echo htmlspecialchars($item['nom']); ?></span>
+                            <span><?php echo number_format($item['prix'] * $item['quantite'], 2, ',', ''); ?> €</span>
+                        </div>
+                    <?php endforeach; ?>
 
-                <?php if ($remise > 0): ?>
-                <div class="resume-ligne">
-                    <span>Sous-total</span>
-                    <span><?php echo number_format($total, 2, ',', ''); ?> €</span>
-                </div>
-                <div class="resume-ligne" style="color:#27ae60;">
-                    <span>Remise <span class="remise-badge">-<?php echo $remise; ?>%</span></span>
-                    <span>-<?php echo number_format($total - $totalRemise, 2, ',', ''); ?> €</span>
-                </div>
-                <?php endif; ?>
+                    <?php if ($remise > 0): ?>
+                        <div class="resume-ligne">
+                            <span>Sous-total</span>
+                            <span><?php echo number_format($total, 2, ',', ''); ?> €</span>
+                        </div>
+                        <div class="resume-ligne" style="color:#27ae60;">
+                            <span>Remise <span class="remise-badge">-<?php echo $remise; ?>%</span></span>
+                            <span>-<?php echo number_format($total - $totalRemise, 2, ',', ''); ?> €</span>
+                        </div>
+                    <?php endif; ?>
 
-                <div class="resume-total">
-                    <span>Total</span>
-                    <span><?php echo number_format($totalRemise, 2, ',', ''); ?> €</span>
-                </div>
+                    <div class="resume-total">
+                        <span>Total</span>
+                        <span><?php echo number_format($totalRemise, 2, ',', ''); ?> €</span>
+                    </div>
 
-                <a href="commande.php" class="btn-commander">PASSER LA COMMANDE</a>
-                <a href="panier.php?vider=1" class="btn-vider">Vider le panier</a>
+                    <a href="commande.php" class="btn-commander">PASSER LA COMMANDE</a>
+                    <a href="panier.php?vider=1" class="btn-vider">Vider le panier</a>
+                </div>
             </div>
-        </div>
         <?php endif; ?>
 
     </div>
