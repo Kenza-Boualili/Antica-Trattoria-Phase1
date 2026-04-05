@@ -1,19 +1,27 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+
 require_once 'lib/auth.php';
 demarrerSession();
 
 requireConnexion();
 requireRole('client');
 
-function lireCommandes() {
+function lireCommandes()
+{
     $fichier = __DIR__ . '/data/commandes.json';
-    if (!file_exists($fichier)) return [];
+    
+    if (!file_exists($fichier))
+    {
+        return [];
+    }
+    
     return json_decode(file_get_contents($fichier), true) ?? [];
 }
 
-function ecrireCommandes($commandes) {
+function ecrireCommandes($commandes)
+{
     $fichier = __DIR__ . '/data/commandes.json';
     file_put_contents($fichier, json_encode($commandes, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 }
@@ -24,8 +32,10 @@ $userId     = $_SESSION['user_id'];
 
 // Trouver la commande
 $maCommande = null;
-foreach ($commandes as $cmd) {
-    if ($cmd['id'] === $commandeId && $cmd['client_id'] == $userId) {
+foreach ($commandes as $cmd)
+{
+    if ($cmd['id'] === $commandeId && $cmd['client_id'] == $userId)
+    {
         $maCommande = $cmd;
         break;
     }
@@ -35,32 +45,44 @@ $erreur = '';
 $succes = '';
 
 // Vérifications
-if (!$maCommande) {
+if (!$maCommande)
+{
     $erreur = 'Commande introuvable ou accès non autorisé.';
-} elseif ($maCommande['statut'] !== 'livree') {
+}
+elseif ($maCommande['statut'] !== 'livree')
+{
     $erreur = 'Vous ne pouvez noter que les commandes livrées.';
-} elseif ($maCommande['note_produits'] !== null) {
+}
+elseif ($maCommande['note_produits'] !== null)
+{
     $succes = 'Vous avez déjà noté cette commande. Merci !';
 }
 
 // Traitement du formulaire
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($erreur) && empty($succes)) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($erreur) && empty($succes))
+{
     $noteProduits  = intval($_POST['produit'] ?? 0);
     $noteLivraison = intval($_POST['livraison'] ?? 0);
     $commentaire   = trim($_POST['commentaire'] ?? '');
 
-    if ($noteProduits < 1 || $noteProduits > 5 || $noteLivraison < 1 || $noteLivraison > 5) {
+    if ($noteProduits < 1 || $noteProduits > 5 || $noteLivraison < 1 || $noteLivraison > 5)
+    {
         $erreur = 'Veuillez attribuer une note entre 1 et 5 étoiles pour chaque critère.';
-    } else {
+    }
+    else
+    {
         // Mettre à jour la commande
-        foreach ($commandes as &$cmd) {
-            if ($cmd['id'] === $commandeId && $cmd['client_id'] == $userId) {
+        foreach ($commandes as &$cmd)
+        {
+            if ($cmd['id'] === $commandeId && $cmd['client_id'] == $userId)
+            {
                 $cmd['note_produits']  = $noteProduits;
                 $cmd['note_livraison'] = $noteLivraison;
                 $cmd['commentaire']    = $commentaire;
                 break;
             }
         }
+        
         ecrireCommandes($commandes);
         $succes = 'Merci pour votre avis ! Votre note a bien été enregistrée.';
     }
@@ -84,6 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($erreur) && empty($succes)) {
             margin-bottom: 25px;
             font-size: 14px;
         }
+
         .form-succes {
             background-color: #e8f8e8;
             border-left: 4px solid #27ae60;
@@ -92,6 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($erreur) && empty($succes)) {
             margin-bottom: 25px;
             font-size: 14px;
         }
+
         .form-succes a {
             display: block;
             margin-top: 8px;
@@ -99,6 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($erreur) && empty($succes)) {
             font-weight: 600;
             text-decoration: underline;
         }
+
         .commande-recap {
             background: var(--color-beige);
             padding: 15px;
@@ -106,6 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($erreur) && empty($succes)) {
             border-left: 3px solid var(--color-gold);
             font-size: 14px;
         }
+
         .commande-recap strong {
             color: var(--color-bordeaux);
         }
@@ -143,7 +169,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($erreur) && empty($succes)) {
         </header>
 
         <div style="flex:1;">
-
             <?php if (!empty($erreur)): ?>
                 <div class="form-erreur">
                     <?php echo htmlspecialchars($erreur); ?>
@@ -157,8 +182,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($erreur) && empty($succes)) {
                 </div>
 
             <?php else: ?>
-
-                <!-- Récap de la commande -->
                 <div class="commande-recap">
                     <strong>Commande <?php echo htmlspecialchars($maCommande['id']); ?></strong>
                     du <?php echo date('d/m/Y', strtotime($maCommande['date_commande'])); ?> —
@@ -203,7 +226,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($erreur) && empty($succes)) {
                     <div class="form-submit">
                         <button type="submit" class="btn-envoyer">ENVOYER MON AVIS</button>
                     </div>
-
                 </form>
             <?php endif; ?>
         </div>
@@ -227,6 +249,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($erreur) && empty($succes)) {
             <a href="deconnexion.php">Déconnexion</a>
         </div>
     </div>
+    
     <div class="footer-middle">
         <div class="footer-column">
             <h3>Administration</h3>
@@ -241,6 +264,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($erreur) && empty($succes)) {
             <a href="livreur.php">Interface Livraison</a>
         </div>
     </div>
+    
     <div class="footer-bottom">
         <p>© 2026 L'Antica Trattoria - Site réalisé par Boualili Kenza et Eish Shahd</p>
     </div>
