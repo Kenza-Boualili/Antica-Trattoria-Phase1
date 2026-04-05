@@ -163,3 +163,44 @@
         grid-template-columns: 1fr;
     }
 }
+/* À AJOUTER À LA FIN DE style-profil.css */
+
+.status-waiting {
+    color: #e67e22;
+    font-weight: 600;
+}
+
+.status-preparing {
+    color: #2980b9;
+    font-weight: 600;
+}
+
+.status-shipping {
+    color: #8e44ad;
+    font-weight: 600;
+}
+
+.status-delivered {
+    color: #27ae60;
+    font-weight: 600;
+}
+
+.status-cancelled {
+    color: #c0392b;
+    font-weight: 600;
+}
+
+.btn-noter {
+    background-color: var(--color-bordeaux);
+    color: #fff;
+    padding: 5px 12px;
+    text-decoration: none;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background 0.3s;
+}
+
+.btn-noter:hover {
+    background-color: var(--color-gold);
+}
