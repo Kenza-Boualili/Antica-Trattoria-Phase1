@@ -1,11 +1,13 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+
 require_once 'lib/auth.php';
 demarrerSession();
 
 // Si déjà connecté, rediriger
-if (estConnecte()) {
+if (estConnecte())
+{
     header('Location: profil.php');
     exit;
 }
@@ -14,7 +16,8 @@ $erreur  = '';
 $succes  = '';
 $donnees = [];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST')
+{
     $donnees = [
         'nom'        => trim($_POST['nom'] ?? ''),
         'prenom'     => trim($_POST['prenom'] ?? ''),
@@ -31,22 +34,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ];
 
     // Validations
-    if (empty($donnees['nom']) || empty($donnees['prenom']) || empty($donnees['email']) || empty($donnees['password'])) {
+    if (empty($donnees['nom']) || empty($donnees['prenom']) || empty($donnees['email']) || empty($donnees['password']))
+    {
         $erreur = 'Veuillez remplir tous les champs obligatoires.';
-    } elseif (!filter_var($donnees['email'], FILTER_VALIDATE_EMAIL)) {
+    }
+    elseif (!filter_var($donnees['email'], FILTER_VALIDATE_EMAIL))
+    {
         $erreur = 'Adresse e-mail invalide.';
-    } elseif (strlen($donnees['password']) < 6) {
+    }
+    elseif (strlen($donnees['password']) < 6)
+    {
         $erreur = 'Le mot de passe doit contenir au moins 6 caractères.';
-    } elseif ($donnees['password'] !== $donnees['confirm']) {
+    }
+    elseif ($donnees['password'] !== $donnees['confirm'])
+    {
         $erreur = 'Les mots de passe ne correspondent pas.';
-    } elseif (!isset($_POST['cgu'])) {
+    }
+    elseif (!isset($_POST['cgu']))
+    {
         $erreur = 'Vous devez accepter les conditions générales d\'utilisation.';
-    } else {
+    }
+    else
+    {
         $resultat = inscrire($donnees);
-        if ($resultat['succes']) {
+        
+        if ($resultat['succes'])
+        {
             $succes = 'Inscription réussie ! Vous pouvez maintenant vous connecter.';
             $donnees = []; // Vider le formulaire
-        } else {
+        }
+        else
+        {
             $erreur = $resultat['message'];
         }
     }
