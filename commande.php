@@ -1,6 +1,7 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+
 require_once 'lib/auth.php';
 require_once 'getapikey.php';
 demarrerSession();
@@ -9,29 +10,39 @@ requireConnexion();
 requireRole('client');
 
 // Constantes CYBank
-define('CYBANK_URL',    'https://www.plateforme-smc.fr/cybank/index.php');
-define('CYBANK_VENDEUR','MEF-2_E');
-define('RETOUR_URL',   'http://localhost:8000/retour_paiement.php');
+define('CYBANK_URL', 'https://www.plateforme-smc.fr/cybank/index.php');
+define('CYBANK_VENDEUR', 'MEF-2_E');
+define('RETOUR_URL', 'http://localhost:8000/retour_paiement.php');
 
-function lirePlats() {
+function lirePlats()
+{
     $fichier = __DIR__ . '/data/plats.json';
-    if (!file_exists($fichier)) return [];
+    if (!file_exists($fichier))
+    {
+        return [];
+    }
     return json_decode(file_get_contents($fichier), true) ?? [];
 }
 
-function lireCommandes() {
+function lireCommandes()
+{
     $fichier = __DIR__ . '/data/commandes.json';
-    if (!file_exists($fichier)) return [];
+    if (!file_exists($fichier))
+    {
+        return [];
+    }
     return json_decode(file_get_contents($fichier), true) ?? [];
 }
 
-function ecrireCommandes($commandes) {
+function ecrireCommandes($commandes)
+{
     $fichier = __DIR__ . '/data/commandes.json';
     file_put_contents($fichier, json_encode($commandes, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 }
 
 // Vérifier que le panier n'est pas vide
-if (empty($_SESSION['panier'])) {
+if (empty($_SESSION['panier']))
+{
     header('Location: panier.php');
     exit;
 }
@@ -41,7 +52,8 @@ $plats = lirePlats();
 
 // Calculer le total
 $total = 0;
-foreach ($_SESSION['panier'] as $item) {
+foreach ($_SESSION['panier'] as $item)
+{
     $total += $item['prix'] * $item['quantite'];
 }
 
@@ -52,18 +64,20 @@ $totalFinal  = round($total * (1 - $remise / 100), 2);
 $erreur = '';
 
 // Traitement du formulaire de commande
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $typeCommande  = $_POST['type_commande'] ?? 'livraison';
-    $preparImmed   = isset($_POST['preparation_immediate']);
-    $datePlanif    = $_POST['date_planifiee'] ?? '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST')
+{
+    $typeCommande = $_POST['type_commande'] ?? 'livraison';
+    $preparImmed  = isset($_POST['preparation_immediate']);
+    $datePlanif   = $_POST['date_planifiee'] ?? '';
 
     // Générer un ID de commande unique
-    $commandes     = lireCommandes();
-    $nouvelId      = 'ORD-' . strtoupper(substr(uniqid(), -6));
+    $commandes = lireCommandes();
+    $nouvelId  = 'ORD-' . strtoupper(substr(uniqid(), -6));
 
     // Construire l'adresse de livraison
     $adresseLivr = null;
-    if ($typeCommande === 'livraison') {
+    if ($typeCommande === 'livraison')
+    {
         $adresseLivr = [
             'adresse'     => $user['adresse'],
             'ville'       => $user['ville'],
@@ -76,34 +90,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Construire les articles
     $articles = [];
-    foreach ($_SESSION['panier'] as $item) {
+    foreach ($_SESSION['panier'] as $item)
+    {
         $articles[] = [
-            'type'         => 'plat',
-            'id'           => $item['id'],
-            'nom'          => $item['nom'],
-            'quantite'     => $item['quantite'],
-            'prix_unitaire'=> $item['prix']
+            'type'          => 'plat',
+            'id'            => $item['id'],
+            'nom'           => $item['nom'],
+            'quantite'      => $item['quantite'],
+            'prix_unitaire' => $item['prix']
         ];
     }
 
-    // Créer la commande en statut "en_attente_paiement"
+    // Créer la commande avec le statut "en_attente_paiement"
     $nouvelleCommande = [
-        'id'                        => $nouvelId,
-        'client_id'                 => $user['id'],
-        'type'                      => $typeCommande,
-        'adresse_livraison'         => $adresseLivr,
-        'articles'                  => $articles,
-        'prix_total'                => $totalFinal,
-        'statut'                    => 'en_attente_paiement',
-        'livreur_id'                => null,
-        'paiement_id'               => null,
-        'preparation_immediate'     => $preparImmed,
-        'date_commande'             => date('Y-m-d\TH:i:s'),
-        'date_preparation_souhaitee'=> (!$preparImmed && !empty($datePlanif))
+        'id'                         => $nouvelId,
+        'client_id'                  => $user['id'],
+        'type'                       => $typeCommande,
+        'adresse_livraison'          => $adresseLivr,
+        'articles'                   => $articles,
+        'prix_total'                 => $totalFinal,
+        'statut'                     => 'en_attente_paiement',
+        'livreur_id'                 => null,
+        'paiement_id'                => null,
+        'preparation_immediate'      => $preparImmed,
+        'date_commande'              => date('Y-m-d\TH:i:s'),
+        'date_preparation_souhaitee' => (!$preparImmed && !empty($datePlanif))
                                         ? date('Y-m-d\TH:i:s', strtotime($datePlanif))
                                         : null,
-        'note_livraison'            => null,
-        'note_produits'             => null
+        'note_livraison'             => null,
+        'note_produits'              => null
     ];
 
     $commandes[] = $nouvelleCommande;
@@ -117,11 +132,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $transaction = preg_replace('/[^0-9a-zA-Z]/', '', $transaction);
     $transaction = substr($transaction, 0, 24);
 
-    $montant  = number_format($totalFinal, 2, '.', '');
-    $vendeur  = CYBANK_VENDEUR;
-    $retour   = RETOUR_URL . '?session=' . session_id();
-    $api_key  = getAPIKey($vendeur);
-    $control  = md5($api_key . '#' . $transaction . '#' . $montant . '#' . $vendeur . '#' . $retour . '#');
+    $montant = number_format($totalFinal, 2, '.', '');
+    $vendeur = CYBANK_VENDEUR;
+    $retour  = RETOUR_URL . '?session=' . session_id();
+    $api_key = getAPIKey($vendeur);
+    $control = md5($api_key . '#' . $transaction . '#' . $montant . '#' . $vendeur . '#' . $retour . '#');
 
     // Stocker les infos transaction en session
     $_SESSION['cybank_transaction'] = $transaction;
@@ -142,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="hidden" name="montant"     value="<?php echo htmlspecialchars($montant); ?>">
         <input type="hidden" name="vendeur"     value="<?php echo htmlspecialchars($vendeur); ?>">
         <input type="hidden" name="retour"      value="<?php echo htmlspecialchars($retour); ?>">
-        <input type="hidden" name="control"     value="<?php echo htmlspecialchars($control); ?>">
+        <input type="hidden" name="control"      value="<?php echo htmlspecialchars($control); ?>">
     </form>
     <script>document.getElementById('cybank-form').submit();</script>
 </body>
@@ -170,6 +185,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             justify-content: center;
             margin-top: 70px;
         }
+
         .commande-hero h1 {
             font-family: var(--font-title);
             font-size: 48px;
@@ -177,6 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             text-transform: uppercase;
             letter-spacing: 4px;
         }
+
         .commande-section {
             padding: 60px 80px 100px 80px;
             max-width: 1100px;
@@ -185,6 +202,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             gap: 40px;
             align-items: flex-start;
         }
+
         .commande-form-block { flex: 2; }
         .commande-recap      { flex: 1; }
 
@@ -195,6 +213,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             box-shadow: 0 5px 20px rgba(0,0,0,0.05);
             margin-bottom: 20px;
         }
+
         .commande-block h2 {
             font-family: var(--font-title);
             font-size: 22px;
@@ -203,9 +222,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             padding-bottom: 10px;
             border-bottom: 1px solid var(--color-beige);
         }
+
         .form-group {
             margin-bottom: 20px;
         }
+
         .form-group label {
             display: block;
             font-size: 12px;
@@ -215,6 +236,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             color: var(--color-dark);
             margin-bottom: 8px;
         }
+
         .form-group input,
         .form-group select,
         .form-group textarea {
@@ -225,6 +247,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-size: 14px;
             background: #fff;
         }
+
         .form-group textarea { resize: none; }
 
         .radio-group {
@@ -232,6 +255,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             gap: 20px;
             margin-bottom: 20px;
         }
+
         .radio-option {
             flex: 1;
             border: 2px solid var(--color-beige);
@@ -240,17 +264,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             text-align: center;
             transition: border-color 0.3s;
         }
+
         .radio-option input { display: none; }
+
         .radio-option:has(input:checked) {
             border-color: var(--color-bordeaux);
             background: #fdf5f5;
         }
+
         .radio-option span {
             display: block;
             font-weight: 600;
             color: var(--color-bordeaux);
             margin-bottom: 5px;
         }
+
         .radio-option small { color: #999; font-size: 12px; }
 
         .adresse-info {
@@ -260,6 +288,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             margin-bottom: 15px;
             border-left: 3px solid var(--color-gold);
         }
+
         .recap-ligne {
             display: flex;
             justify-content: space-between;
@@ -267,6 +296,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border-bottom: 1px solid var(--color-beige);
             font-size: 14px;
         }
+
         .recap-total {
             display: flex;
             justify-content: space-between;
@@ -275,6 +305,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-weight: 600;
             color: var(--color-bordeaux);
         }
+
         .btn-payer {
             display: block;
             width: 100%;
@@ -290,13 +321,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             margin-top: 20px;
             transition: background 0.3s;
         }
+
         .btn-payer:hover { background: var(--color-gold); }
+
         .cybank-info {
             text-align: center;
             font-size: 12px;
             color: #999;
             margin-top: 10px;
         }
+
         @media (max-width: 768px) {
             .commande-section { flex-direction: column; padding: 30px 20px; }
         }
@@ -325,11 +359,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="commande-section">
 
-        <!-- Formulaire -->
         <div class="commande-form-block">
             <form method="POST" action="commande.php">
 
-                <!-- Type de commande -->
                 <div class="commande-block">
                     <h2>Type de commande</h2>
                     <div class="radio-group">
@@ -354,7 +386,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
 
-                <!-- Adresse de livraison -->
                 <div class="commande-block" id="bloc-adresse">
                     <h2>Adresse de livraison</h2>
                     <div class="adresse-info">
@@ -374,7 +405,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
 
-                <!-- Quand préparer -->
                 <div class="commande-block">
                     <h2>Quand souhaitez-vous être livré ?</h2>
                     <div class="radio-group">
@@ -409,27 +439,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
         </div>
 
-        <!-- Récapitulatif -->
         <div class="commande-recap">
             <div class="commande-block">
                 <h2>Récapitulatif</h2>
 
                 <?php foreach ($_SESSION['panier'] as $item): ?>
-                <div class="recap-ligne">
-                    <span><?php echo $item['quantite']; ?>x <?php echo htmlspecialchars($item['nom']); ?></span>
-                    <span><?php echo number_format($item['prix'] * $item['quantite'], 2, ',', ''); ?> €</span>
-                </div>
+                    <div class="recap-ligne">
+                        <span><?php echo $item['quantite']; ?>x <?php echo htmlspecialchars($item['nom']); ?></span>
+                        <span><?php echo number_format($item['prix'] * $item['quantite'], 2, ',', ''); ?> €</span>
+                    </div>
                 <?php endforeach; ?>
 
                 <?php if ($remise > 0): ?>
-                <div class="recap-ligne">
-                    <span>Sous-total</span>
-                    <span><?php echo number_format($total, 2, ',', ''); ?> €</span>
-                </div>
-                <div class="recap-ligne" style="color:#27ae60;">
-                    <span>Remise -<?php echo $remise; ?>%</span>
-                    <span>-<?php echo number_format($total - $totalFinal, 2, ',', ''); ?> €</span>
-                </div>
+                    <div class="recap-ligne">
+                        <span>Sous-total</span>
+                        <span><?php echo number_format($total, 2, ',', ''); ?> €</span>
+                    </div>
+                    <div class="recap-ligne" style="color:#27ae60;">
+                        <span>Remise -<?php echo $remise; ?>%</span>
+                        <span>-<?php echo number_format($total - $totalFinal, 2, ',', ''); ?> €</span>
+                    </div>
                 <?php endif; ?>
 
                 <div class="recap-total">
@@ -484,14 +513,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </footer>
 
 <script>
-function toggleAdresse(val) {
-    document.getElementById('bloc-adresse').style.display =
-        val === 'livraison' ? 'block' : 'none';
-}
-function togglePlanif(immediate) {
-    document.getElementById('bloc-planif').style.display =
-        immediate ? 'none' : 'block';
-}
+    function toggleAdresse(val)
+    {
+        document.getElementById('bloc-adresse').style.display =
+            val === 'livraison' ? 'block' : 'none';
+    }
+
+    function togglePlanif(immediate)
+    {
+        document.getElementById('bloc-planif').style.display =
+            immediate ? 'none' : 'block';
+    }
 </script>
 
 </body>
