@@ -1,30 +1,41 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+
 require_once 'lib/auth.php';
 require_once 'getapikey.php';
 demarrerSession();
 
 define('CYBANK_VENDEUR', 'MEF-2_E');
 
-function lireCommandes() {
+function lireCommandes()
+{
     $fichier = __DIR__ . '/data/commandes.json';
-    if (!file_exists($fichier)) return [];
+    if (!file_exists($fichier))
+    {
+        return [];
+    }
     return json_decode(file_get_contents($fichier), true) ?? [];
 }
 
-function ecrireCommandes($commandes) {
+function ecrireCommandes($commandes)
+{
     $fichier = __DIR__ . '/data/commandes.json';
     file_put_contents($fichier, json_encode($commandes, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 }
 
-function lirePaiements() {
+function lirePaiements()
+{
     $fichier = __DIR__ . '/data/paiements.json';
-    if (!file_exists($fichier)) return [];
+    if (!file_exists($fichier))
+    {
+        return [];
+    }
     return json_decode(file_get_contents($fichier), true) ?? [];
 }
 
-function ecrirePaiements($paiements) {
+function ecrirePaiements($paiements)
+{
     $fichier = __DIR__ . '/data/paiements.json';
     file_put_contents($fichier, json_encode($paiements, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 }
@@ -40,15 +51,21 @@ $paiementOk  = false;
 $erreurMsg   = '';
 
 // Vérifier la valeur de contrôle
-if (!empty($transaction) && !empty($montant) && !empty($vendeur) && !empty($statut)) {
-    $api_key       = getAPIKey($vendeur);
-    $controlCalc   = md5($api_key . '#' . $transaction . '#' . $montant . '#' . $vendeur . '#' . $statut . '#');
+if (!empty($transaction) && !empty($montant) && !empty($vendeur) && !empty($statut))
+{
+    $api_key     = getAPIKey($vendeur);
+    $controlCalc = md5($api_key . '#' . $transaction . '#' . $montant . '#' . $vendeur . '#' . $statut . '#');
 
-    if ($controlCalc === $controlRecu && $statut === 'accepted') {
+    if ($controlCalc === $controlRecu && $statut === 'accepted')
+    {
         $paiementOk = true;
-    } elseif ($statut !== 'accepted') {
+    }
+    elseif ($statut !== 'accepted')
+    {
         $erreurMsg = 'Paiement refusé par CYBank.';
-    } else {
+    }
+    else
+    {
         $erreurMsg = 'Erreur de contrôle : transaction invalide.';
     }
 }
@@ -56,30 +73,36 @@ if (!empty($transaction) && !empty($montant) && !empty($vendeur) && !empty($stat
 // Mettre à jour la commande
 $commandeId = $_SESSION['commande_en_cours'] ?? '';
 
-if (!empty($commandeId)) {
+if (!empty($commandeId))
+{
     $commandes  = lireCommandes();
     $paiements  = lirePaiements();
 
-    foreach ($commandes as &$cmd) {
-        if ($cmd['id'] === $commandeId) {
-            if ($paiementOk) {
-                $cmd['statut']     = 'en_preparation';
-                $paiementId        = 'PAY-' . strtoupper(substr(md5($transaction), 0, 6));
-                $cmd['paiement_id']= $paiementId;
+    foreach ($commandes as &$cmd)
+    {
+        if ($cmd['id'] === $commandeId)
+        {
+            if ($paiementOk)
+            {
+                $cmd['statut']      = 'en_preparation';
+                $paiementId         = 'PAY-' . strtoupper(substr(md5($transaction), 0, 6));
+                $cmd['paiement_id'] = $paiementId;
 
                 // Enregistrer le paiement
                 $paiements[] = [
-                    'id'                   => $paiementId,
-                    'commande_id'          => $commandeId,
-                    'client_id'            => $cmd['client_id'],
-                    'montant'              => floatval($montant),
-                    'statut'               => 'validé',
-                    'methode'              => 'carte',
-                    'cybank_transaction_id'=> $transaction,
-                    'date_transaction'     => date('Y-m-d\TH:i:s')
+                    'id'                    => $paiementId,
+                    'commande_id'           => $commandeId,
+                    'client_id'             => $cmd['client_id'],
+                    'montant'               => floatval($montant),
+                    'statut'                => 'validé',
+                    'methode'               => 'carte',
+                    'cybank_transaction_id' => $transaction,
+                    'date_transaction'      => date('Y-m-d\TH:i:s')
                 ];
                 ecrirePaiements($paiements);
-            } else {
+            }
+            else
+            {
                 // Supprimer la commande si paiement refusé
                 $cmd['statut'] = 'annulee';
             }
@@ -89,7 +112,8 @@ if (!empty($commandeId)) {
     ecrireCommandes($commandes);
 
     // Vider le panier si paiement OK
-    if ($paiementOk) {
+    if ($paiementOk)
+    {
         $_SESSION['panier'] = [];
         unset($_SESSION['commande_en_cours']);
         unset($_SESSION['cybank_transaction']);
@@ -113,6 +137,7 @@ if (!empty($commandeId)) {
             justify-content: center;
             padding: 100px 20px 60px 20px;
         }
+
         .confirmation-card {
             background: #fff;
             padding: 60px 50px;
@@ -122,7 +147,8 @@ if (!empty($commandeId)) {
             max-width: 500px;
             width: 100%;
         }
-        .icone-ok  { font-size: 60px; margin-bottom: 20px; }
+
+        .icone-ok { font-size: 60px; margin-bottom: 20px; }
         .icone-err { font-size: 60px; margin-bottom: 20px; }
 
         .confirmation-card h1 {
@@ -131,12 +157,14 @@ if (!empty($commandeId)) {
             color: var(--color-bordeaux);
             margin-bottom: 15px;
         }
+
         .confirmation-card p {
             font-size: 15px;
             color: #5a5a5a;
             line-height: 1.8;
             margin-bottom: 10px;
         }
+
         .commande-ref {
             background: var(--color-beige);
             padding: 10px 20px;
@@ -146,6 +174,7 @@ if (!empty($commandeId)) {
             margin: 20px 0;
             letter-spacing: 2px;
         }
+
         .btn-retour {
             display: inline-block;
             margin-top: 25px;
@@ -158,7 +187,9 @@ if (!empty($commandeId)) {
             letter-spacing: 2px;
             transition: background 0.3s;
         }
+
         .btn-retour:hover { background: var(--color-gold); }
+
         .btn-retour-sec {
             display: inline-block;
             margin-top: 15px;
@@ -229,6 +260,7 @@ if (!empty($commandeId)) {
             <a href="deconnexion.php">Déconnexion</a>
         </div>
     </div>
+    
     <div class="footer-middle">
         <div class="footer-column">
             <h3>Administration</h3>
@@ -243,6 +275,7 @@ if (!empty($commandeId)) {
             <a href="livreur.php">Interface Livraison</a>
         </div>
     </div>
+    
     <div class="footer-bottom">
         <p>© 2026 L'Antica Trattoria - Site réalisé par Boualili Kenza et Eish Shahd</p>
     </div>
