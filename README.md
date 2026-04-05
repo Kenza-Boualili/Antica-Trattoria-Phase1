@@ -56,22 +56,22 @@ L'objectif est de créer une application web multi-utilisateurs permettant de g�
 ---
 
 ## 🏗️ Architecture du projet
+```
 /project
-│
 ├── lib/ # Fonctions PHP (authentification, utils)
 ├── data/ # Fichiers JSON (users, plats, commandes...)
-│
+|
 ├── index.php
 ├── carte.php
 ├── profil.php
 ├── admin.php
 ├── restaurateur.php
 ├── livreur.php
-│
+|
 ├── fichiercommun.css
 ├── style-admin.css
-├── style carte.css
-
+├──  style carte.css
+```
 
 ---
 
