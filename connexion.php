@@ -2,35 +2,68 @@
 require_once 'lib/auth.php';
 demarrerSession();
 
-// Si on estdéjà connecté, on sera rediriger selon le rôle
-if (estConnecte()) {
+// Si on est déjà connecté, on sera rediriger selon le rôle
+if (estConnecte())
+{
     $role = getRoleConnecte();
-    if ($role === 'admin')        header('Location: admin.php');
-    elseif ($role === 'restaurateur') header('Location: restaurateur.php');
-    elseif ($role === 'livreur')  header('Location: livreur.php');
-    else                          header('Location: profil.php');
+    if ($role === 'admin')
+    {
+        header('Location: admin.php');
+    }
+    elseif ($role === 'restaurateur')
+    {
+        header('Location: restaurateur.php');
+    }
+    elseif ($role === 'livreur')
+    {
+        header('Location: livreur.php');
+    }
+    else
+    {
+        header('Location: profil.php');
+    }
     exit;
 }
 
 $erreur = '';
 
 // Traitement du formulaire
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST')
+{
     $email    = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
 
-    if (empty($email) || empty($password)) {
+    if (empty($email) || empty($password))
+    {
         $erreur = 'Veuillez remplir tous les champs.';
-    } else {
+    }
+    else
+    {
         $resultat = connecter($email, $password);
-        if ($resultat['succes']) {
+        
+        if ($resultat['succes'])
+        {
             // Redirection selon le rôle
-            if ($resultat['role'] === 'admin')            header('Location: admin.php');
-            elseif ($resultat['role'] === 'restaurateur') header('Location: restaurateur.php');
-            elseif ($resultat['role'] === 'livreur')      header('Location: livreur.php');
-            else                                          header('Location: profil.php');
+            if ($resultat['role'] === 'admin')
+            {
+                header('Location: admin.php');
+            }
+            elseif ($resultat['role'] === 'restaurateur')
+            {
+                header('Location: restaurateur.php');
+            }
+            elseif ($resultat['role'] === 'livreur')
+            {
+                header('Location: livreur.php');
+            }
+            else
+            {
+                header('Location: profil.php');
+            }
             exit;
-        } else {
+        }
+        else
+        {
             $erreur = $resultat['message'];
         }
     }
@@ -109,7 +142,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <p class="form-footer-link">Pas encore de compte ? <a href="inscription.php">Créer un compte</a></p>
 
-            <!-- Comptes de test pour voir si la connexion fonctionne-->
             <div class="comptes-test">
                 <p><strong>Comptes de test (mot de passe : password)</strong></p>
                 <p>Client : kenza.boualili@email.com</p>
