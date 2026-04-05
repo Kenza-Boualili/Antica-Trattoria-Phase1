@@ -1,13 +1,18 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+
 require_once 'lib/auth.php';
 demarrerSession();
 
 // Lire les plats depuis plats.json
 function lirePlats() {
     $fichier = __DIR__ . '/data/plats.json';
-    if (!file_exists($fichier)) return [];
+    
+    if (!file_exists($fichier)) {
+        return [];
+    }
+    
     return json_decode(file_get_contents($fichier), true) ?? [];
 }
 
@@ -18,28 +23,28 @@ $recherche = trim($_GET['search'] ?? '');
 $filtreSaveur = $_GET['saveur'] ?? '';
 $filtreAllergen = $_GET['allergene'] ?? '';
 
-// Definitions de synonymes pour la recherche ("On peut avoir des utilisateurs qui cherchent "pizza" au lieu de "pizze" etc.)
+// Definitions de synonymes pour la recherche
 $mappingRecherche = [
-    'pizza'     => 'pizze',
-    'pizzas'    => 'pizze',
-    'pate'      => 'pasta',
-    'pates'     => 'pasta',
-    'pâte'      => 'pasta',
-    'pâtes'     => 'pasta',
-    'viande'    => 'carne',
-    'viandes'   => 'carne',
-    'entree'    => 'antipasti',
-    'entrees'   => 'antipasti',
-    'entrée'    => 'antipasti',
-    'entrées'   => 'antipasti',
-    'dessert'   => 'dolce',
-    'desserts'  => 'dolce',
-    'boisson'   => 'cocktail',
-    'boissons'  => 'cocktail',
-    'cocktail'  => 'cocktail',
-    'fromage'   => 'burrata',
-    'vegetarien'=> 'vegetarien',
-    'végétarien'=> 'vegetarien',
+    'pizza'      => 'pizze',
+    'pizzas'     => 'pizze',
+    'pate'       => 'pasta',
+    'pates'      => 'pasta',
+    'pâte'       => 'pasta',
+    'pâtes'      => 'pasta',
+    'viande'     => 'carne',
+    'viandes'    => 'carne',
+    'entree'     => 'antipasti',
+    'entrees'    => 'antipasti',
+    'entrée'     => 'antipasti',
+    'entrées'    => 'antipasti',
+    'dessert'    => 'dolce',
+    'desserts'   => 'dolce',
+    'boisson'    => 'cocktail',
+    'boissons'   => 'cocktail',
+    'cocktail'   => 'cocktail',
+    'fromage'    => 'burrata',
+    'vegetarien' => 'vegetarien',
+    'végétarien' => 'vegetarien',
 ];
 
 // FILTRE PAR RECHERCHE TEXTE
@@ -72,13 +77,13 @@ if ($filtreSaveur === 'sans_gluten') {
 
 // Grouper par catégorie
 $categories = [
-    'antipasti' => [], 
-    'pasta' => [], 
-    'carne' => [], 
-    'pizze' => [], 
-    'dolce' => [], 
-    'cocktail' => []
-    ];
+    'antipasti' => [],
+    'pasta'     => [],
+    'carne'     => [],
+    'pizze'     => [],
+    'dolce'     => [],
+    'cocktail'  => []
+];
 
 // On range chaque plat dans sa catégorie
 foreach ($plats as $plat) {
@@ -108,7 +113,6 @@ $nomCategories = [
     <link rel="stylesheet" href="fichiercommun.css">
     <link rel="stylesheet" href="style carte.css">
     <style>
-
         /* Style du prix */
         .carte-item-prix {
             font-size: 16px;
@@ -162,7 +166,10 @@ $nomCategories = [
             text-transform: uppercase;
             transition: background 0.3s;
         }
-        .btn-panier:hover { background: var(--color-gold); }
+
+        .btn-panier:hover {
+            background: var(--color-gold);
+        }
 
         /* Message aucun résultat */
         .aucun-resultat {
@@ -180,13 +187,10 @@ $nomCategories = [
     <nav id="navbar" class="nav-scrolled">
         <div class="logo">L'Antica Trattoria</div>
         <ul class="nav-links">
-
-         <!-- Navigation -->
             <li><a href="index.php">ACCUEIL</a></li>
             <li><a href="carte.php">NOTRE CARTE</a></li>
         </ul>
 
-        <!-- Boutons connexion -->
         <div class="nav-buttons">
             <?php if (estConnecte()): ?>
                 <button class="btn-gold" onclick="window.location.href='profil.php'">MON PROFIL</button>
@@ -200,8 +204,6 @@ $nomCategories = [
 </header>
 
 <main>
-
-    <!-- SECTION FILTRES -->
     <section class="carte-filter-section">
         <div class="filter-container">
             <form method="GET" action="carte.php" class="search-box">
@@ -209,101 +211,89 @@ $nomCategories = [
                        value="<?php echo htmlspecialchars($recherche); ?>">
                 <button type="submit" class="btn-search-carte">RECHERCHER</button>
             </form>
+
             <div class="filter-menu">
                 <div class="filter-group">
                     <label>SAVEURS</label>
                     <select name="saveur" onchange="this.form.submit()" form="filtreForm">
                         <option value="">Toutes</option>
-                        <option value="pimente"    <?php echo $filtreSaveur === 'pimente'    ? 'selected' : ''; ?>>Pimenté</option>
+                        <option value="pimente" <?php echo $filtreSaveur === 'pimente' ? 'selected' : ''; ?>>Pimenté</option>
                         <option value="vegetarien" <?php echo $filtreSaveur === 'vegetarien' ? 'selected' : ''; ?>>Végétarien</option>
                     </select>
                 </div>
+
                 <div class="filter-group">
                     <label>ALLERGÈNES</label>
                     <select name="allergene" onchange="this.form.submit()" form="filtreForm">
                         <option value="">Sans restriction</option>
-                        <option value="sans_gluten"  <?php echo $filtreAllergen === 'sans_gluten'  ? 'selected' : ''; ?>>Sans Gluten</option>
+                        <option value="sans_gluten" <?php echo $filtreAllergen === 'sans_gluten' ? 'selected' : ''; ?>>Sans Gluten</option>
                         <option value="sans_lactose" <?php echo $filtreAllergen === 'sans_lactose' ? 'selected' : ''; ?>>Sans Lactose</option>
                     </select>
                 </div>
             </div>
+
             <form id="filtreForm" method="GET" action="carte.php">
                 <input type="hidden" name="search" value="<?php echo htmlspecialchars($recherche); ?>">
             </form>
         </div>
     </section>
 
-    <!-- AFFICHAGE DES PLATS PAR CATÉGORIE -->
     <?php foreach ($categories as $catKey => $platsCat): ?>
         <?php if (!empty($platsCat)): ?>
-        <section class="carte-section" id="<?php echo $catKey; ?>">
+            <section class="carte-section" id="<?php echo $catKey; ?>">
+                <h1 class="carte-title"><?php echo $nomCategories[$catKey]; ?></h1>
+                
+                <div class="carte-grid">
+                    <?php foreach ($platsCat as $plat): ?>
+                        <div class="carte-item">
+                            <img src="<?php echo htmlspecialchars($plat['image']); ?>"
+                                 alt="<?php echo htmlspecialchars($plat['nom']); ?>"
+                                 class="carte-image"
+                                 onerror="this.src='photo/placeholder.jpg'">
 
-        <!-- Nom catégorie -->
-            <h1 class="carte-title"><?php echo $nomCategories[$catKey]; ?></h1>
-            <div class="carte-grid">
+                            <h3 class="carte-item-name"><?php echo htmlspecialchars($plat['nom']); ?></h3>
 
-             <!-- Liste des plats -->
-                <?php foreach ($platsCat as $plat): ?>
-                <div class="carte-item">
+                            <p class="carte-item-description"><?php echo htmlspecialchars($plat['description']); ?></p>
 
-                <!-- Image -->
-                    <img src="<?php echo htmlspecialchars($plat['image']); ?>"
-                         alt="<?php echo htmlspecialchars($plat['nom']); ?>"
-                         class="carte-image"
-                         onerror="this.src='photo/placeholder.jpg'">
+                            <p class="carte-item-prix"><?php echo number_format($plat['prix'], 2, ',', ''); ?> €</p>
 
-                    <!-- Nom -->
-                    <h3 class="carte-item-name"><?php echo htmlspecialchars($plat['nom']); ?></h3>
+                            <?php if ($plat['vegetarien']): ?>
+                                <span class="badge-veg">🌿 Végétarien</span>
+                            <?php endif; ?>
 
-                    <!-- Description -->
-                    <p class="carte-item-description"><?php echo htmlspecialchars($plat['description']); ?></p>
+                            <?php if ($plat['pimente']): ?>
+                                <span class="badge-piment">🌶 Pimenté</span>
+                            <?php endif; ?>
 
-                    <!-- Prix -->
-                    <p class="carte-item-prix"><?php echo number_format($plat['prix'], 2, ',', ''); ?> €</p>
+                            <?php if (!empty($plat['allergenes'])): ?>
+                                <p class="carte-item-allergenes">
+                                    Allergènes : <?php echo implode(', ', $plat['allergenes']); ?>
+                                </p>
+                            <?php endif; ?>
 
-                    <!-- Badge végétarien -->
-                    <?php if ($plat['vegetarien']): ?>
-                        <span class="badge-veg">🌿 Végétarien</span>
-                    <?php endif; ?>
-
-                    <!-- Badge pimenté -->
-                    <?php if ($plat['pimente']): ?>
-                        <span class="badge-piment">🌶 Pimenté</span>
-                    <?php endif; ?>
-
-                    <!-- Allergènes -->
-                    <?php if (!empty($plat['allergenes'])): ?>
-                        <p class="carte-item-allergenes">
-                            Allergènes : <?php echo implode(', ', $plat['allergenes']); ?>
-                        </p>
-                    <?php endif; ?>
-
-                    <!-- Bouton panier (uniquement client connecté) -->
-                    <?php if (estConnecte() && getRoleConnecte() === 'client'): ?>
-                        <button class="btn-panier"
-                                onclick="window.location.href='panier.php?ajouter=<?php echo $plat['id']; ?>'">
-                            AJOUTER AU PANIER
-                        </button>
-                    <?php endif; ?>
+                            <?php if (estConnecte() && getRoleConnecte() === 'client'): ?>
+                                <button class="btn-panier"
+                                        onclick="window.location.href='panier.php?ajouter=<?php echo $plat['id']; ?>'">
+                                    AJOUTER AU PANIER
+                                </button>
+                            <?php endif; ?>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
-                <?php endforeach; ?>
-            </div>
-        </section>
+            </section>
         <?php endif; ?>
     <?php endforeach; ?>
 
-     <!-- Message si aucun plat -->
     <?php
     $totalPlats = array_sum(array_map('count', $categories));
     if ($totalPlats === 0):
     ?>
-    <section class="carte-section">
-        <div class="carte-grid">
-            <p class="aucun-resultat">Aucun plat trouvé pour "<?php echo htmlspecialchars($recherche); ?>"</p>
-        </div>
-    </section>
+        <section class="carte-section">
+            <div class="carte-grid">
+                <p class="aucun-resultat">Aucun plat trouvé pour "<?php echo htmlspecialchars($recherche); ?>"</p>
+            </div>
+        </section>
     <?php endif; ?>
-
 </main>
 
 <footer>
@@ -324,10 +314,11 @@ $nomCategories = [
                 <a href="deconnexion.php">Déconnexion</a>
             <?php else: ?>
                 <a href="connexion.php">Se connecter</a>
-                <a href="inscription.php">S'inscrire</a>
+                <a href="inscription.php">S'INSCRIRE</a>
             <?php endif; ?>
         </div>
     </div>
+
     <div class="footer-middle">
         <div class="footer-column">
             <h3>Administration</h3>
@@ -342,6 +333,7 @@ $nomCategories = [
             <a href="livreur.php">Interface Livraison (Mobile)</a>
         </div>
     </div>
+
     <div class="footer-bottom">
         <p>© 2026 L'Antica Trattoria - Site réalisé par Boualili Kenza et Eish Shahd</p>
     </div>
