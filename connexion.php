@@ -1,0 +1,162 @@
+<?php
+require_once 'lib/auth.php';
+demarrerSession();
+
+// Si on estdéjà connecté, on sera rediriger selon le rôle
+if (estConnecte()) {
+    $role = getRoleConnecte();
+    if ($role === 'admin')        header('Location: admin.php');
+    elseif ($role === 'restaurateur') header('Location: restaurateur.php');
+    elseif ($role === 'livreur')  header('Location: livreur.php');
+    else                          header('Location: profil.php');
+    exit;
+}
+
+$erreur = '';
+
+// Traitement du formulaire
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email    = trim($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
+
+    if (empty($email) || empty($password)) {
+        $erreur = 'Veuillez remplir tous les champs.';
+    } else {
+        $resultat = connecter($email, $password);
+        if ($resultat['succes']) {
+            // Redirection selon le rôle
+            if ($resultat['role'] === 'admin')            header('Location: admin.php');
+            elseif ($resultat['role'] === 'restaurateur') header('Location: restaurateur.php');
+            elseif ($resultat['role'] === 'livreur')      header('Location: livreur.php');
+            else                                          header('Location: profil.php');
+            exit;
+        } else {
+            $erreur = $resultat['message'];
+        }
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - L'Antica Trattoria</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="fichiercommun.css">
+    <link rel="stylesheet" href="style-connexion.css">
+</head>
+<body>
+
+<header>
+    <nav id="navbar" class="nav-scrolled">
+        <div class="logo">L'Antica Trattoria</div>
+        <ul class="nav-links">
+            <li><a href="index.php">ACCUEIL</a></li>
+            <li><a href="carte.php">NOTRE CARTE</a></li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="btn-gold" onclick="window.location.href='connexion.php'">SE CONNECTER</button>
+            <button class="btn-gold" onclick="window.location.href='inscription.php'">S'INSCRIRE</button>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <div class="connexion-hero">
+        <div class="connexion-hero-overlay">
+            <h1>Se Connecter</h1>
+            <div class="separator"></div>
+        </div>
+    </div>
+
+    <section class="connexion-section">
+        <header class="connexion-intro">
+            <h2>BIENVENUE</h2>
+            <p>Connectez-vous à votre espace personnel pour gérer vos réservations, suivre vos commandes en cours et profiter de vos offres fidélité.</p>
+        </header>
+
+        <form action="connexion.php" method="POST" class="connexion-form">
+
+            <?php if (!empty($erreur)): ?>
+                <div class="form-erreur">
+                    <?php echo htmlspecialchars($erreur); ?>
+                </div>
+            <?php endif; ?>
+
+            <div class="form-group full-width">
+                <label for="email">Adresse e-mail *</label>
+                <input type="email" id="email" name="email" placeholder="votre@email.com"
+                       value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>" required>
+            </div>
+
+            <div class="form-group full-width">
+                <label for="password">Mot de passe *</label>
+                <input type="password" id="password" name="password" placeholder="••••••••" required>
+            </div>
+
+            <div class="form-options">
+                <div class="remember-me">
+                    <input type="checkbox" id="remember" name="remember">
+                    <label for="remember">Se souvenir de moi</label>
+                </div>
+                <a href="#" class="forgot-password">Mot de passe oublié ?</a>
+            </div>
+
+            <div class="form-submit">
+                <button type="submit" class="btn-connexion">SE CONNECTER</button>
+            </div>
+
+            <p class="form-footer-link">Pas encore de compte ? <a href="inscription.php">Créer un compte</a></p>
+
+            <!-- Comptes de test pour voir si la connexion fonctionne-->
+            <div class="comptes-test">
+                <p><strong>Comptes de test (mot de passe : password)</strong></p>
+                <p>Client : kenza.boualili@email.com</p>
+                <p>Admin : admin@antica-trattoria.fr</p>
+                <p>Restaurateur : mario@antica-trattoria.fr</p>
+                <p>Livreur : marco@antica-trattoria.fr</p>
+            </div>
+        </form>
+    </section>
+</main>
+
+<footer>
+    <div class="footer-top">
+        <div class="footer-column">
+            <h3>Notre Adresse</h3>
+            <p>Avenue du Parc<br>95000 Cergy</p>
+        </div>
+        <div class="footer-column">
+            <h3>Horaires</h3>
+            <p>Lundi - Jeudi :<br>12:00 - 22:45</p>
+            <p>Vendredi - Dimanche :<br>12:00 - 23:45</p>
+        </div>
+        <div class="footer-column">
+            <h3>Mon Compte</h3>
+            <a href="connexion.php">Se connecter</a>
+            <a href="inscription.php">S'inscrire</a>
+            <a href="profil.php">Mon Profil</a>
+        </div>
+    </div>
+    <div class="footer-middle">
+        <div class="footer-column">
+            <h3>Administration</h3>
+            <a href="admin.php">Interface Administrateur</a>
+        </div>
+        <div class="footer-column">
+            <h3>Restaurateur</h3>
+            <a href="restaurateur.php">Gestion Cuisine (Tablette)</a>
+        </div>
+        <div class="footer-column">
+            <h3>Livreur</h3>
+            <a href="livreur.php">Interface Livraison (Mobile)</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2026 L'Antica Trattoria - Site réalisé par Boualili Kenza et Eish Shahd</p>
+    </div>
+</footer>
+
+</body>
+</html>
