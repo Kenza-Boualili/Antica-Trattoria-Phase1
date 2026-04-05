@@ -1,0 +1,48 @@
+[
+  {
+    "id": 1,
+    "nom": "Menu Classico",
+    "description": "Le menu du terroir italien : entrée, plat et dessert pour un repas complet",
+    "prix_total": 28.00,
+    "prix_somme_plats": 31.50,
+    "plats_ids": [2, 10, 17],
+    "nb_personnes_minimum": 1,
+    "creneaux": ["midi", "soir"],
+    "disponible": true,
+    "options_possibles": [
+      {"type": "remplacer", "plat_id": 2, "alternatives_ids": [3, 5]},
+      {"type": "remplacer", "plat_id": 10, "alternatives_ids": [8, 11]},
+      {"type": "remplacer", "plat_id": 17, "alternatives_ids": [18]}
+    ]
+  },
+  {
+    "id": 2,
+    "nom": "Menu Famiglia",
+    "description": "Menu pour partager en famille : antipasti variés, pasta et dolce pour 2 personnes",
+    "prix_total": 48.00,
+    "prix_somme_plats": 55.00,
+    "plats_ids": [1, 5, 11, 12, 17, 18],
+    "nb_personnes_minimum": 2,
+    "creneaux": ["midi", "soir"],
+    "disponible": true,
+    "options_possibles": [
+      {"type": "enlever", "plat_id": 1, "ingredients": ["sauce maison"]},
+      {"type": "remplacer", "plat_id": 11, "alternatives_ids": [8, 10]}
+    ]
+  },
+  {
+    "id": 3,
+    "nom": "Menu Pranzo",
+    "description": "Menu du midi express : plat et boisson pour une pause déjeuner rapide",
+    "prix_total": 16.00,
+    "prix_somme_plats": 19.50,
+    "plats_ids": [8, 19],
+    "nb_personnes_minimum": 1,
+    "creneaux": ["midi"],
+    "disponible": true,
+    "options_possibles": [
+      {"type": "remplacer", "plat_id": 8, "alternatives_ids": [9, 10, 15, 16]},
+      {"type": "remplacer", "plat_id": 19, "alternatives_ids": [20]}
+    ]
+  }
+]

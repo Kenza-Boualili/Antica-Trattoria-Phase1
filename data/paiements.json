@@ -1,0 +1,72 @@
+[
+    {
+        "id": "PAY-001",
+        "commande_id": "ORD-450",
+        "client_id": 2,
+        "montant": 35,
+        "statut": "validé",
+        "methode": "carte",
+        "cybank_transaction_id": "CYB-88421",
+        "date_transaction": "2026-02-12T18:05:00"
+    },
+    {
+        "id": "PAY-002",
+        "commande_id": "ORD-451",
+        "client_id": 1,
+        "montant": 28,
+        "statut": "validé",
+        "methode": "carte",
+        "cybank_transaction_id": "CYB-88422",
+        "date_transaction": "2026-02-12T19:05:00"
+    },
+    {
+        "id": "PAY-003",
+        "commande_id": "ORD-452",
+        "client_id": 1,
+        "montant": 35,
+        "statut": "validé",
+        "methode": "carte",
+        "cybank_transaction_id": "CYB-88450",
+        "date_transaction": "2026-03-15T12:12:00"
+    },
+    {
+        "id": "PAY-004",
+        "commande_id": "ORD-453",
+        "client_id": 3,
+        "montant": 18,
+        "statut": "validé",
+        "methode": "carte",
+        "cybank_transaction_id": "CYB-88451",
+        "date_transaction": "2026-03-15T11:02:00"
+    },
+    {
+        "id": "PAY-005",
+        "commande_id": "ORD-454",
+        "client_id": 4,
+        "montant": 48,
+        "statut": "validé",
+        "methode": "carte",
+        "cybank_transaction_id": "CYB-88390",
+        "date_transaction": "2026-03-01T20:03:00"
+    },
+    {
+        "id": "PAY-27AF05",
+        "commande_id": "ORD-5D125A",
+        "client_id": 1,
+        "montant": 24,
+        "statut": "validé",
+        "methode": "carte",
+        "cybank_transaction_id": "ORD5D125Aa338",
+        "date_transaction": "2026-04-04T14:38:55"
+    },
+    {
+        "id": "PAY-DF8C1F",
+        "commande_id": "ORD-F82BCF",
+        "client_id": 11,
+        "montant": 41,
+        "statut": "validé",
+        "methode": "carte",
+        "cybank_transaction_id": "ORDF82BCF4e86",
+        "date_transaction": "2026-04-05T13:02:07"
+    }
+]

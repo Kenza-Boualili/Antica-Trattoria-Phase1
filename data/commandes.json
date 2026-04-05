@@ -1,0 +1,262 @@
+[
+    {
+        "id": "ORD-450",
+        "client_id": 2,
+        "type": "livraison",
+        "adresse_livraison": {
+            "adresse": "5 Rue des Lilas",
+            "ville": "Cergy",
+            "code_postal": "95000",
+            "etage": "RDC",
+            "interphone": "",
+            "commentaire": "Sonner deux fois"
+        },
+        "articles": [
+            {
+                "type": "plat",
+                "id": 15,
+                "nom": "Margherita",
+                "quantite": 2,
+                "prix_unitaire": 13
+            },
+            {
+                "type": "plat",
+                "id": 17,
+                "nom": "Poker di Tiramisu",
+                "quantite": 1,
+                "prix_unitaire": 9
+            }
+        ],
+        "prix_total": 35,
+        "statut": "livree",
+        "livreur_id": 9,
+        "paiement_id": "PAY-001",
+        "preparation_immediate": true,
+        "date_commande": "2026-02-12T18:00:00",
+        "date_preparation_souhaitee": null,
+        "note_livraison": null,
+        "note_produits": null
+    },
+    {
+        "id": "ORD-451",
+        "client_id": 1,
+        "type": "livraison",
+        "adresse_livraison": {
+            "adresse": "12 Avenue du Parc",
+            "ville": "Cergy",
+            "code_postal": "95000",
+            "etage": "2eme etage",
+            "interphone": "A102",
+            "commentaire": ""
+        },
+        "articles": [
+            {
+                "type": "menu",
+                "id": 1,
+                "nom": "Menu Classico",
+                "quantite": 1,
+                "prix_unitaire": 28
+            }
+        ],
+        "prix_total": 28,
+        "statut": "livree",
+        "livreur_id": 9,
+        "paiement_id": "PAY-002",
+        "preparation_immediate": true,
+        "date_commande": "2026-02-12T19:00:00",
+        "date_preparation_souhaitee": null,
+        "note_livraison": 5,
+        "note_produits": 5,
+        "commentaire": "exellent !"
+    },
+    {
+        "id": "ORD-452",
+        "client_id": 1,
+        "type": "livraison",
+        "adresse_livraison": {
+            "adresse": "12 Avenue du Parc",
+            "ville": "Cergy",
+            "code_postal": "95000",
+            "etage": "2eme etage",
+            "interphone": "A102",
+            "commentaire": ""
+        },
+        "articles": [
+            {
+                "type": "plat",
+                "id": 15,
+                "nom": "Margherita",
+                "quantite": 2,
+                "prix_unitaire": 13
+            },
+            {
+                "type": "plat",
+                "id": 17,
+                "nom": "Poker di Tiramisu",
+                "quantite": 1,
+                "prix_unitaire": 9
+            }
+        ],
+        "prix_total": 35,
+        "statut": "en_preparation",
+        "livreur_id": null,
+        "paiement_id": "PAY-003",
+        "preparation_immediate": true,
+        "date_commande": "2026-03-15T12:10:00",
+        "date_preparation_souhaitee": null,
+        "note_livraison": null,
+        "note_produits": null
+    },
+    {
+        "id": "ORD-453",
+        "client_id": 3,
+        "type": "livraison",
+        "adresse_livraison": {
+            "adresse": "8 Boulevard Saint-Martin",
+            "ville": "Pontoise",
+            "code_postal": "95300",
+            "etage": "1er etage",
+            "interphone": "B205",
+            "commentaire": "Pas de sonnette, appeler"
+        },
+        "articles": [
+            {
+                "type": "plat",
+                "id": 9,
+                "nom": "Penne all'Arrabbiata",
+                "quantite": 1,
+                "prix_unitaire": 12.5
+            },
+            {
+                "type": "plat",
+                "id": 19,
+                "nom": "Virgin Mojito",
+                "quantite": 1,
+                "prix_unitaire": 5.5
+            }
+        ],
+        "prix_total": 18,
+        "statut": "en_attente",
+        "livreur_id": null,
+        "paiement_id": "PAY-004",
+        "preparation_immediate": false,
+        "date_commande": "2026-03-15T11:00:00",
+        "date_preparation_souhaitee": "2026-03-15T19:30:00",
+        "note_livraison": null,
+        "note_produits": null
+    },
+    {
+        "id": "ORD-454",
+        "client_id": 4,
+        "type": "sur_place",
+        "adresse_livraison": null,
+        "articles": [
+            {
+                "type": "menu",
+                "id": 2,
+                "nom": "Menu Famiglia",
+                "quantite": 1,
+                "prix_unitaire": 48
+            }
+        ],
+        "prix_total": 48,
+        "statut": "livree",
+        "livreur_id": null,
+        "paiement_id": "PAY-005",
+        "preparation_immediate": true,
+        "date_commande": "2026-03-01T20:00:00",
+        "date_preparation_souhaitee": null,
+        "note_livraison": 5,
+        "note_produits": 5
+    },
+    {
+        "id": "ORD-5D125A",
+        "client_id": 1,
+        "type": "livraison",
+        "adresse_livraison": {
+            "adresse": "12 Avenue du Parc",
+            "ville": "Cergy",
+            "code_postal": "95000",
+            "etage": "2ème étage",
+            "interphone": "A102",
+            "commentaire": ""
+        },
+        "articles": [
+            {
+                "type": "plat",
+                "id": 3,
+                "nom": "Bruschetta Capra",
+                "quantite": 1,
+                "prix_unitaire": 8
+            },
+            {
+                "type": "plat",
+                "id": 6,
+                "nom": "Burrata al Tartufo",
+                "quantite": 1,
+                "prix_unitaire": 16
+            }
+        ],
+        "prix_total": 24,
+        "statut": "en_preparation",
+        "livreur_id": null,
+        "paiement_id": "PAY-27AF05",
+        "preparation_immediate": true,
+        "date_commande": "2026-04-04T14:37:57",
+        "date_preparation_souhaitee": null,
+        "note_livraison": null,
+        "note_produits": null
+    },
+    {
+        "id": "ORD-F82BCF",
+        "client_id": 11,
+        "type": "livraison",
+        "adresse_livraison": {
+            "adresse": "61 Avenue du maréchal lyautey",
+            "ville": "Poissy",
+            "code_postal": "78300",
+            "etage": "5ème",
+            "interphone": "08",
+            "commentaire": ""
+        },
+        "articles": [
+            {
+                "type": "plat",
+                "id": 9,
+                "nom": "Calamari Fritti",
+                "quantite": 1,
+                "prix_unitaire": 13.5
+            },
+            {
+                "type": "plat",
+                "id": 16,
+                "nom": "Lasagna Tradizionale",
+                "quantite": 1,
+                "prix_unitaire": 15
+            },
+            {
+                "type": "plat",
+                "id": 36,
+                "nom": "Milkshake",
+                "quantite": 1,
+                "prix_unitaire": 7
+            },
+            {
+                "type": "plat",
+                "id": 42,
+                "nom": "Virgin Mojito",
+                "quantite": 1,
+                "prix_unitaire": 5.5
+            }
+        ],
+        "prix_total": 41,
+        "statut": "en_preparation",
+        "livreur_id": null,
+        "paiement_id": "PAY-DF8C1F",
+        "preparation_immediate": true,
+        "date_commande": "2026-04-05T13:01:51",
+        "date_preparation_souhaitee": null,
+        "note_livraison": null,
+        "note_produits": null
+    }
+]
