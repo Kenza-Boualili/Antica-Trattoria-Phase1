@@ -45,6 +45,10 @@ foreach ($plats as $plat)
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="fichiercommun.css">
     <link rel="stylesheet" href="style index.css">
+    
+    <?php if (isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'sombre'): ?>
+        <link rel="stylesheet" href="dark-mode.css" id="css-darkmode">
+    <?php endif; ?>
 </head>
 <body>
 
@@ -75,6 +79,10 @@ foreach ($plats as $plat)
                 <button class="btn-gold" onclick="window.location.href='connexion.php'">SE CONNECTER</button>
                 <button class="btn-gold" onclick="window.location.href='inscription.php'">S'INSCRIRE</button>
             <?php endif; ?>
+
+            <button id="btn-theme" onclick="basculerTheme()" class="btn-gold">
+                <?php echo (isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'sombre') ? '☀️ Mode clair' : '🌙 Mode sombre'; ?>
+            </button>
         </div>
     </nav>
     
@@ -238,6 +246,6 @@ foreach ($plats as $plat)
         <p>© 2026 L'Antica Trattoria - Site réalisé par Boualili Kenza et Eish Shahd</p>
     </div>
 </footer>
-
+<script src="js/theme.js"></script>
 </body>
 </html>
