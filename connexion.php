@@ -1,8 +1,11 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 require_once 'lib/auth.php';
 demarrerSession();
 
-// Si on est déjà connecté, on sera rediriger selon le rôle
+// Si on est déjà connecté, on sera redirigé selon le rôle
 if (estConnecte())
 {
     $role = getRoleConnecte();
@@ -77,7 +80,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     <title>Connexion - L'Antica Trattoria</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="fichiercommun.css">
-    <link rel="stylesheet" href="style-connexion.css">
+    <link id="css-theme" rel="stylesheet" href="style-connexion.css">
+    
+    <?php if (isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'sombre'): ?>
+        <link rel="stylesheet" href="dark-mode.css" id="css-darkmode">
+    <?php endif; ?>
 </head>
 <body>
 
@@ -91,6 +98,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         <div class="nav-buttons">
             <button class="btn-gold" onclick="window.location.href='connexion.php'">SE CONNECTER</button>
             <button class="btn-gold" onclick="window.location.href='inscription.php'">S'INSCRIRE</button>
+            
+            <button id="btn-theme" onclick="basculerTheme()" class="btn-gold">
+                <?php echo (isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'sombre') ? '☀️ Mode clair' : '🌙 Mode sombre'; ?>
+            </button>
         </div>
     </nav>
 </header>
@@ -109,7 +120,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
             <p>Connectez-vous à votre espace personnel pour gérer vos réservations, suivre vos commandes en cours et profiter de vos offres fidélité.</p>
         </header>
 
-        <form action="connexion.php" method="POST" class="connexion-form">
+        <form id="loginForm" action="connexion.php" method="POST" class="connexion-form" onsubmit="return validerConnexion(event)">
+
+            <div id="js-erreur" class="form-erreur" style="display:none; margin-bottom: 20px; padding: 15px; background: #f8d7da; color: #721c24; border-radius: 4px; border: 1px solid #f5c6cb;"></div>
 
             <?php if (!empty($erreur)): ?>
                 <div class="form-erreur">
@@ -123,9 +136,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                        value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>" required>
             </div>
 
-            <div class="form-group full-width">
+            <div class="form-group full-width" style="position: relative;">
                 <label for="password">Mot de passe *</label>
                 <input type="password" id="password" name="password" placeholder="••••••••" required>
+                <span id="togglePassword" class="toggle-icon" onclick="togglePassword('password', 'togglePassword')" style="position: absolute; right: 10px; top: 35px; cursor: pointer;">
+                    👁️
+                </span>
             </div>
 
             <div class="form-options">
@@ -189,6 +205,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         <p>© 2026 L'Antica Trattoria - Site réalisé par Boualili Kenza et Eish Shahd</p>
     </div>
 </footer>
-
+<script src="js/theme.js"></script>
+<script src="js/validation.js"></script>
 </body>
 </html>
