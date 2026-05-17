@@ -97,6 +97,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($erreur) && empty($succes))
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="fichiercommun.css">
     <link rel="stylesheet" href="style-notation.css">
+    
+    <?php if (isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'sombre'): ?>
+        <link rel="stylesheet" href="dark-mode.css" id="css-darkmode">
+    <?php endif; ?>
+
     <style>
         .form-erreur {
             background-color: #fde8e8;
@@ -149,6 +154,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($erreur) && empty($succes))
         </ul>
         <div class="nav-buttons">
             <button class="btn-gold" onclick="window.location.href='deconnexion.php'">DÉCONNEXION</button>
+            <button id="btn-theme" onclick="basculerTheme()" class="btn-gold">
+                <?php echo (isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'sombre') ? '☀️ Mode clair' : '🌙 Mode sombre'; ?>
+            </button>
         </div>
     </nav>
 </header>
@@ -269,6 +277,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($erreur) && empty($succes))
         <p>© 2026 L'Antica Trattoria - Site réalisé par Boualili Kenza et Eish Shahd</p>
     </div>
 </footer>
-
+<script src="js/theme.js"></script>
 </body>
 </html>
