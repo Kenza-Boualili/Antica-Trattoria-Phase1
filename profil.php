@@ -12,23 +12,17 @@ $user = getUtilisateurConnecte();
 function getCommandesUtilisateur($userId)
 {
     $fichier = __DIR__ . '/data/commandes.json';
-    
-    if (!file_exists($fichier))
-    {
-        return [];
-    }
+    if (!file_exists($fichier)) return [];
     
     $commandes = json_decode(file_get_contents($fichier), true) ?? [];
     $result = [];
     
-    foreach ($commandes as $cmd)
-    {
-        if ($cmd['client_id'] == $userId)
-        {
+    foreach ($commandes as $cmd) {
+        if ($cmd['client_id'] == $userId) {
             $result[] = $cmd;
         }
     }
-    
+    // Tri : la plus récente en premier
     usort($result, fn($a, $b) => strcmp($b['date_commande'], $a['date_commande']));
     return $result;
 }
@@ -41,7 +35,6 @@ $statutLabels = [
     'en_livraison'   => 'En livraison',
     'livree'         => 'Livrée',
     'abandonnee'     => 'Abandonnée',
-    'sur_place'      => 'Sur place',
 ];
 
 $statutClasses = [
@@ -61,6 +54,10 @@ $statutClasses = [
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="fichiercommun.css">
     <link rel="stylesheet" href="style-profil.css">
+    
+    <?php if (isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'sombre'): ?>
+        <link rel="stylesheet" href="dark-mode.css" id="css-darkmode">
+    <?php endif; ?>
 </head>
 <body>
 
@@ -72,7 +69,10 @@ $statutClasses = [
             <li><a href="carte.php">NOTRE CARTE</a></li>
         </ul>
         <div class="nav-buttons">
-            <button class="btn-gold" onclick="window.location.href='deconnexion.php'">SE DECONNECTER</button>
+            <button class="btn-gold" onclick="window.location.href='deconnexion.php'">DÉCONNEXION</button>
+            <button id="btn-theme" onclick="basculerTheme()" class="btn-gold">
+                <?php echo (isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'sombre') ? '☀️ Mode clair' : '🌙 Mode sombre'; ?>
+            </button>
         </div>
     </nav>
 </header>
@@ -86,191 +86,99 @@ $statutClasses = [
     </div>
 
     <section class="profil-section">
-        <header class="profil-intro">
-            <h2>BENVENUTO</h2>
-            <p>Gerez vos informations personnelles, suivez vos avantages fidelite et retrouvez le gout de vos precedentes visites chez L'Antica Trattoria.</p>
-        </header>
-
         <div class="profil-container">
 
-            <div class="profil-block">
+            <div class="profil-block" id="block-infos">
                 <div class="block-header">
                     <h3>Mes Informations</h3>
-                    <span class="edit-icon" title="Modifier (disponible phase 3)">✎</span>
+                    <span class="edit-icon" id="btn-edit-profil" title="Modifier" onclick="toggleEditMode(true)" style="cursor:pointer;">✎</span>
                 </div>
-                <div class="info-grid">
-                    <div class="info-item"><strong>Nom :</strong> <?php echo htmlspecialchars($user['nom']); ?></div>
-                    <div class="info-item"><strong>Prenom :</strong> <?php echo htmlspecialchars($user['prenom']); ?></div>
+
+                <div id="profil-msg" class="form-msg" style="display:none; margin-bottom:15px; padding:10px; border-radius:4px;"></div>
+
+                <div id="profil-display" class="info-grid">
+                    <div class="info-item"><strong>Nom :</strong> <span id="txt-nom"><?php echo htmlspecialchars($user['nom']); ?></span></div>
+                    <div class="info-item"><strong>Prénom :</strong> <span id="txt-prenom"><?php echo htmlspecialchars($user['prenom']); ?></span></div>
                     <div class="info-item"><strong>Email :</strong> <?php echo htmlspecialchars($user['login']); ?></div>
-                    <div class="info-item"><strong>Telephone :</strong> <?php echo htmlspecialchars($user['telephone'] ?: 'Non renseigne'); ?></div>
+                    <div class="info-item"><strong>Tél :</strong> <span id="txt-tel"><?php echo htmlspecialchars($user['telephone'] ?: '—'); ?></span></div>
                     <div class="info-item full-width">
-                        <strong>Adresse :</strong>
-                        <?php
-                        $adresse = trim($user['adresse'] . ' ' . $user['code_postal'] . ' ' . $user['ville']);
-                        echo htmlspecialchars($adresse ?: 'Non renseignee');
-                        ?>
+                        <strong>Adresse :</strong> 
+                        <span id="txt-adresse"><?php echo htmlspecialchars(($user['adresse'] ?? '') . ' ' . ($user['ville'] ?? '')); ?></span>
                     </div>
-                    <?php if (!empty($user['etage'])): ?>
-                        <div class="info-item"><strong>Etage :</strong> <?php echo htmlspecialchars($user['etage']); ?></div>
-                    <?php endif; ?>
-                    
-                    <?php if (!empty($user['interphone'])): ?>
-                        <div class="info-item"><strong>Interphone :</strong> <?php echo htmlspecialchars($user['interphone']); ?></div>
-                    <?php endif; ?>
-                    
-                    <div class="info-item"><strong>Statut :</strong> <?php echo ucfirst($user['statut']); ?></div>
-                    <div class="info-item"><strong>Membre depuis :</strong> <?php echo date('d/m/Y', strtotime($user['date_inscription'])); ?></div>
                 </div>
+
+                <form id="form-edit-profil" style="display:none;" onsubmit="sauvegarderProfil(event)">
+                    <div class="info-grid">
+                        <div class="info-item"><label>Nom</label><input type="text" name="nom" value="<?php echo htmlspecialchars($user['nom']); ?>" required></div>
+                        <div class="info-item"><label>Prénom</label><input type="text" name="prenom" value="<?php echo htmlspecialchars($user['prenom']); ?>" required></div>
+                        <div class="info-item"><label>Téléphone</label><input type="tel" name="telephone" value="<?php echo htmlspecialchars($user['telephone']); ?>"></div>
+                        <div class="info-item full-width"><label>Adresse</label><input type="text" name="adresse" value="<?php echo htmlspecialchars($user['adresse']); ?>"></div>
+                    </div>
+                    <div style="margin-top:15px;">
+                        <button type="submit" class="btn-gold">ENREGISTRER</button>
+                        <button type="button" class="btn-link" onclick="toggleEditMode(false)">Annuler</button>
+                    </div>
+                </form>
             </div>
 
             <div class="profil-block loyalty-card">
-                <div class="block-header">
-                    <h3>Mon Compte Fidelite</h3>
-                </div>
+                <div class="block-header"><h3>Fidélité</h3></div>
                 <div class="loyalty-content">
-                    <div class="points-circle">
-                        <span class="points-value"><?php echo $user['points_fidelite']; ?></span>
-                        <span class="points-label">Points</span>
-                    </div>
-                    <div class="loyalty-text">
-                        <?php if ($user['remise'] > 0): ?>
-                            <p>Vous beneficiez d'une remise de <strong><?php echo $user['remise']; ?>%</strong> sur toutes vos commandes !</p>
-                        <?php else: ?>
-                            <p>Continuez a commander pour accumuler des points et debloquer des <strong>avantages exclusifs</strong> !</p>
-                        <?php endif; ?>
-                        <a href="#" class="btn-link">Voir mes avantages</a>
-                    </div>
+                    <div class="points-circle"><span class="points-value"><?php echo $user['points_fidelite']; ?></span><span class="points-label">Points</span></div>
+                    <p>Statut : <strong><?php echo strtoupper($user['statut']); ?></strong></p>
                 </div>
             </div>
 
-            <?php
-            // Chercher une commande en cours
-            $commandeEnCours = null;
-            foreach ($commandes as $cmd) 
-            {
-                if (in_array($cmd['statut'], ['en_attente', 'en_preparation', 'en_livraison', 'en_attente_paiement'])) 
-                {
-                    $commandeEnCours = $cmd;
-                    break;
-                }
-            }
-            ?>
-
-            <?php if ($commandeEnCours): ?>
-                <div class="profil-block" style="border-left: 4px solid var(--color-bordeaux);">
-                    <div class="block-header">
-                        <h3>Commande en cours</h3>
-                        <span style="font-size:12px; color:#999;">Mis à jour en temps réel</span>
-                    </div>
-
-                    <div style="display:flex; align-items:center; gap:30px; flex-wrap:wrap;">
-
-                        <div style="flex:1; min-width:300px;">
-                            <div style="display:flex; align-items:center; gap:0; margin-bottom:20px;">
-
-                                <?php
-                                $etapes = [
-                                    'en_attente'     => ['label' => 'Reçue',      'icon' => '📋'],
-                                    'en_preparation' => ['label' => 'Préparation','icon' => '👨‍🍳'],
-                                    'en_livraison'   => ['label' => 'En route',   'icon' => '🛵'],
-                                    'livree'         => ['label' => 'Livrée',     'icon' => '✅'],
-                                ];
-                                $statutActuel = $commandeEnCours['statut'];
-                                $statutsOrdre = array_keys($etapes);
-                                $indexActuel  = array_search($statutActuel, $statutsOrdre);
-                                ?>
-
-                                <?php foreach ($etapes as $key => $etape):
-                                    $index   = array_search($key, $statutsOrdre);
-                                    $actif   = ($key === $statutActuel);
-                                    $passe   = ($index < $indexActuel);
-                                    $couleur = $actif ? 'var(--color-bordeaux)' : ($passe ? '#27ae60' : '#ccc');
-                                ?>
-                                    <div style="text-align:center; flex:1;">
-                                        <div style="width:40px; height:40px; border-radius:50%;
-                                                    background:<?php echo $couleur; ?>;
-                                                    color:#fff; display:flex; align-items:center;
-                                                    justify-content:center; margin:0 auto 5px;
-                                                    font-size:18px;">
-                                            <?php echo $etape['icon']; ?>
-                                        </div>
-                                        <div style="font-size:11px; color:<?php echo $couleur; ?>;
-                                                    font-weight:<?php echo $actif ? '600' : '400'; ?>;">
-                                            <?php echo $etape['label']; ?>
-                                        </div>
-                                    </div>
-                                    
-                                    <?php if ($key !== 'livree'): ?>
-                                        <div style="flex:1; height:2px; background:<?php echo $passe ? '#27ae60' : '#eee'; ?>;
-                                                    margin-bottom:20px;"></div>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                            </div>
-                        </div>
-
-                        <div style="font-size:14px; color:#5a5a5a; min-width:200px;">
-                            <p><strong>Commande :</strong> <?php echo htmlspecialchars($commandeEnCours['id']); ?></p>
-                            <p><strong>Total :</strong> <?php echo number_format($commandeEnCours['prix_total'], 2); ?> €</p>
-                            <p><strong>Type :</strong> <?php echo ucfirst(str_replace('_', ' ', $commandeEnCours['type'])); ?></p>
-                            <p><strong>Statut :</strong>
-                                <span class="<?php echo $statutClasses[$commandeEnCours['statut']] ?? ''; ?>">
-                                    <?php echo $statutLabels[$commandeEnCours['statut']] ?? $commandeEnCours['statut']; ?>
-                                </span>
-                            </p>
-                            <?php if ($commandeEnCours['date_preparation_souhaitee']): ?>
-                                <p><strong>Livraison prévue :</strong><br>
-                                    <?php echo date('d/m/Y à H:i', strtotime($commandeEnCours['date_preparation_souhaitee'])); ?>
-                                </p>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                </div>
-            <?php endif; ?>
-
-            <div class="profil-block">
-                <div class="block-header">
-                    <h3>Mes Commandes</h3>
-                </div>
-
+            <div class="profil-block" style="grid-column: 1 / -1;">
+                <div class="block-header"><h3>Mes Commandes</h3></div>
                 <?php if (empty($commandes)): ?>
-                    <p style="color:#5a5a5a; font-style:italic;">Vous n'avez pas encore passe de commande.</p>
+                    <p>Aucune commande passée.</p>
                 <?php else: ?>
-                    <table class="orders-table">
+                    <table class="orders-table" style="width:100%; border-collapse: collapse;">
                         <thead>
-                            <tr>
-                                <th>N°</th>
+                            <tr style="text-align:left; border-bottom: 1px solid #eee;">
+                                <th style="padding:10px;">N°</th>
                                 <th>Date</th>
-                                <th>Articles</th>
                                 <th>Total</th>
                                 <th>Statut</th>
-                                <th>Action</th>
+                                <th>Action / Note</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($commandes as $cmd): ?>
-                                <tr>
-                                    <td><?php echo htmlspecialchars($cmd['id']); ?></td>
-                                    <td><?php echo date('d/m/Y H:i', strtotime($cmd['date_commande'])); ?></td>
+                                <tr style="border-bottom: 1px solid #f9f9f9;">
+                                    <td style="padding:10px;">#<?php echo $cmd['id']; ?></td>
+                                    <td><?php echo date('d/m/Y', strtotime($cmd['date_commande'])); ?></td>
+                                    <td><?php echo number_format($cmd['prix_total'], 2); ?>€</td>
+                                    <td><span class="<?php echo $statutClasses[$cmd['statut']] ?? ''; ?>"><?php echo $statutLabels[$cmd['statut']] ?? $cmd['statut']; ?></span></td>
+                                    
                                     <td>
-                                        <?php
-                                        $noms = array_map(fn($a) => $a['quantite'] . 'x ' . $a['nom'], $cmd['articles']);
-                                        echo htmlspecialchars(implode(', ', $noms));
-                                        ?>
-                                    </td>
-                                    <td><?php echo number_format($cmd['prix_total'], 2); ?> EUR</td>
-                                    <td>
-                                        <span class="<?php echo $statutClasses[$cmd['statut']] ?? ''; ?>">
-                                            <?php echo $statutLabels[$cmd['statut']] ?? $cmd['statut']; ?>
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <?php if ($cmd['statut'] === 'livree' && $cmd['note_produits'] === null): ?>
-                                            <a href="notation.php?commande=<?php echo $cmd['id']; ?>" class="btn-noter">Noter</a>
-                                        <?php elseif ($cmd['statut'] === 'livree'): ?>
-                                            <span style="color:#27ae60; font-size:13px;">Note</span>
-                                        <?php else: ?>
-                                            <span style="color:#5a5a5a; font-size:13px;">--</span>
-                                        <?php endif; ?>
+                                        <div id="notation-container-<?php echo $cmd['id']; ?>">
+                                            <?php if ($cmd['statut'] === 'livree'): ?>
+                                                <?php if (empty($cmd['note_produits'])): ?>
+                                                    <select id="note-val-<?php echo $cmd['id']; ?>" style="padding:2px;">
+                                                        <option value="5">5 ⭐</option>
+                                                        <option value="4">4 ⭐</option>
+                                                        <option value="3">3 ⭐</option>
+                                                        <option value="2">2 ⭐</option>
+                                                        <option value="1">1 ⭐</option>
+                                                    </select>
+                                                    <button class="btn-admin-action" onclick="envoyerNotation('<?php echo $cmd['id']; ?>')">NOTER</button>
+                                                <?php else: ?>
+                                                    <span style="color:#27ae60; font-weight:600;">Note : <?php echo $cmd['note_produits']; ?>/5</span>
+                                                <?php endif; ?>
+                                            
+                                            <?php elseif ($cmd['statut'] === 'en_attente'): ?>
+                                                <a href="panier.php?modifier_commande=<?php echo urlencode($cmd['id']); ?>" 
+                                                   class="btn-admin-action" 
+                                                   style="text-decoration:none; background:var(--color-gold); color:#fff; padding:5px 10px; display:inline-block; font-size:11px; text-transform:uppercase;">
+                                                    ⚙️ Modifier
+                                                </a>
+
+                                            <?php else: ?>
+                                                —
+                                            <?php endif; ?>
+                                        </div>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -284,40 +192,10 @@ $statutClasses = [
 </main>
 
 <footer>
-    <div class="footer-top">
-        <div class="footer-column">
-            <h3>Notre Adresse</h3>
-            <p>Avenue du Parc<br>95000 Cergy</p>
-        </div>
-        <div class="footer-column">
-            <h3>Horaires</h3>
-            <p>Lundi - Jeudi :<br>12:00 - 22:45</p>
-            <p>Vendredi - Dimanche :<br>12:00 - 23:45</p>
-        </div>
-        <div class="footer-column">
-            <h3>Mon Compte</h3>
-            <a href="deconnexion.php">Deconnexion</a>
-            <a href="notation.php">Noter ma commande</a>
-        </div>
-    </div>
-    <div class="footer-middle">
-        <div class="footer-column">
-            <h3>Administration</h3>
-            <a href="admin.php">Interface Administrateur</a>
-        </div>
-        <div class="footer-column">
-            <h3>Restaurateur</h3>
-            <a href="restaurateur.php">Gestion Cuisine</a>
-        </div>
-        <div class="footer-column">
-            <h3>Livreur</h3>
-            <a href="livreur.php">Interface Livraison</a>
-        </div>
-    </div>
-    <div class="footer-bottom">
-        <p>© 2026 L'Antica Trattoria - Site realise par Boualili Kenza et Eish Shahd</p>
-    </div>
+    <div class="footer-bottom"><p>© 2026 L'Antica Trattoria - Kenza et Shahd</p></div>
 </footer>
 
+<script src="js/theme.js"></script>
+<script src="js/profil.js"></script>
 </body>
 </html>
