@@ -70,7 +70,7 @@ L'objectif est de créer une application web multi-utilisateurs permettant de g�
 /project
 ├── lib/ # Fonctions PHP (authentification, utils)
 ├── data/ # Fichiers JSON (users, plats, commandes...)
-├── api/
+├── api/ # Scripts de traitement asynchrones
 ├── js/ # Scripts de dynamisation Front-End
 ├── index.php
 ├── carte.php
