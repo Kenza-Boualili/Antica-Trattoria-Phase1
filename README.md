@@ -70,7 +70,8 @@ L'objectif est de créer une application web multi-utilisateurs permettant de g�
 /project
 ├── lib/ # Fonctions PHP (authentification, utils)
 ├── data/ # Fichiers JSON (users, plats, commandes...)
-|
+├── api/
+├── js/ # Scripts de dynamisation Front-End
 ├── index.php
 ├── carte.php
 ├── profil.php
@@ -225,7 +226,7 @@ Transactions :
 
 ---
 
-## 🔮 Phase 3 (à venir)
+## 🔮 Phase 3 
 
 - Actions admin fonctionnelles (bloquer, VIP, remise)  
 - Modification du profil utilisateur  
@@ -261,6 +262,6 @@ Transactions :
 ## 📌 Remarque
 
 Projet réalisé dans un cadre pédagogique (CY Tech).  
-Certaines fonctionnalités seront finalisées en Phase 3.
+Certaines fonctionnalités seront finalisées en Phase 4.
 
 ---
