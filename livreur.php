@@ -17,12 +17,6 @@ function lireCommandes()
     return json_decode(file_get_contents($fichier), true) ?? [];
 }
 
-function ecrireCommandes($commandes)
-{
-    $fichier = __DIR__ . '/data/commandes.json';
-    file_put_contents($fichier, json_encode($commandes, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-}
-
 function lireUsers()
 {
     $fichier = __DIR__ . '/data/users.json';
@@ -35,33 +29,6 @@ function lireUsers()
 
 $livreurId = $_SESSION['user_id'];
 $commandes = lireCommandes();
-
-// Traitement du bouton livraison terminée ou abandonnée
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['commande_id']))
-{
-    $action     = $_POST['action'];
-    $commandeId = $_POST['commande_id'];
-
-    foreach ($commandes as &$cmd)
-    {
-        if ($cmd['id'] === $commandeId && $cmd['livreur_id'] == $livreurId)
-        {
-            if ($action === 'livree')
-            {
-                $cmd['statut'] = 'livree';
-            }
-            elseif ($action === 'abandonnee')
-            {
-                $cmd['statut'] = 'abandonnee';
-            }
-            break;
-        }
-    }
-    
-    ecrireCommandes($commandes);
-    header('Location: livreur.php');
-    exit;
-}
 
 // Trouver la commande attribuée au livreur connecté
 $maCommande = null;
@@ -89,10 +56,11 @@ if ($maCommande)
     }
 }
 
-// Historique des livraisons du livreur
+// Historique des livraisons 
 $historique = array_filter($commandes, fn($c) =>
     $c['livreur_id'] == $livreurId && in_array($c['statut'], ['livree', 'abandonnee'])
 );
+usort($historique, fn($a, $b) => strcmp($b['date_commande'], $a['date_commande']));
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -103,126 +71,21 @@ $historique = array_filter($commandes, fn($c) =>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="fichiercommun.css">
     <link rel="stylesheet" href="style-livreur.css">
+    
+    <?php if (isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'sombre'): ?>
+        <link rel="stylesheet" href="dark-mode.css" id="css-darkmode">
+    <?php endif; ?>
+
     <style>
-        .livreur-container {
-            max-width: 500px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        .no-commande {
-            background: #fff;
-            padding: 40px;
-            text-align: center;
-            border-left: 4px solid var(--color-gold);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-
-        .no-commande h3 {
-            font-family: var(--font-title);
-            color: var(--color-bordeaux);
-            margin-bottom: 10px;
-        }
-
-        .articles-list {
-            background: var(--color-beige);
-            padding: 15px;
-            border-radius: 5px;
-            margin: 15px 0;
-        }
-
-        .articles-list h4 {
-            font-size: 13px;
-            text-transform: uppercase;
-            color: var(--color-gold);
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-        }
-
-        .articles-list ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .articles-list li {
-            font-size: 14px;
-            padding: 5px 0;
-            border-bottom: 1px solid #e0e0e0;
-            color: var(--color-dark);
-        }
-
-        .articles-list li:last-child {
-            border-bottom: none;
-        }
-
-        .prix-total {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--color-bordeaux);
-            text-align: right;
-            margin: 10px 0;
-        }
-
-        .btn-abandonnee {
-            display: block;
-            width: 100%;
-            text-align: center;
-            padding: 15px 0;
-            background-color: #e74c3c;
-            color: #fff;
-            border: none;
-            margin-top: 15px;
-            font-weight: 600;
-            font-size: 13px;
-            border-radius: 5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-        }
-
-        .historique-block {
-            background: #fff;
-            padding: 25px;
-            margin-top: 20px;
-            border-left: 4px solid var(--color-gold);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-
-        .historique-block h3 {
-            font-family: var(--font-title);
-            color: var(--color-bordeaux);
-            margin-bottom: 15px;
-            font-size: 20px;
-        }
-
-        .historique-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
-
-        .historique-table th {
-            text-align: left;
-            padding: 8px;
-            background: var(--color-beige);
-            color: var(--color-bordeaux);
-        }
-
-        .historique-table td {
-            padding: 10px 8px;
-            border-bottom: 1px solid var(--color-beige);
-        }
-
-        .status-livree {
-            color: #27ae60;
-            font-weight: 600;
-        }
-
-        .status-abandonnee {
-            color: #e74c3c;
-            font-weight: 600;
-        }
+        .livreur-container { max-width: 500px; margin: 30px auto; padding: 0 20px; }
+        .no-commande { background: #fff; padding: 40px; text-align: center; border-left: 4px solid var(--color-gold); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .delivery-info-card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: all 0.3s ease; }
+        .articles-list { background: #f9f9f9; padding: 15px; border-radius: 5px; margin: 15px 0; }
+        .prix-total { font-size: 18px; font-weight: 600; color: var(--color-bordeaux); text-align: right; }
+        .btn-complete { display: block; width: 100%; padding: 15px; background: #27ae60; color: #fff; border: none; border-radius: 5px; font-weight: 600; cursor: pointer; margin-top: 20px; }
+        .btn-abandonnee { display: block; width: 100%; padding: 12px; background: #e74c3c; color: #fff; border: none; border-radius: 5px; font-size: 12px; cursor: pointer; margin-top: 10px; }
+        .status-livree { color: #27ae60; font-weight: 600; }
+        .status-abandonnee { color: #e74c3c; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -230,179 +93,84 @@ $historique = array_filter($commandes, fn($c) =>
 <header>
     <nav id="navbar" class="nav-scrolled">
         <div class="logo">L'Antica Trattoria</div>
-        <ul class="nav-links">
-            <li><a href="index.php">ACCUEIL</a></li>
-        </ul>
         <div class="nav-buttons">
-            <span style="color:#fff; font-size:13px; margin-right:10px;">
-                <?php echo htmlspecialchars($_SESSION['user_prenom']); ?>
-            </span>
-            <button class="btn-gold" onclick="window.location.href='deconnexion.php'">DÉCONNEXION</button>
+            <span style="color:#fff; font-size:12px; margin-right:5px;"><?php echo htmlspecialchars($_SESSION['user_prenom']); ?></span>
+            
+            <button id="btn-theme" onclick="basculerTheme()" class="btn-gold">
+                <?php echo (isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'sombre') ? '☀️ Mode clair' : '🌙 Mode sombre'; ?>
+            </button>
+            
+            <button class="btn-gold" onclick="window.location.href='deconnexion.php'">X</button>
         </div>
     </nav>
 </header>
 
 <main>
-    <div class="livreur-hero">
-        <h1>Espace Livreur</h1>
-    </div>
-
     <div class="livreur-container">
+        <h2 style="font-family: var(--font-title); color: var(--color-bordeaux); margin-bottom: 20px;">Ma Course</h2>
 
         <?php if (!$maCommande): ?>
             <div class="no-commande">
-                <h3>Aucune course en cours</h3>
-                <p style="color:#5a5a5a;">Vous n'avez pas de commande à livrer pour le moment. Le restaurateur vous en attribuera une bientôt.</p>
+                <h3>Aucune course</h3>
+                <p>En attente d'une nouvelle commande du Chef...</p>
             </div>
-
         <?php else: ?>
-            <div class="delivery-info-card">
+            <div class="delivery-info-card" id="card-<?php echo $maCommande['id']; ?>">
                 <div class="info-group">
-                    <label>COMMANDE</label>
-                    <p class="address-text"><?php echo htmlspecialchars($maCommande['id']); ?></p>
+                    <label>COMMANDE #<?php echo htmlspecialchars($maCommande['id']); ?></label>
                 </div>
 
                 <div class="articles-list">
-                    <h4>Articles à livrer</h4>
                     <ul>
                         <?php foreach ($maCommande['articles'] as $art): ?>
-                            <li>
-                                <?php echo $art['quantite']; ?>x <?php echo htmlspecialchars($art['nom']); ?>
-                                — <?php echo number_format($art['prix_unitaire'], 2); ?>€
-                            </li>
+                            <li><?php echo $art['quantite']; ?>x <?php echo htmlspecialchars($art['nom']); ?></li>
                         <?php endforeach; ?>
                     </ul>
-                    <p class="prix-total">Total : <?php echo number_format($maCommande['prix_total'], 2); ?>€</p>
+                    <p class="prix-total"><?php echo number_format($maCommande['prix_total'], 2); ?>€</p>
                 </div>
 
                 <?php if ($maCommande['adresse_livraison']): ?>
-                    <?php $adr = $maCommande['adresse_livraison']; ?>
                     <div class="info-group">
-                        <label>ADRESSE DE LIVRAISON</label>
-                        <p class="address-text">
-                            <?php echo htmlspecialchars($adr['adresse'] . ', ' . $adr['code_postal'] . ' ' . $adr['ville']); ?>
-                        </p>
-                        <?php
-                        $adresseEncoded = urlencode($adr['adresse'] . ' ' . $adr['code_postal'] . ' ' . $adr['ville']);
-                        ?>
-                        <a href="https://www.google.com/maps/search/?api=1&query=<?php echo $adresseEncoded; ?>"
-                           target="_blank" class="btn-maps">OUVRIR DANS MAPS</a>
-                    </div>
-
-                    <div class="info-grid">
-                        <?php if (!empty($adr['etage'])): ?>
-                            <div class="info-item">
-                                <label>ÉTAGE</label>
-                                <p><?php echo htmlspecialchars($adr['etage']); ?></p>
-                            </div>
-                        <?php endif; ?>
+                        <label>DESTINATION</label>
+                        <p><strong><?php echo htmlspecialchars($maCommande['adresse_livraison']['adresse']); ?></strong></p>
+                        <p><?php echo htmlspecialchars($maCommande['adresse_livraison']['ville']); ?></p>
                         
-                        <?php if (!empty($adr['interphone'])): ?>
-                            <div class="info-item">
-                                <label>INTERPHONE</label>
-                                <p><?php echo htmlspecialchars($adr['interphone']); ?></p>
-                            </div>
+                        <?php if ($client && $client['telephone']): ?>
+                            <p style="margin-top:10px;">📞 <a href="tel:<?php echo $client['telephone']; ?>"><?php echo $client['telephone']; ?></a></p>
                         <?php endif; ?>
                     </div>
-
-                    <?php if (!empty($adr['commentaire'])): ?>
-                        <div class="info-group">
-                            <label>COMMENTAIRES</label>
-                            <p class="comment-text"><?php echo htmlspecialchars($adr['commentaire']); ?></p>
-                        </div>
-                    <?php endif; ?>
                 <?php endif; ?>
 
-                <?php if ($client && !empty($client['telephone'])): ?>
-                    <div class="info-group">
-                        <label>TÉLÉPHONE CLIENT</label>
-                        <a href="tel:<?php echo preg_replace('/\s/', '', $client['telephone']); ?>"
-                           class="btn-phone">APPELER LE CLIENT</a>
-                    </div>
-                <?php endif; ?>
+                <button class="btn-complete" onclick="validerLivraison('<?php echo $maCommande['id']; ?>', 'livree')">
+                    LIVRAISON TERMINÉE ✅
+                </button>
 
-                <form method="POST" action="livreur.php">
-                    <input type="hidden" name="commande_id" value="<?php echo htmlspecialchars($maCommande['id']); ?>">
-                    <input type="hidden" name="action" value="livree">
-                    <button type="submit" class="btn-complete">INDIQUER LIVRAISON TERMINÉE</button>
-                </form>
-
-                <form method="POST" action="livreur.php"
-                      onsubmit="return confirm('Confirmer l\'abandon de cette livraison ?')">
-                    <input type="hidden" name="commande_id" value="<?php echo htmlspecialchars($maCommande['id']); ?>">
-                    <input type="hidden" name="action" value="abandonnee">
-                    <button type="submit" class="btn-abandonnee">ADRESSE INTROUVABLE / ABANDONNER</button>
-                </form>
+                <button class="btn-abandonnee" onclick="validerLivraison('<?php echo $maCommande['id']; ?>', 'abandonnee')">
+                    ADRESSE INTROUVABLE / ANNULER ❌
+                </button>
             </div>
         <?php endif; ?>
 
         <?php if (!empty($historique)): ?>
-            <div class="historique-block">
-                <h3>Mes dernières livraisons</h3>
+            <div class="historique-block" style="margin-top:40px;">
+                <h3 style="font-size:16px;">Historique récent</h3>
                 <table class="historique-table">
-                    <thead>
+                    <?php foreach (array_slice($historique, 0, 5) as $h): ?>
                         <tr>
-                            <th>N°</th>
-                            <th>Date</th>
-                            <th>Montant</th>
-                            <th>Statut</th>
+                            <td>#<?php echo $h['id']; ?></td>
+                            <td><?php echo number_format($h['prix_total'], 2); ?>€</td>
+                            <td class="status-<?php echo $h['statut']; ?>">
+                                <?php echo $h['statut'] === 'livree' ? 'OK' : 'Abandon'; ?>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($historique as $h): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($h['id']); ?></td>
-                                <td><?php echo date('d/m/Y H:i', strtotime($h['date_commande'])); ?></td>
-                                <td><?php echo number_format($h['prix_total'], 2); ?>€</td>
-                                <td>
-                                    <span class="status-<?php echo $h['statut']; ?>">
-                                        <?php echo $h['statut'] === 'livree' ? 'Livrée' : 'Abandonnée'; ?>
-                                    </span>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
+                    <?php endforeach; ?>
                 </table>
             </div>
         <?php endif; ?>
-
     </div>
 </main>
 
-<footer>
-    <div class="footer-top">
-        <div class="footer-column">
-            <h3>Notre Adresse</h3>
-            <p>Avenue du Parc<br>95000 Cergy</p>
-        </div>
-        <div class="footer-column">
-            <h3>Horaires</h3>
-            <p>Lundi - Jeudi : 12:00 - 22:45</p>
-            <p>Vendredi - Dimanche : 12:00 - 23:45</p>
-        </div>
-        <div class="footer-column">
-            <h3>Compte</h3>
-            <a href="deconnexion.php">Déconnexion</a>
-        </div>
-    </div>
-    <div class="footer-middle">
-        <div class="footer-column">
-            <h3>Administration</h3>
-            <a href="admin.php">Espace Admin</a>
-        </div>
-        <div class="footer-column">
-            <h3>Restaurateur</h3>
-            <a href="restaurateur.php">Tableau de Bord</a>
-        </div>
-        <div class="footer-column">
-            <h3>Livreur</h3>
-            <a href="livreur.php">Interface Livreur</a>
-        </div>
-    </div>
-    <div class="footer-bottom">
-        <p>© 2026 L'Antica Trattoria - Site réalisé par Boualili Kenza et Eish Shahd</p>
-    </div>
-</footer>
-
+<script src="js/theme.js"></script>
+<script src="js/livreur.js"></script>
 </body>
 </html>
