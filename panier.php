@@ -33,6 +33,41 @@ if (!isset($_SESSION['panier']))
     $_SESSION['panier'] = [];
 }
 
+if (isset($_GET['modifier_commande']))
+{
+    $cmdIdModif = trim($_GET['modifier_commande']);
+    $fichierCommandes = __DIR__ . '/data/commandes.json';
+    
+    if (file_exists($fichierCommandes))
+    {
+        $commandesExistantes = json_decode(file_get_contents($fichierCommandes), true) ?? [];
+        foreach ($commandesExistantes as $c)
+        {
+            //on vérifie l'ID, le propriétaire et que le statut est bien 'en_attente'
+            if ($c['id'] === $cmdIdModif && $c['client_id'] == $_SESSION['user_id'] && $c['statut'] === 'en_attente')
+            {
+                $_SESSION['modifier_commande_id'] = $cmdIdModif;
+                $_SESSION['panier'] = []; // On réinitialise le panier courant
+                
+                // On charge les articles de la commande payée dans le panier de session
+                foreach ($c['articles'] as $art)
+                {
+                    $_SESSION['panier'][$art['id']] = [
+                        'id'       => $art['id'],
+                        'nom'      => $art['nom'],
+                        'prix'     => $art['prix_unitaire'],
+                        'quantite' => $art['quantite']
+                    ];
+                }
+                
+                // Redirection propre pour vider les paramètres d'URL
+                header('Location: panier.php');
+                exit;
+            }
+        }
+    }
+}
+
 // Actions sur le panier
 $action = $_GET['action'] ?? $_POST['action'] ?? '';
 
@@ -96,6 +131,7 @@ if (isset($_GET['supprimer']))
 if (isset($_GET['vider']))
 {
     $_SESSION['panier'] = [];
+    unset($_SESSION['modifier_commande_id']); 
     header('Location: panier.php');
     exit;
 }
@@ -121,6 +157,11 @@ $totalRemise = $total * (1 - $remise / 100);
     <title>Mon Panier - L'Antica Trattoria</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="fichiercommun.css">
+    
+    <?php if (isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'sombre'): ?>
+        <link rel="stylesheet" href="dark-mode.css" id="css-darkmode">
+    <?php endif; ?>
+
     <style>
         .panier-hero {
             height: 25vh;
@@ -140,6 +181,19 @@ $totalRemise = $total * (1 - $remise / 100);
             text-transform: uppercase;
             letter-spacing: 4px;
         }
+
+        .modification-banner {
+            background-color: #e67e22;
+            color: #ffffff;
+            padding: 15px 30px;
+            text-align: center;
+            font-weight: 400;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .modification-banner strong { font-weight: 600; }
+        .modification-banner a { color: #fff; text-decoration: underline; margin-left: 15px; font-weight: 600; }
 
         .panier-section {
             padding: 60px 80px 100px 80px;
@@ -316,6 +370,10 @@ $totalRemise = $total * (1 - $remise / 100);
         <div class="nav-buttons">
             <button class="btn-gold" onclick="window.location.href='profil.php'">MON PROFIL</button>
             <button class="btn-gold" onclick="window.location.href='deconnexion.php'">DÉCONNEXION</button>
+            
+            <button id="btn-theme" onclick="basculerTheme()" class="btn-gold">
+                <?php echo (isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'sombre') ? '☀️ Mode clair' : '🌙 Mode sombre'; ?>
+            </button>
         </div>
     </nav>
 </header>
@@ -324,6 +382,13 @@ $totalRemise = $total * (1 - $remise / 100);
     <div class="panier-hero">
         <h1>Mon Panier</h1>
     </div>
+
+    <?php if (isset($_SESSION['modifier_commande_id'])): ?>
+        <div class="modification-banner">
+            ⚠️ <strong>Mode Modification Actif :</strong> Vous ajustez la composition de la commande payée <strong>#<?php echo htmlspecialchars($_SESSION['modifier_commande_id']); ?></strong>. 
+            <a href="panier.php?vider=1">Annuler les changements</a>
+        </div>
+    <?php endif; ?>
 
     <div class="panier-section">
 
@@ -406,8 +471,13 @@ $totalRemise = $total * (1 - $remise / 100);
                         <span><?php echo number_format($totalRemise, 2, ',', ''); ?> €</span>
                     </div>
 
-                    <a href="commande.php" class="btn-commander">PASSER LA COMMANDE</a>
-                    <a href="panier.php?vider=1" class="btn-vider">Vider le panier</a>
+                    <a href="commande.php" class="btn-commander">
+                        <?php echo isset($_SESSION['modifier_commande_id']) ? 'Enregistrer les modifications' : 'Passer la commande'; ?>
+                    </a>
+                    
+                    <a href="panier.php?vider=1" class="btn-vider">
+                        <?php echo isset($_SESSION['modifier_commande_id']) ? 'Annuler et vider' : 'Vider le panier'; ?>
+                    </a>
                 </div>
             </div>
         <?php endif; ?>
@@ -450,6 +520,6 @@ $totalRemise = $total * (1 - $remise / 100);
         <p>© 2026 L'Antica Trattoria - Site réalisé par Boualili Kenza et Eish Shahd</p>
     </div>
 </footer>
-
+<script src="js/theme.js"></script>
 </body>
 </html>
