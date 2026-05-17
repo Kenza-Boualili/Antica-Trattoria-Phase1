@@ -55,6 +55,16 @@ L'objectif est de créer une application web multi-utilisateurs permettant de g�
 
 ---
 
+### ✅ Phase 3 – Frontend Dynamique & Asynchronisme (JS / AJAX) 
+
+- **Cookie Thématique Intégré :** Persistance du choix d'affichage (Clair/Sombre) stocké exclusivement via Cookie 30 jours pour neutraliser le flash blanc au chargement.
+- **Moteur de Validation Client :** Interception JavaScript bloquant les requêtes tant que l'email ou le téléphone (exactement 10 chiffres numériques requis) sont invalides.
+- **Éléments UX Interactifs :** Compteur en temps réel (gabarit de saisie type X/20 avec alerte rouge) et bouton œil d'affichage/masquage des mots de passe.
+- **Architecture de Requêtes Asynchrones :** Recours obligatoire à l'API Fetch JavaScript pour l'édition de profil, le rafraîchissement des filtres de la carte et les verrous admin.
+- **Moteur de Modification de Commande :** Algorithme différentiel calculant l'écart budgétaire (Delta) et passerelle CYBank configurée pour n'encaisser que le complément.
+- **Dispositif de Sécurité Kick :** Interception amont de session et expulsion forcée instantanée de tout profil banni par l'administrateur.
+
+---
 ## 🏗️ Architecture du projet
 ```
 /project
