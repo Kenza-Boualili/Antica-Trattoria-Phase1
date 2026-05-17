@@ -1,0 +1,183 @@
+
+:root
+{
+    --color-bordeaux : #ff6b6b;
+    --color-gold     : #ffd93d;
+    --color-beige    : #1a1a2e;
+    --color-dark     : #eaeaea;
+    --color-white    : #16213e;
+}
+
+
+body
+{
+    background-color : #1a1a2e;
+    color            : #eaeaea;
+}
+
+nav,
+.nav-scrolled
+{
+    background-color : #16213e !important;
+    box-shadow       : 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+
+.hero
+{
+    background-image : linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                       url("photo/restophoto.jpeg");
+}
+
+
+.suggestions-section,
+.carte-filter-section,
+.carte-section,
+.about-section,
+.connexion-section,
+.inscription-section,
+.profil-section,
+.notation-section,
+.admin-section,
+.resto-section,
+.livreur-section,
+.panier-section,
+.commande-section,
+.confirmation-section
+{
+    background-color : #1a1a2e;
+}
+
+
+.suggestion-card,
+.carte-item,
+.profil-block,
+.admin-block,
+.resto-block,
+.delivery-info-card,
+.historique-block,
+.connexion-form,
+.inscription-form,
+.notation-form,
+.panier-block,
+.commande-block,
+.stat-card,
+.no-commande,
+.order-card
+{
+    background-color : #16213e !important;
+    color            : #eaeaea;
+    border-color     : #ffd93d;
+}
+
+
+h1, h2, h3, h4, h5, h6
+{
+    color : #eaeaea;
+}
+
+p, li, td, th, label, span
+{
+    color : #cccccc;
+}
+
+a
+{
+    color : #ffd93d;
+}
+
+a:hover
+{
+    color : #ff6b6b;
+}
+
+.users-table th,
+.orders-table th,
+.delivery-table th,
+.historique-table th
+{
+    background-color : #0f3460;
+    color            : #ffd93d;
+}
+
+.users-table td,
+.orders-table td,
+.delivery-table td,
+.historique-table td
+{
+    border-bottom : 1px solid #0f3460;
+    color         : #eaeaea;
+}
+
+input,
+select,
+textarea
+{
+    background-color : #0f3460 !important;
+    color            : #eaeaea !important;
+    border-color     : #ffd93d !important;
+}
+
+input::placeholder,
+textarea::placeholder
+{
+    color : #888888;
+}
+
+
+footer
+{
+    background-color : #0f3460 !important;
+    color            : #eaeaea;
+}
+
+.footer-column h3  { color : #ffd93d; }
+.footer-column p   { color : #aaaaaa; }
+.footer-column a   { color : #aaaaaa; }
+.footer-bottom     { color : #888888; }
+
+.banner
+{
+    background-color : #0f3460;
+}
+
+.menu-section
+{
+    background-color : #0f3460;
+}
+
+.reserve-section  { background-color : #16213e; }
+.reserve-content  { background-color : #0f3460; }
+
+.profil-hero,
+.admin-hero,
+.resto-hero,
+.connexion-hero,
+.inscription-hero,
+.notation-hero,
+.livreur-hero,
+.panier-hero,
+.commande-hero
+{
+    filter : brightness(0.7);
+}
+
+#btn-theme
+{
+    background  : #0f3460;
+    color       : #ffd93d;
+    border      : 1px solid #ffd93d;
+}
+
+#btn-theme:hover
+{
+    background : #ffd93d;
+    color      : #0f3460;
+}
+
+.badge-veg    { background : #1a5c38; }
+.badge-piment { background : #7c1a1a; }
+
+
+.points-circle { border-color : #ffd93d; }
+.points-value  { color : #ffd93d; }
