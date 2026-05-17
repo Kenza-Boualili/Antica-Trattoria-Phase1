@@ -70,25 +70,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     $preparImmed  = isset($_POST['preparation_immediate']);
     $datePlanif   = $_POST['date_planifiee'] ?? '';
 
-    // Générer un ID de commande unique
     $commandes = lireCommandes();
-    $nouvelId  = 'ORD-' . strtoupper(substr(uniqid(), -6));
-
-    // Construire l'adresse de livraison
-    $adresseLivr = null;
-    if ($typeCommande === 'livraison')
-    {
-        $adresseLivr = [
-            'adresse'     => $user['adresse'],
-            'ville'       => $user['ville'],
-            'code_postal' => $user['code_postal'],
-            'etage'       => $user['etage'],
-            'interphone'  => $user['interphone'],
-            'commentaire' => trim($_POST['commentaire'] ?? '')
-        ];
-    }
-
-    // Construire les articles
+    
+    // Construire la liste des articles modifiés ou nouveaux
     $articles = [];
     foreach ($_SESSION['panier'] as $item)
     {
@@ -101,33 +85,117 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         ];
     }
 
-    // Créer la commande avec le statut "en_attente_paiement"
-    $nouvelleCommande = [
-        'id'                         => $nouvelId,
-        'client_id'                  => $user['id'],
-        'type'                       => $typeCommande,
-        'adresse_livraison'          => $adresseLivr,
-        'articles'                   => $articles,
-        'prix_total'                 => $totalFinal,
-        'statut'                     => 'en_attente_paiement',
-        'livreur_id'                 => null,
-        'paiement_id'                => null,
-        'preparation_immediate'      => $preparImmed,
-        'date_commande'              => date('Y-m-d\TH:i:s'),
-        'date_preparation_souhaitee' => (!$preparImmed && !empty($datePlanif))
-                                        ? date('Y-m-d\TH:i:s', strtotime($datePlanif))
-                                        : null,
-        'note_livraison'             => null,
-        'note_produits'              => null
-    ];
+    // Déterminer s'il s'agit d'une modification de commande existante
+    $isModification = isset($_SESSION['modifier_commande_id']);
 
-    $commandes[] = $nouvelleCommande;
-    ecrireCommandes($commandes);
+    if ($isModification) 
+    {
+        $nouvelId = $_SESSION['modifier_commande_id'];
+        
+        // Trouver l'ancien prix total facturé pour calculer la différence 
+        $ancienPrix = 0;
+        foreach ($commandes as $c) 
+        {
+            if ($c['id'] === $nouvelId) 
+            {
+                $ancienPrix = $c['prix_total'];
+                break;
+            }
+        }
+        
+        $difference = round($totalFinal - $ancienPrix, 2);
 
-    // Stocker l'ID commande en session pour le retour CYBank
-    $_SESSION['commande_en_cours'] = $nouvelId;
+        // Mémorisation temporaire de la nouvelle structure en session pour le script de retour
+        $_SESSION['modif_temp_articles'] = $articles;
+        $_SESSION['modif_temp_total']    = $totalFinal;
+        $_SESSION['commande_en_cours']   = $nouvelId;
 
-    // Préparer les paramètres CYBank
+        // SCÉNARIO A : Le nouveau montant est supérieur -> On ne paie QUE la différence
+        if ($difference > 0) 
+        {
+            $totalFinal = $difference;
+        } 
+        // SCÉNARIO B : Le montant est inférieur ou identique -> Pas besoin de CYBank !
+        else 
+        {
+            foreach ($commandes as &$cmd) 
+            {
+                if ($cmd['id'] === $nouvelId) 
+                {
+                    $cmd['articles']   = $articles;
+                    $cmd['prix_total'] = $totalFinal;
+                    $cmd['type']       = $typeCommande;
+                    
+                    if ($typeCommande === 'livraison') {
+                        $cmd['adresse_livraison'] = [
+                            'adresse'     => $user['adresse'],
+                            'ville'       => $user['ville'],
+                            'code_postal' => $user['code_postal'],
+                            'etage'       => $user['etage'],
+                            'interphone'  => $user['interphone'],
+                            'commentaire' => trim($_POST['commentaire'] ?? '')
+                        ];
+                    } else {
+                        $cmd['adresse_livraison'] = null;
+                    }
+                    break;
+                }
+            }
+            ecrireCommandes($commandes);
+            
+            // Nettoyage immédiat de la session et retour profil
+            $_SESSION['panier'] = [];
+            unset($_SESSION['modifier_commande_id'], $_SESSION['modif_temp_articles'], $_SESSION['modif_temp_total'], $_SESSION['commande_en_cours']);
+            header('Location: profil.php?succes=modifiee');
+            exit;
+        }
+    } 
+    else 
+    {
+        // Logique classique : Générer un ID de commande unique et créer une nouvelle entrée
+        $nouvelId  = 'ORD-' . strtoupper(substr(uniqid(), -6));
+
+        // Construire l'adresse de livraison
+        $adresseLivr = null;
+        if ($typeCommande === 'livraison')
+        {
+            $adresseLivr = [
+                'adresse'     => $user['adresse'],
+                'ville'       => $user['ville'],
+                'code_postal' => $user['code_postal'],
+                'etage'       => $user['etage'],
+                'interphone'  => $user['interphone'],
+                'commentaire' => trim($_POST['commentaire'] ?? '')
+            ];
+        }
+
+        $nouvelleCommande = [
+            'id'                         => $nouvelId,
+            'client_id'                  => $user['id'],
+            'type'                       => $typeCommande,
+            'adresse_livraison'          => $adresseLivr,
+            'articles'                   => $articles,
+            'prix_total'                 => $totalFinal,
+            'statut'                     => 'en_attente_paiement',
+            'livreur_id'                 => null,
+            'paiement_id'                => null,
+            'preparation_immediate'      => $preparImmed,
+            'date_commande'              => date('Y-m-d\TH:i:s'),
+            'date_preparation_souhaitee' => (!$preparImmed && !empty($datePlanif))
+                                            ? date('Y-m-d\TH:i:s', strtotime($datePlanif))
+                                            : null,
+            'note_livraison'             => null,
+            'note_produits'              => null
+        ];
+
+        $commandes[] = $nouvelleCommande;
+        ecrireCommandes($commandes);
+
+        // Stocker l'ID commande en session pour le retour CYBank
+        $_SESSION['commande_en_cours'] = $nouvelId;
+    }
+
+    // Préparation des paramètres de hachage de contrôle CYBank
     $transaction = $nouvelId . substr(md5(time()), 0, 4);
     $transaction = preg_replace('/[^0-9a-zA-Z]/', '', $transaction);
     $transaction = substr($transaction, 0, 24);
@@ -138,7 +206,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     $api_key = getAPIKey($vendeur);
     $control = md5($api_key . '#' . $transaction . '#' . $montant . '#' . $vendeur . '#' . $retour . '#');
 
-    // Stocker les infos transaction en session
+    // Stocker les infos de la transaction en cours en session
     $_SESSION['cybank_transaction'] = $transaction;
     $_SESSION['cybank_montant']     = $montant;
 ?>
@@ -174,6 +242,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     <title>Valider ma commande - L'Antica Trattoria</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="fichiercommun.css">
+    
+    <?php if (isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'sombre'): ?>
+        <link rel="stylesheet" href="dark-mode.css" id="css-darkmode">
+    <?php endif; ?>
+
     <style>
         .commande-hero {
             height: 25vh;
@@ -197,8 +270,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         .commande-section {
             padding: 60px 80px 100px 80px;
             max-width: 1100px;
-            margin: 0 auto;
-            display: flex;
+            margin: 0 auto;  display: flex;
             gap: 40px;
             align-items: flex-start;
         }
@@ -348,6 +420,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         </ul>
         <div class="nav-buttons">
             <button class="btn-gold" onclick="window.location.href='deconnexion.php'">DÉCONNEXION</button>
+            
+            <button id="btn-theme" onclick="basculerTheme()" class="btn-gold">
+                <?php echo (isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'sombre') ? '☀️ Mode clair' : '🌙 Mode sombre'; ?>
+            </button>
         </div>
     </nav>
 </header>
@@ -390,7 +466,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                     <h2>Adresse de livraison</h2>
                     <div class="adresse-info">
                         <strong><?php echo htmlspecialchars($user['adresse']); ?></strong><br>
-                        <?php echo htmlspecialchars($user['code_postal'] . ' ' . $user['ville']); ?>
+                        <?php echo htmlspecialchars(($user['code_postal'] ?? '') . ' ' . ($user['ville'] ?? '')); ?>
                         <?php if (!empty($user['etage'])): ?>
                             — <?php echo htmlspecialchars($user['etage']); ?>
                         <?php endif; ?>
@@ -432,7 +508,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                 </div>
 
                 <button type="submit" class="btn-payer">
-                    PROCÉDER AU PAIEMENT →
+                    <?php echo isset($_SESSION['modifier_commande_id']) ? 'Confirmer la modification →' : 'Procéder au paiement →'; ?>
                 </button>
                 <p class="cybank-info">🔒 Paiement sécurisé via CYBank</p>
 
@@ -525,6 +601,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
             immediate ? 'none' : 'block';
     }
 </script>
-
+<script src="js/theme.js"></script>
 </body>
 </html>
