@@ -72,6 +72,13 @@ if (!empty($transaction) && !empty($montant) && !empty($vendeur) && !empty($stat
 
 // Mettre à jour la commande
 $commandeId = $_SESSION['commande_en_cours'] ?? '';
+$isModification = isset($_SESSION['modifier_commande_id']);
+
+// Préparer les messages personnalisés pour la vue HTML avant de nettoyer la session
+$msgSuccesTitre = $isModification ? 'Commande modifiée !' : 'Commande confirmée !';
+$msgSuccesDesc  = $isModification 
+    ? 'Les modifications ont bien été enregistrées et le règlement de la différence a été validé.' 
+    : 'Votre paiement a été accepté et votre commande est en cours de préparation.';
 
 if (!empty($commandeId))
 {
@@ -84,11 +91,23 @@ if (!empty($commandeId))
         {
             if ($paiementOk)
             {
-                $cmd['statut']      = 'en_preparation';
+                if ($isModification && isset($_SESSION['modif_temp_articles']))
+                {
+                    // On applique la nouvelle liste d'articles et le nouveau prix cumulé
+                    $cmd['articles']   = $_SESSION['modif_temp_articles'];
+                    $cmd['prix_total'] = $_SESSION['modif_temp_total'];
+                    $cmd['statut']     = 'en_attente'; // Reste en attente de traitement cuisine
+                }
+                else
+                {
+                    // Commande classique : Passage standard en préparation
+                    $cmd['statut'] = 'en_preparation';
+                }
+
                 $paiementId         = 'PAY-' . strtoupper(substr(md5($transaction), 0, 6));
                 $cmd['paiement_id'] = $paiementId;
 
-                // Enregistrer le paiement
+                // Enregistrer le reçu du paiement (soit le montant total, soit le delta)
                 $paiements[] = [
                     'id'                    => $paiementId,
                     'commande_id'           => $commandeId,
@@ -103,21 +122,27 @@ if (!empty($commandeId))
             }
             else
             {
-                // Supprimer la commande si paiement refusé
-                $cmd['statut'] = 'annulee';
+                //Si le paiement échoue sur une modification, on N'ANNULE PAS la commande !
+                // Le client a déjà payé son panier initial, on rejette juste ses modifications.
+                if (!$isModification)
+                {
+                    $cmd['statut'] = 'annulee';
+                }
             }
             break;
         }
     }
     ecrireCommandes($commandes);
 
-    // Vider le panier si paiement OK
     if ($paiementOk)
     {
         $_SESSION['panier'] = [];
         unset($_SESSION['commande_en_cours']);
         unset($_SESSION['cybank_transaction']);
         unset($_SESSION['cybank_montant']);
+        unset($_SESSION['modifier_commande_id']);
+        unset($_SESSION['modif_temp_articles']);
+        unset($_SESSION['modif_temp_total']);
     }
 }
 ?>
@@ -129,6 +154,11 @@ if (!empty($commandeId))
     <title>Confirmation de commande - L'Antica Trattoria</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="fichiercommun.css">
+    
+    <?php if (isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'sombre'): ?>
+        <link rel="stylesheet" href="dark-mode.css" id="css-darkmode">
+    <?php endif; ?>
+
     <style>
         .confirmation-section {
             min-height: 60vh;
@@ -211,6 +241,10 @@ if (!empty($commandeId))
         <div class="nav-buttons">
             <button class="btn-gold" onclick="window.location.href='profil.php'">MON PROFIL</button>
             <button class="btn-gold" onclick="window.location.href='deconnexion.php'">DÉCONNEXION</button>
+            
+            <button id="btn-theme" onclick="basculerTheme()" class="btn-gold">
+                <?php echo (isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'sombre') ? '☀️ Mode clair' : '🌙 Mode sombre'; ?>
+            </button>
         </div>
     </nav>
 </header>
@@ -221,8 +255,8 @@ if (!empty($commandeId))
 
             <?php if ($paiementOk): ?>
                 <div class="icone-ok">✅</div>
-                <h1>Commande confirmée !</h1>
-                <p>Votre paiement a été accepté et votre commande est en cours de préparation.</p>
+                <h1><?php echo htmlspecialchars($msgSuccesTitre); ?></h1>
+                <p><?php echo htmlspecialchars($msgSuccesDesc); ?></p>
                 <div class="commande-ref"><?php echo htmlspecialchars($commandeId); ?></div>
                 <p>Vous pouvez suivre le statut de votre commande depuis votre profil.</p>
                 <a href="profil.php" class="btn-retour">Voir mon profil</a>
@@ -233,7 +267,7 @@ if (!empty($commandeId))
                 <div class="icone-err">❌</div>
                 <h1>Paiement refusé</h1>
                 <p><?php echo htmlspecialchars($erreurMsg ?: 'Une erreur est survenue lors du paiement.'); ?></p>
-                <p>Votre commande a été annulée. Aucun montant n'a été débité.</p>
+                <p><?php echo $isModification ? 'Les modifications ont été annulées. Votre commande initiale reste inchangée.' : 'Votre commande a été annulée. Aucun montant n\'a été débité.'; ?></p>
                 <a href="panier.php" class="btn-retour">Retour au panier</a>
                 <br>
                 <a href="carte.php" class="btn-retour-sec">Continuer mes achats</a>
@@ -280,6 +314,6 @@ if (!empty($commandeId))
         <p>© 2026 L'Antica Trattoria - Site réalisé par Boualili Kenza et Eish Shahd</p>
     </div>
 </footer>
-
+<script src="js/theme.js"></script>
 </body>
 </html>
