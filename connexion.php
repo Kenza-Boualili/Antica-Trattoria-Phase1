@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
             <button class="btn-gold" onclick="window.location.href='connexion.php'">SE CONNECTER</button>
             <button class="btn-gold" onclick="window.location.href='inscription.php'">S'INSCRIRE</button>
             
-            <button id="btn-theme" onclick="basculerTheme()" class="btn-gold">
+            <button id="btn-theme" onclick="basculerTheme()" class="btn-gold" aria-label="Changer le thème d'affichage">
                 <?php echo (isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'sombre') ? '☀️ Mode clair' : '🌙 Mode sombre'; ?>
             </button>
         </div>
