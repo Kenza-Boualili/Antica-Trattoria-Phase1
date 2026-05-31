@@ -80,7 +80,7 @@ foreach ($plats as $plat)
                 <button class="btn-gold" onclick="window.location.href='inscription.php'">S'INSCRIRE</button>
             <?php endif; ?>
 
-            <button id="btn-theme" onclick="basculerTheme()" class="btn-gold">
+            <button id="btn-theme" onclick="basculerTheme()" class="btn-gold" aria-label="Changer le thème d'affichage">
                 <?php echo (isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'sombre') ? '☀️ Mode clair' : '🌙 Mode sombre'; ?>
             </button>
         </div>
@@ -115,7 +115,7 @@ foreach ($plats as $plat)
                 <div class="suggestion-card">
                     <div class="dish-tag">Plat du jour</div>
                     <img src="<?php echo htmlspecialchars($platDuJour['image']); ?>"
-                         alt="<?php echo htmlspecialchars($platDuJour['nom']); ?>">
+                         alt="Plat du jour : <?php echo htmlspecialchars($platDuJour['nom']); ?>">
                     <h3><?php echo htmlspecialchars($platDuJour['nom']); ?></h3>
                     <p><?php echo htmlspecialchars($platDuJour['description']); ?></p>
                     <p style="color:var(--color-bordeaux); font-weight:600; margin-top:8px;">
@@ -128,7 +128,7 @@ foreach ($plats as $plat)
                 <div class="suggestion-card">
                     <div class="dish-tag">Populaire</div>
                     <img src="<?php echo htmlspecialchars($plat['image']); ?>"
-                         alt="<?php echo htmlspecialchars($plat['nom']); ?>">
+                         alt="Plat populaire : <?php echo htmlspecialchars($plat['nom']); ?>">
                     <h3><?php echo htmlspecialchars($plat['nom']); ?></h3>
                     <p><?php echo htmlspecialchars($plat['description']); ?></p>
                     <p style="color:var(--color-bordeaux); font-weight:600; margin-top:8px;">
@@ -147,8 +147,8 @@ foreach ($plats as $plat)
             <p>Depuis notre ouverture, nous avons eu un seul but : partager l'amour et le respect de la cuisine italienne authentique avec nos convives.</p>
         </div>
         <div class="about-images">
-            <img src="photo/pizza1.jpeg" alt="Pizza" class="pizza-img">
-            <img src="photo/burratta1.jpeg" alt="Burrata" class="burrata-img">
+            <img src="photo/pizza1.jpeg" alt="Photographie d'une authentique pizza italienne cuite au feu de bois" class="pizza-img">
+            <img src="photo/burratta1.jpeg" alt="Photographie d'une burrata crémeuse et tomates fraîches" class="burrata-img">
         </div>
     </section>
 
@@ -157,19 +157,19 @@ foreach ($plats as $plat)
         <div class="menu-grid">
             <div class="menu-item" onclick="window.location.href='carte.php#antipasti'">
                 <span class="menu-item-title">Antipasti</span>
-                <img src="photo/burratta2.jpeg" alt="Antipasti">
+                <img src="photo/burratta2.jpeg" alt="Assiette d'Antipasti italiens">
             </div>
             <div class="menu-item" onclick="window.location.href='carte.php#carne'">
                 <span class="menu-item-title">Carne</span>
-                <img src="photo/viande1.jpeg" alt="Viande">
+                <img src="photo/viande1.jpeg" alt="Plat de viande italienne préparée">
             </div>
             <div class="menu-item" onclick="window.location.href='carte.php#pasta'">
                 <span class="menu-item-title">Pasta</span>
-                <img src="photo/pates1.jpeg" alt="Pâtes">
+                <img src="photo/pates1.jpeg" alt="Assiette de pâtes fraîches traditionnelles">
             </div>
             <div class="menu-item" onclick="window.location.href='carte.php#pizze'">
                 <span class="menu-item-title">Pizze</span>
-                <img src="photo/pizza2.jpeg" alt="Pizza">
+                <img src="photo/pizza2.jpeg" alt="Pizza artisanale sortie du four">
             </div>
         </div>
     </section>
@@ -177,7 +177,7 @@ foreach ($plats as $plat)
     <section class="reserve-section">
         <div class="reserve-wrapper">
             <div class="reserve-image">
-                <img src="photo/reserver.jpeg" alt="Restaurant">
+                <img src="photo/reserver.jpeg" alt="Vue intérieure de notre restaurant L'Antica Trattoria">
             </div>
             <div class="reserve-content">
                 <h2>Une Expérience Unique</h2>
