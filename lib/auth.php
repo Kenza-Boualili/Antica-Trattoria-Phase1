@@ -211,3 +211,4 @@ function getUtilisateurConnecte()
 
     return null;
 }
+
