@@ -67,6 +67,6 @@ if (!empty($desserts)) {
     ];
 }
 
-// Une fois le panier surprise rempli, on redirige vers le panier !
+// Une fois le panier surprise rempli, on redirige vers le panier 
 header('Location: panier.php');
 exit;
