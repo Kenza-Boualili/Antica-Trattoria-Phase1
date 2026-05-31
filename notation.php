@@ -154,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($erreur) && empty($succes))
         </ul>
         <div class="nav-buttons">
             <button class="btn-gold" onclick="window.location.href='deconnexion.php'">DÉCONNEXION</button>
-            <button id="btn-theme" onclick="basculerTheme()" class="btn-gold">
+            <button id="btn-theme" onclick="basculerTheme()" class="btn-gold" aria-label="Changer le thème d'affichage">
                 <?php echo (isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'sombre') ? '☀️ Mode clair' : '🌙 Mode sombre'; ?>
             </button>
         </div>
