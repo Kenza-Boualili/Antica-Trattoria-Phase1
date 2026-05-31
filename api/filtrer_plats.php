@@ -66,7 +66,7 @@ foreach ($plats as $plat) {
     }
 }
 
-// 6. DÉFINIR LES NOMS (indispensable pour éviter que les titres disparaissent)
+// 6. DÉFINIR LES NOMS ( pour éviter que les titres disparaissent)
 $nomCategories = [
     'antipasti' => 'ANTIPASTI',
     'pasta'     => 'PASTA',
