@@ -96,7 +96,7 @@ usort($historique, fn($a, $b) => strcmp($b['date_commande'], $a['date_commande']
         <div class="nav-buttons">
             <span style="color:#fff; font-size:12px; margin-right:5px;"><?php echo htmlspecialchars($_SESSION['user_prenom']); ?></span>
             
-            <button id="btn-theme" onclick="basculerTheme()" class="btn-gold">
+            <button id="btn-theme" onclick="basculerTheme()" class="btn-gold" aria-label="Changer le thème d'affichage">
                 <?php echo (isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'sombre') ? '☀️ Mode clair' : '🌙 Mode sombre'; ?>
             </button>
             
@@ -136,7 +136,7 @@ usort($historique, fn($a, $b) => strcmp($b['date_commande'], $a['date_commande']
                         <p><?php echo htmlspecialchars($maCommande['adresse_livraison']['ville']); ?></p>
                         
                         <?php if ($client && $client['telephone']): ?>
-                            <p style="margin-top:10px;">📞 <a href="tel:<?php echo $client['telephone']; ?>"><?php echo $client['telephone']; ?></a></p>
+                            <p style="margin-top:10px;">📞 <a href="tel:<?php echo htmlspecialchars($client['telephone']); ?>"><?php echo htmlspecialchars($client['telephone']); ?></a></p>
                         <?php endif; ?>
                     </div>
                 <?php endif; ?>
