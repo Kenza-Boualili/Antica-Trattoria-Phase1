@@ -110,12 +110,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         $_SESSION['modif_temp_total']    = $totalFinal;
         $_SESSION['commande_en_cours']   = $nouvelId;
 
-        // SCÉNARIO A : Le nouveau montant est supérieur -> On ne paie QUE la différence
+        // SCÉNARIO A : Le nouveau montant est supérieur -> On ne paie que la différence
         if ($difference > 0) 
         {
             $totalFinal = $difference;
         } 
-        // SCÉNARIO B : Le montant est inférieur ou identique -> Pas besoin de CYBank !
+        // SCÉNARIO B : Le montant est inférieur ou identique -> Pas besoin de CYBank 
         else 
         {
             foreach ($commandes as &$cmd) 
