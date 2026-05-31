@@ -101,7 +101,7 @@ $livreurs = array_filter($users, fn($u) => $u['role'] === 'livreur' && $u['actif
                 Chef : <?php echo htmlspecialchars($_SESSION['user_prenom']); ?>
             </span>
             <button class="btn-gold" onclick="window.location.href='deconnexion.php'">DÉCONNEXION</button>
-            <button id="btn-theme" onclick="basculerTheme()" class="btn-gold">
+            <button id="btn-theme" onclick="basculerTheme()" class="btn-gold" aria-label="Changer le thème d'affichage">
                 <?php echo (isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'sombre') ? '☀️ Mode clair' : '🌙 Mode sombre'; ?>
             </button>
         </div>
