@@ -142,7 +142,7 @@ $nomCategories = [
                 <button class="btn-gold" onclick="window.location.href='inscription.php'">S'INSCRIRE</button>
             <?php endif; ?>
             
-            <button id="btn-theme" onclick="basculerTheme()" class="btn-gold">
+            <button id="btn-theme" onclick="basculerTheme()" class="btn-gold" aria-label="Changer le thème d'affichage">
                 <?php echo (isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'sombre') ? '☀️ Mode clair' : '🌙 Mode sombre'; ?>
             </button>
         </div>
@@ -177,6 +177,14 @@ $nomCategories = [
                     </select>
                 </div>
             </div>
+            
+            <?php if (estConnecte() && getRoleConnecte() === 'client'): ?>
+                <div style="text-align: center; margin-top: 25px;">
+                    <button type="button" class="btn-gold" onclick="window.location.href='aleatoire.php'" style="background: var(--color-bordeaux); color: #fff; border-color: var(--color-bordeaux); font-weight: 600;">
+                        🎲 SURPRENEZ-MOI (MENU ALÉATOIRE)
+                    </button>
+                </div>
+            <?php endif; ?>
         </div>
     </section>
 
