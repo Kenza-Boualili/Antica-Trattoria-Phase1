@@ -72,13 +72,10 @@ if (!empty($transaction) && !empty($montant) && !empty($vendeur) && !empty($stat
 
 // Mettre à jour la commande
 $commandeId = $_SESSION['commande_en_cours'] ?? '';
-$isModification = isset($_SESSION['modifier_commande_id']);
 
-// Préparer les messages personnalisés pour la vue HTML avant de nettoyer la session
-$msgSuccesTitre = $isModification ? 'Commande modifiée !' : 'Commande confirmée !';
-$msgSuccesDesc  = $isModification 
-    ? 'Les modifications ont bien été enregistrées et le règlement de la différence a été validé.' 
-    : 'Votre paiement a été accepté et votre commande est en cours de préparation.';
+// Préparer les messages pour la vue HTML
+$msgSuccesTitre = 'Commande confirmée !';
+$msgSuccesDesc  = 'Votre paiement a été accepté et votre commande est en cours de préparation.';
 
 if (!empty($commandeId))
 {
@@ -91,23 +88,13 @@ if (!empty($commandeId))
         {
             if ($paiementOk)
             {
-                if ($isModification && isset($_SESSION['modif_temp_articles']))
-                {
-                    // On applique la nouvelle liste d'articles et le nouveau prix cumulé
-                    $cmd['articles']   = $_SESSION['modif_temp_articles'];
-                    $cmd['prix_total'] = $_SESSION['modif_temp_total'];
-                    $cmd['statut']     = 'en_attente'; // Reste en attente de traitement cuisine
-                }
-                else
-                {
-                    // Commande classique : Passage standard en préparation
-                    $cmd['statut'] = 'en_preparation';
-                }
+                // Passage standard en préparation
+                $cmd['statut'] = 'en_preparation';
 
                 $paiementId         = 'PAY-' . strtoupper(substr(md5($transaction), 0, 6));
                 $cmd['paiement_id'] = $paiementId;
 
-                // Enregistrer le reçu du paiement (soit le montant total, soit le delta)
+                // Enregistrer le reçu du paiement
                 $paiements[] = [
                     'id'                    => $paiementId,
                     'commande_id'           => $commandeId,
@@ -122,12 +109,8 @@ if (!empty($commandeId))
             }
             else
             {
-                //Si le paiement échoue sur une modification, on N'ANNULE PAS la commande !
-                // Le client a déjà payé son panier initial, on rejette juste ses modifications.
-                if (!$isModification)
-                {
-                    $cmd['statut'] = 'annulee';
-                }
+                // Si le paiement échoue, la commande est annulée
+                $cmd['statut'] = 'annulee';
             }
             break;
         }
@@ -140,9 +123,6 @@ if (!empty($commandeId))
         unset($_SESSION['commande_en_cours']);
         unset($_SESSION['cybank_transaction']);
         unset($_SESSION['cybank_montant']);
-        unset($_SESSION['modifier_commande_id']);
-        unset($_SESSION['modif_temp_articles']);
-        unset($_SESSION['modif_temp_total']);
     }
 }
 ?>
@@ -267,7 +247,7 @@ if (!empty($commandeId))
                 <div class="icone-err">❌</div>
                 <h1>Paiement refusé</h1>
                 <p><?php echo htmlspecialchars($erreurMsg ?: 'Une erreur est survenue lors du paiement.'); ?></p>
-                <p><?php echo $isModification ? 'Les modifications ont été annulées. Votre commande initiale reste inchangée.' : 'Votre commande a été annulée. Aucun montant n\'a été débité.'; ?></p>
+                <p>Votre commande a été annulée. Aucun montant n'a été débité.</p>
                 <a href="panier.php" class="btn-retour">Retour au panier</a>
                 <br>
                 <a href="carte.php" class="btn-retour-sec">Continuer mes achats</a>
