@@ -8,7 +8,7 @@ demarrerSession();
 requireConnexion();
 requireRole('client');
 
-define('CYBANK_URL',    'https://www.plateforme-smc.fr/cybank/index.php');
+define('CYBANK_URL',     'https://www.plateforme-smc.fr/cybank/index.php');
 define('CYBANK_VENDEUR','MEF-2_E');
 define('RETOUR_URL',    'http://localhost:8000/retour_paiement.php');
 
@@ -50,76 +50,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ], $_SESSION['panier']);
 
     $totalFinal = round($total, 2);
-    $isModification = isset($_SESSION['modifier_commande_id']);
 
-    if ($isModification) {
-        $nouvelId   = $_SESSION['modifier_commande_id'];
-        $ancienPrix = 0;
-        foreach ($commandes as $c) {
-            if ($c['id'] === $nouvelId) { $ancienPrix = $c['prix_total']; break; }
-        }
-
-        $difference = round($totalFinal - $ancienPrix, 2);
-        $_SESSION['modif_temp_articles'] = $articles;
-        $_SESSION['modif_temp_total']    = $totalFinal;
-        $_SESSION['commande_en_cours']   = $nouvelId;
-
-        if ($difference <= 0) {
-            foreach ($commandes as &$cmd) {
-                if ($cmd['id'] === $nouvelId) {
-                    $cmd['articles']   = $articles;
-                    $cmd['prix_total'] = $totalFinal;
-                    $cmd['type']       = $typeCommande;
-                    $cmd['adresse_livraison'] = $typeCommande === 'livraison' ? [
-                        'adresse'     => $user['adresse'],
-                        'ville'       => $user['ville'],
-                        'code_postal' => $user['code_postal'],
-                        'etage'       => $user['etage'],
-                        'interphone'  => $user['interphone'],
-                        'commentaire' => trim($_POST['commentaire'] ?? '')
-                    ] : null;
-                    break;
-                }
-            }
-            ecrireCommandes($commandes);
-            $_SESSION['panier'] = [];
-            unset($_SESSION['modifier_commande_id'], $_SESSION['modif_temp_articles'],
-                  $_SESSION['modif_temp_total'],    $_SESSION['commande_en_cours']);
-            header('Location: profil.php?succes=modifiee');
-            exit;
-        }
-        $totalFinal = $difference;
-
-    } else {
-        $nouvelId    = 'ORD-' . strtoupper(substr(uniqid(), -6));
-        $commandes[] = [
-            'id'                         => $nouvelId,
-            'client_id'                  => $user['id'],
-            'type'                       => $typeCommande,
-            'adresse_livraison'          => $typeCommande === 'livraison' ? [
-                'adresse'     => $user['adresse'],
-                'ville'       => $user['ville'],
-                'code_postal' => $user['code_postal'],
-                'etage'       => $user['etage'],
-                'interphone'  => $user['interphone'],
-                'commentaire' => trim($_POST['commentaire'] ?? '')
-            ] : null,
-            'articles'                   => $articles,
-            'prix_total'                 => $totalFinal,
-            'statut'                     => 'en_attente_paiement',
-            'livreur_id'                 => null,
-            'paiement_id'                => null,
-            'preparation_immediate'      => $preparImmed,
-            'date_commande'              => date('Y-m-d\TH:i:s'),
-            'date_preparation_souhaitee' => (!$preparImmed && !empty($datePlanif))
-                                            ? date('Y-m-d\TH:i:s', strtotime($datePlanif))
-                                            : null,
-            'note_livraison'             => null,
-            'note_produits'              => null
-        ];
-        ecrireCommandes($commandes);
-        $_SESSION['commande_en_cours'] = $nouvelId;
-    }
+    // Générer un ID de commande unique et créer une nouvelle entrée
+    $nouvelId    = 'ORD-' . strtoupper(substr(uniqid(), -6));
+    $commandes[] = [
+        'id'                         => $nouvelId,
+        'client_id'                  => $user['id'],
+        'type'                       => $typeCommande,
+        'adresse_livraison'          => $typeCommande === 'livraison' ? [
+            'adresse'     => $user['adresse'],
+            'ville'       => $user['ville'],
+            'code_postal' => $user['code_postal'],
+            'etage'       => $user['etage'],
+            'interphone'  => $user['interphone'],
+            'commentaire' => trim($_POST['commentaire'] ?? '')
+        ] : null,
+        'articles'                   => $articles,
+        'prix_total'                 => $totalFinal,
+        'statut'                     => 'en_attente_paiement',
+        'livreur_id'                 => null,
+        'paiement_id'                => null,
+        'preparation_immediate'      => $preparImmed,
+        'date_commande'              => date('Y-m-d\TH:i:s'),
+        'date_preparation_souhaitee' => (!$preparImmed && !empty($datePlanif))
+                                        ? date('Y-m-d\TH:i:s', strtotime($datePlanif))
+                                        : null,
+        'note_livraison'             => null,
+        'note_produits'              => null
+    ];
+    ecrireCommandes($commandes);
+    $_SESSION['commande_en_cours'] = $nouvelId;
 
     // Préparation CYBank
     $transaction = substr(preg_replace('/[^0-9a-zA-Z]/', '', $nouvelId . substr(md5(time()), 0, 4)), 0, 24);
@@ -322,7 +282,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <button type="submit" class="btn-payer">
-                    <?= isset($_SESSION['modifier_commande_id']) ? 'Confirmer la modification →' : 'Procéder au paiement →' ?>
+                    Procéder au paiement →
                 </button>
                 <p class="cybank-info">🔒 Paiement sécurisé via CYBank</p>
 
